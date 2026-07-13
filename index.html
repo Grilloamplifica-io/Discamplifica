@@ -94,7 +94,7 @@
 
   /* Results (admin view) */
   .profile-summary{ text-align:center; padding:30px 0 10px; }
-  .profile-code{ font-family:'Barlow Condensed', sans-serif; font-size:76px; font-weight:700; color:var(--navy); letter-spacing:0.02em; }
+  .profile-code{ font-family:'Barlow Condensed', sans-serif; font-size:42px; font-weight:700; color:var(--navy); letter-spacing:0.01em; line-height:1.1; }
   .profile-name{ font-size:15.5px; color:var(--blue); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-top:5px; }
   .bars{ margin:34px 0; }
   .bar-row{ margin-bottom:20px; }
@@ -147,7 +147,7 @@
 
   @media print{ body{ padding:0; background:#fff; } .footer-actions{ display:none; } .card{ box-shadow:none; } }
   @media (max-width: 480px){
-    h1{ font-size:34px; } .card{ padding:26px; } .profile-code{ font-size:52px; } .app-logo{ height:36px; margin-bottom:22px; }
+    h1{ font-size:34px; } .card{ padding:26px; } .profile-code{ font-size:32px; } .app-logo{ height:36px; margin-bottom:22px; }
     .phrase-row{ flex-direction:column; align-items:flex-start; gap:10px; }
     .tag-buttons{ align-self:flex-end; }
   }
@@ -169,7 +169,7 @@
     .phrase-text{ font-size:18.5px; }
     .tag-btn{ font-size:14.5px; padding:10px 16px; }
     .thanks-icon{ width:88px; height:88px; font-size:40px; }
-    .profile-code{ font-size:92px; }
+    .profile-code{ font-size:50px; }
     .profile-name{ font-size:17px; }
     .bar-head{ font-size:21px; }
     .narrative h3{ font-size:22px; }
@@ -201,7 +201,7 @@
     <div class="eyebrow">Amplifica · Evaluación complementaria</div>
     <h1>Perfil de comportamiento DISC</h1>
     <div class="card" style="margin-top:20px;">
-      <p>Este cuestionario consta de <strong>26 bloques</strong> con 4 frases cada uno. En cada bloque, elige la frase que <strong>MÁS</strong> te representa y la que <strong>MENOS</strong> te representa.</p>
+      <p>Este cuestionario consta de <strong>28 bloques</strong> con 4 palabras cada uno. En cada bloque, elige la palabra que <strong>MÁS</strong> te representa y la que <strong>MENOS</strong> te representa.</p>
       <p>No hay respuestas correctas o incorrectas. Te tomará entre 10 y 15 minutos.</p>
       <p>Este resultado es un <strong>insumo complementario</strong> del proceso de selección, no un factor excluyente de decisión. Los resultados serán revisados por el equipo de Personas de Amplifica.</p>
       <div class="consent">
@@ -246,11 +246,11 @@
   <!-- QUESTIONS -->
   <div class="screen" id="quiz">
     <div class="progress-wrap">
-      <div class="progress-label"><span id="progressText">Bloque 1 de 26</span><span id="progressPct">4%</span></div>
+      <div class="progress-label"><span id="progressText">Bloque 1 de 28</span><span id="progressPct">4%</span></div>
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:4%"></div></div>
     </div>
     <div class="card">
-      <div class="block-instruction">Marca la frase que MÁS te representa y la que MENOS te representa.</div>
+      <div class="block-instruction">Marca la palabra que MÁS te representa y la que MENOS te representa.</div>
       <div id="phraseContainer"></div>
       <div class="nav-row">
         <button class="btn-ghost" id="backBtn">← Volver</button>
@@ -307,8 +307,8 @@
     <div class="card" style="margin-top:20px;">
       <div class="candidate-meta" id="candidateMeta"></div>
       <div class="profile-summary">
-        <div class="profile-code" id="profileCode">D-I</div>
-        <div class="profile-name" id="profileName">Perfil dominante</div>
+        <div class="profile-code" id="profileCode">Alentador</div>
+        <div class="profile-name" id="profileName">Patrón clásico</div>
       </div>
       <div class="bars" id="barsContainer"></div>
       <div class="narrative">
@@ -323,39 +323,50 @@
 
       <div class="report-section two-col">
         <div>
-          <h3>Motivadores</h3>
-          <ul id="motivadoresList" style="padding-left:18px;"></ul>
+          <h3>Emociones</h3>
+          <p id="emocionesText"></p>
         </div>
         <div>
-          <h3>Desmotivadores</h3>
-          <ul id="desmotivadoresList" style="padding-left:18px;"></ul>
+          <h3>Motivadores</h3>
+          <p id="metasText"></p>
         </div>
       </div>
 
       <div class="report-section">
-        <h3>Estilo de comunicación</h3>
-        <p id="comunicacionText"></p>
+        <h3>Cómo influye en los demás</h3>
+        <p id="influyeText"></p>
       </div>
 
       <div class="report-section">
-        <h3>Toma de decisiones</h3>
-        <p id="decisionText"></p>
-      </div>
-
-      <div class="report-section">
-        <h3>Supervisor ideal</h3>
-        <p id="supervisorText"></p>
+        <h3>Cómo juzga a los demás</h3>
+        <p id="juzgaText"></p>
       </div>
 
       <div class="report-section two-col">
         <div class="list-col fortalezas">
-          <h4>Fortalezas</h4>
-          <ul id="fortalezasList"></ul>
+          <h4>Su valor para la organización</h4>
+          <p id="valorText"></p>
         </div>
         <div class="list-col desarrollo">
-          <h4>Áreas de desarrollo</h4>
-          <ul id="desarrolloList"></ul>
+          <h4>De qué abusa</h4>
+          <p id="abusaText"></p>
         </div>
+      </div>
+
+      <div class="report-section two-col">
+        <div>
+          <h3>Bajo presión</h3>
+          <p id="presionText"></p>
+        </div>
+        <div>
+          <h3>Qué teme</h3>
+          <p id="temeText"></p>
+        </div>
+      </div>
+
+      <div class="report-section">
+        <h3>Sería más eficaz si...</h3>
+        <p id="eficazText"></p>
       </div>
 
       <div class="report-section">
@@ -392,34 +403,36 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const rtdb = firebase.database();
 
-// ---------- DATA: 26 bloques (d, i, s, c) ----------
+// ---------- DATA: 28 bloques oficiales (palabra + dimensión por posición) ----------
 const BLOCKS = [
-["Toma decisiones rápido, incluso bajo presión","Disfruta conocer gente nueva","Prefiere rutinas y procesos estables","Revisa los detalles antes de actuar"],
-["Le gusta tener el control de las situaciones","Se entusiasma fácilmente con nuevas ideas","Es paciente frente a los cambios lentos","Sigue las normas y procedimientos establecidos"],
-["Enfrenta los desafíos de manera directa","Motiva a otros con facilidad","Escucha con calma antes de responder","Organiza su trabajo de forma metódica"],
-["Se orienta a resultados concretos","Se comunica de forma expresiva y cercana","Es leal y constante con su equipo","Busca la precisión en lo que hace"],
-["Asume riesgos con determinación","Genera buen ambiente en el grupo","Mantiene la calma en situaciones tensas","Analiza los datos antes de opinar"],
-["Le incomoda perder tiempo en detalles","Le gusta ser el centro de atención en reuniones","Prefiere trabajar en equipo antes que solo","Prefiere seguir un plan antes que improvisar"],
-["Impone su punto de vista cuando lo cree correcto","Persuade con facilidad a los demás","Se adapta sin resistencia a lo que se le pide","Detecta errores que otros pasan por alto"],
-["Actúa rápido, sin esperar demasiadas instrucciones","Expresa sus emociones abiertamente","Es predecible y consistente en su forma de trabajar","Cuestiona la información antes de aceptarla"],
-["Le gusta competir y ganar","Cuenta historias de forma entretenida","Da apoyo emocional a sus compañeros","Prefiere la exactitud a la rapidez"],
-["Delega poco porque prefiere hacerlo él/ella mismo/a","Se siente cómodo/a hablando en público","Evita los conflictos directos","Se guía por reglas claras más que por intuición"],
-["Presiona para que las cosas avancen rápido","Es optimista frente a los problemas","Necesita tiempo para adaptarse a lo nuevo","Documenta y respalda su trabajo con cuidado"],
-["Prioriza los resultados sobre las relaciones","Construye redes de contacto con facilidad","Es un buen mediador en conflictos de equipo","Prefiere procedimientos definidos antes que ambigüedad"],
-["Le cuesta aceptar un \"no\" como respuesta","Improvisa con soltura frente al público","Es tolerante con los ritmos de los demás","Es cauteloso/a antes de comprometerse"],
-["Se frustra con la lentitud de otros","Contagia entusiasmo al equipo","Prioriza la armonía del grupo","Prefiere tener toda la información antes de decidir"],
-["Va directo al punto sin rodeos","Disfruta trabajar con distintos tipos de personas","Es constante en el largo plazo","Se apega estrictamente a los estándares de calidad"],
-["Le gusta liderar los proyectos","Usa el humor para conectar con otros","Prefiere evitar cambios bruscos","Prefiere trabajar con datos antes que con opiniones"],
-["Insiste hasta lograr lo que se propone","Se involucra emocionalmente con las personas","Escucha activamente antes de opinar","Es reservado/a hasta tener certeza"],
-["Toma la iniciativa sin que se lo pidan","Le resulta fácil generar confianza rápidamente","Prefiere la estabilidad laboral antes que el cambio constante","Verifica dos veces antes de entregar un trabajo"],
-["Es exigente consigo mismo/a y con los demás","Anima al equipo en momentos difíciles","Es paciente para explicar las cosas varias veces","Prefiere lo comprobado antes que lo experimental"],
-["Prefiere actuar antes que planificar en exceso","Le gusta socializar fuera del trabajo también","Se adapta al ritmo del equipo","Sigue protocolos incluso bajo presión de tiempo"],
-["Confronta los problemas de frente","Convence con entusiasmo más que con datos","Es un pilar de estabilidad para el equipo","Prefiere el análisis profundo antes de opinar"],
-["Le gusta fijar metas ambiciosas","Se energiza al trabajar con otras personas","Prioriza mantener buenas relaciones a largo plazo","Es meticuloso/a con los procesos"],
-["Prefiere decidir solo/a y avisar después","Es espontáneo/a en su forma de comunicarse","Prefiere la rutina conocida antes que lo desconocido","Sigue una lógica estructurada para resolver problemas"],
-["Se impacienta con procesos muy burocráticos","Da buenas primeras impresiones","Es flexible con los cambios de última hora, aunque le cuesten","Prefiere revisar antes de enviar cualquier entregable"],
-["Asume el control cuando nadie más lo hace","Prefiere trabajar acompañado/a que en solitario","Necesita previsibilidad para rendir bien","Confía más en los hechos que en las impresiones"],
-["Le motivan los desafíos difíciles","Transmite entusiasmo de forma natural","Prefiere consenso antes que imposición","Es cuidadoso/a con cada detalle de su trabajo"]
+  {words:["Entusiasta","Rápido(a)","Lógico(a)","Apacible"], dims:["i","d","c","s"]},
+  {words:["Cauteloso(a)","Decidido(a)","Receptivo(a)","Bondadoso(a)"], dims:["c","d","i","s"]},
+  {words:["Amigable","Preciso(a)","Franco(a)","Tranquilo(a)"], dims:["i","c","d","s"]},
+  {words:["Elocuente","Controlado(a)","Tolerante","Decisivo(a)"], dims:["i","c","s","d"]},
+  {words:["Atrevido(a)","Concienzudo(a)","Comunicativo(a)","Moderado(a)"], dims:["d","c","i","s"]},
+  {words:["Ameno(a)","Ingenioso(a)","Investigador(a)","Acepta Riesgos"], dims:["s","i","c","d"]},
+  {words:["Expresivo(a)","Cuidadoso(a)","Dominante","Sensible"], dims:["i","c","d","s"]},
+  {words:["Extrovertido(a)","Precavido(a)","Constante","Impaciente"], dims:["i","c","s","d"]},
+  {words:["Discreto(a)","Complaciente","Encantador(a)","Insistente"], dims:["c","s","i","d"]},
+  {words:["Valeroso(a)","Anima a los demás","Pacifico(a)","Perfeccionista"], dims:["d","i","s","c"]},
+  {words:["Reservado(a)","Atento(a)","Osado(a)","Alegre"], dims:["c","s","d","i"]},
+  {words:["Estimulante","Gentil","Perceptivo(a)","Independiente"], dims:["i","s","c","d"]},
+  {words:["Competitivo(a)","Considerado(a)","Alegre","Sagaz"], dims:["d","s","i","c"]},
+  {words:["Meticuloso(a)","Obediente","Ideas Firmes","Alentador(a)"], dims:["c","s","d","i"]},
+  {words:["Popular","Reflexivo(a)","Tenaz","Calmado(a)"], dims:["i","c","d","s"]},
+  {words:["Analítico(a)","Audaz","Leal","Promotor(a)"], dims:["c","d","s","i"]},
+  {words:["Sociable","Paciente","Autosuficiente","Certero(a)"], dims:["i","s","d","c"]},
+  {words:["Adaptable","Resuelto(a)","Prevenido(a)","Vivaz"], dims:["s","d","c","i"]},
+  {words:["Agresivo(a)","Impetuoso(a)","Amistoso(a)","Discerniente"], dims:["d","i","s","c"]},
+  {words:["De trato Fácil","Compasivo(a)","Cauto(a)","Habla Directo"], dims:["i","s","c","d"]},
+  {words:["Evaluador(a)","Generoso(a)","Animado(a)","Persistente"], dims:["c","s","i","d"]},
+  {words:["Impulsivo(a)","Cuida los Detalles","Enérgico(a)","Tranquilo(a)"], dims:["i","c","d","s"]},
+  {words:["Sociable","Sistemático(a)","Vigoroso(a)","Tolerante"], dims:["i","c","d","s"]},
+  {words:["Cautivador(a)","Contento(a)","Exigente","Apegado(a) a las normas"], dims:["i","s","d","c"]},
+  {words:["Le agrada discutir","Metódico(a)","Comedido(a)","Desenvuelto(a)"], dims:["d","c","s","i"]},
+  {words:["Jovial","Preciso(a)","Directo(a)","Ecuánime"], dims:["i","c","d","s"]},
+  {words:["Inquieto(a)","Amable","Elocuente","Cuidadoso(a)"], dims:["d","s","i","c"]},
+  {words:["Prudente","Pionero(a)","Espontáneo(a)","Colaborador"], dims:["c","d","i","s"]}
 ];
 const DIMS = ['d','i','s','c'];
 const DIM_LABEL = {d:'Dominancia', i:'Influencia', s:'Estabilidad', c:'Cumplimiento'};
@@ -432,7 +445,8 @@ function shuffle(arr){
 }
 const blockOrder = shuffle(BLOCKS.map((_,i)=>i));
 const session = blockOrder.map(idx=>{
-  const phrases = DIMS.map((d,i)=>({dim:d, text:BLOCKS[idx][i]}));
+  const block = BLOCKS[idx];
+  const phrases = block.words.map((w,i)=>({dim:block.dims[i], text:w}));
   return shuffle(phrases);
 });
 
@@ -570,70 +584,309 @@ function levelFor(score){
   return 'Medio';
 }
 
-const NARRATIVES = {
-  d:"Persona orientada a resultados, decidida y directa. Le motivan los desafíos y el logro de metas concretas. Puede tender a la impaciencia con procesos lentos o muy detallados, y a priorizar la tarea por sobre la relación.",
-  i:"Persona sociable, entusiasta y persuasiva. Genera buen clima y motiva a otros con facilidad. Puede tender a la dispersión en tareas muy estructuradas o repetitivas, y a subestimar los detalles operativos.",
-  s:"Persona paciente, leal y constante. Aporta calma y consistencia al equipo, y se adapta bien al trabajo colaborativo. Puede tender a la resistencia frente a cambios bruscos y a evitar el conflicto incluso cuando es necesario.",
-  c:"Persona precisa, analítica y apegada a normas y procesos. Aporta rigurosidad y calidad al trabajo. Puede tender a la sobreanálisis, a la lentitud en la toma de decisiones bajo incertidumbre y a la crítica excesiva de errores propios o ajenos."
-};
-const COMBO_NARRATIVES = {
-  'd-i':"Líder natural, decidido y carismático. Bueno para movilizar equipos hacia metas ambiciosas. Riesgo: puede pasar por alto detalles o la opinión de perfiles más cautelosos.",
-  'i-d':"Líder natural, decidido y carismático. Bueno para movilizar equipos hacia metas ambiciosas. Riesgo: puede pasar por alto detalles o la opinión de perfiles más cautelosos.",
-  'd-c':"Analítico y ejecutor. Toma decisiones basadas en datos y las lleva a cabo con disciplina. Riesgo: puede ser percibido como rígido o poco empático en la forma de comunicar.",
-  'c-d':"Analítico y ejecutor. Toma decisiones basadas en datos y las lleva a cabo con disciplina. Riesgo: puede ser percibido como rígido o poco empático en la forma de comunicar.",
-  'i-s':"Cercano y colaborador. Genera confianza y sostiene relaciones de largo plazo. Riesgo: puede evitar decisiones difíciles por no generar tensión.",
-  's-i':"Cercano y colaborador. Genera confianza y sostiene relaciones de largo plazo. Riesgo: puede evitar decisiones difíciles por no generar tensión.",
-  's-c':"Confiable y meticuloso/a. Ideal para procesos que requieren consistencia y precisión sostenida. Riesgo: puede costarle adaptarse a cambios rápidos o ambigüedad.",
-  'c-s':"Confiable y meticuloso/a. Aporta orden y control de calidad, con énfasis en normas y procedimientos formales. Riesgo: puede sentirse incómodo/a en entornos muy cambiantes.",
-  'd-s':"Combina firmeza en la toma de decisiones con constancia en la ejecución. Aporta estabilidad incluso en contextos exigentes.",
-  's-d':"Combina firmeza en la toma de decisiones con constancia en la ejecución. Aporta estabilidad incluso en contextos exigentes.",
-  'i-c':"Combina cercanía interpersonal con atención al detalle. Comunica de forma cálida sin descuidar la precisión.",
-  'c-i':"Combina cercanía interpersonal con atención al detalle. Comunica de forma cálida sin descuidar la precisión."
+// ---- Tabla de clasificación oficial (código de 4 dígitos -> patrón clásico) ----
+const CODE_TO_PATTERN = {1111:"Subactivo",1112:"Subactivo",1113:"Subactivo",1114:"Subactivo",1115:"Objetivo",1116:"Objetivo",1117:"Objetivo",1121:"Subactivo",1122:"Subactivo",1123:"Subactivo",1124:"Subactivo",1125:"Objetivo",1126:"Objetivo",1127:"Objetivo",1131:"Subactivo",1132:"Subactivo",1133:"Subactivo",1134:"Subactivo",1135:"Objetivo",1136:"Objetivo",1137:"Objetivo",1141:"Subactivo",1142:"Subactivo",1143:"Subactivo",1144:"Subactivo",1145:"Objetivo",1146:"Objetivo",1147:"Objetivo",1151:"Especialista",1152:"Especialista",1153:"Especialista",1154:"Especialista",1155:"Perfeccionista",1156:"Perfeccionista",1157:"Perfeccionista",1161:"Especialista",1162:"Especialista",1163:"Especialista",1164:"Especialista",1165:"Perfeccionista",1166:"Perfeccionista",1167:"Perfeccionista",1171:"Especialista",1172:"Especialista",1173:"Especialista",1174:"Especialista",1175:"Perfeccionista",1176:"Perfeccionista",1177:"Perfeccionista",1211:"Subactivo",1212:"Subactivo",1213:"Subactivo",1214:"Subactivo",1215:"Objetivo",1216:"Objetivo",1217:"Objetivo",1221:"Subactivo",1222:"Subactivo",1223:"Subactivo",1224:"Subactivo",1225:"Objetivo",1226:"Objetivo",1227:"Objetivo",1231:"Subactivo",1232:"Subactivo",1233:"Subactivo",1234:"Subactivo",1235:"Objetivo",1236:"Objetivo",1237:"Objetivo",1241:"Subactivo",1242:"Subactivo",1243:"Subactivo",1244:"Subactivo",1245:"Objetivo",1246:"Objetivo",1247:"Objetivo",1251:"Especialista",1252:"Especialista",1253:"Especialista",1254:"Especialista",1255:"Perfeccionista",1256:"Perfeccionista",1257:"Perfeccionista",1261:"Especialista",1262:"Especialista",1263:"Especialista",1264:"Especialista",1265:"Perfeccionista",1266:"Perfeccionista",1267:"Perfeccionista",1271:"Especialista",1272:"Especialista",1273:"Especialista",1274:"Especialista",1275:"Perfeccionista",1276:"Perfeccionista",1277:"Perfeccionista",1311:"Subactivo",1312:"Subactivo",1313:"Subactivo",1314:"Subactivo",1315:"Objetivo",1316:"Objetivo",1317:"Objetivo",1321:"Subactivo",1322:"Subactivo",1323:"Subactivo",1324:"Subactivo",1325:"Objetivo",1326:"Objetivo",1327:"Objetivo",1331:"Subactivo",1332:"Subactivo",1333:"Subactivo",1334:"Subactivo",1335:"Objetivo",1336:"Objetivo",1337:"Objetivo",1341:"Subactivo",1342:"Subactivo",1343:"Subactivo",1344:"Subactivo",1345:"Objetivo",1346:"Objetivo",1347:"Objetivo",1351:"Especialista",1352:"Especialista",1353:"Especialista",1354:"Especialista",1355:"Perfeccionista",1356:"Perfeccionista",1357:"Perfeccionista",1361:"Especialista",1362:"Especialista",1363:"Especialista",1364:"Especialista",1365:"Perfeccionista",1366:"Perfeccionista",1367:"Perfeccionista",1371:"Especialista",1372:"Especialista",1373:"Especialista",1374:"Especialista",1375:"Perfeccionista",1376:"Perfeccionista",1377:"Perfeccionista",1411:"Subactivo",1412:"Subactivo",1413:"Subactivo",1414:"Subactivo",1415:"Objetivo",1416:"Objetivo",1417:"Objetivo",1421:"Subactivo",1422:"Subactivo",1423:"Subactivo",1424:"Subactivo",1425:"Objetivo",1426:"Objetivo",1427:"Objetivo",1431:"Subactivo",1432:"Subactivo",1433:"Subactivo",1434:"Subactivo",1435:"Objetivo",1436:"Objetivo",1437:"Objetivo",1441:"Subactivo",1442:"Subactivo",1443:"Subactivo",1444:"Subactivo",1445:"Objetivo",1446:"Objetivo",1447:"Objetivo",1451:"Especialista",1452:"Especialista",1453:"Especialista",1454:"Especialista",1455:"Perfeccionista",1456:"Perfeccionista",1457:"Perfeccionista",1461:"Especialista",1462:"Especialista",1463:"Especialista",1464:"Especialista",1465:"Perfeccionista",1466:"Perfeccionista",1467:"Perfeccionista",1471:"Especialista",1472:"Especialista",1473:"Especialista",1474:"Especialista",1475:"Perfeccionista",1476:"Perfeccionista",1477:"Perfeccionista",1511:"Promotor",1512:"Promotor",1513:"Promotor",1514:"Promotor",1515:"Evaluador",1516:"Evaluador",1517:"Evaluador",1521:"Promotor",1522:"Promotor",1523:"Promotor",1524:"Promotor",1525:"Evaluador",1526:"Evaluador",1527:"Evaluador",1531:"Promotor",1532:"Promotor",1533:"Promotor",1534:"Promotor",1535:"Evaluador",1536:"Evaluador",1537:"Evaluador",1541:"Promotor",1542:"Promotor",1543:"Promotor",1544:"Promotor",1545:"Profesional",1546:"Profesional",1547:"Profesional",1551:"Consejero",1552:"Consejero",1553:"Consejero",1554:"Consejero",1555:"Profesional",1556:"Profesional",1557:"Profesional",1561:"Agente",1562:"Agente",1563:"Agente",1564:"Agente",1565:"Profesional",1566:"Profesional",1567:"Profesional",1571:"Agente",1572:"Agente",1573:"Agente",1574:"Agente",1575:"Profesional",1576:"Profesional",1577:"Profesional",1611:"Promotor",1612:"Promotor",1613:"Promotor",1614:"Promotor",1615:"Evaluador",1616:"Evaluador",1617:"Evaluador",1621:"Promotor",1622:"Promotor",1623:"Promotor",1624:"Promotor",1625:"Evaluador",1626:"Evaluador",1627:"Evaluador",1631:"Promotor",1632:"Promotor",1633:"Promotor",1634:"Promotor",1635:"Evaluador",1636:"Evaluador",1637:"Evaluador",1641:"Promotor",1642:"Promotor",1643:"Promotor",1644:"Promotor",1645:"Profesional",1646:"Profesional",1647:"Profesional",1651:"Consejero",1652:"Consejero",1653:"Consejero",1654:"Consejero",1655:"Profesional",1656:"Profesional",1657:"Profesional",1661:"Consejero",1662:"Consejero",1663:"Consejero",1664:"Consejero",1665:"Profesional",1666:"Profesional",1667:"Profesional",1671:"Agente",1672:"Agente",1673:"Agente",1674:"Agente",1675:"Profesional",1676:"Profesional",1677:"Profesional",1711:"Promotor",1712:"Promotor",1713:"Promotor",1714:"Promotor",1715:"Evaluador",1716:"Evaluador",1717:"Evaluador",1721:"Promotor",1722:"Promotor",1723:"Promotor",1724:"Promotor",1725:"Evaluador",1726:"Evaluador",1727:"Evaluador",1731:"Promotor",1732:"Promotor",1733:"Promotor",1734:"Promotor",1735:"Evaluador",1736:"Evaluador",1737:"Evaluador",1741:"Promotor",1742:"Promotor",1743:"Promotor",1744:"Promotor",1745:"Profesional",1746:"Profesional",1747:"Profesional",1751:"Consejero",1752:"Consejero",1753:"Consejero",1754:"Consejero",1755:"Profesional",1756:"Profesional",1757:"Profesional",1761:"Consejero",1762:"Consejero",1763:"Consejero",1764:"Consejero",1765:"Profesional",1766:"Profesional",1767:"Profesional",1771:"Consejero",1772:"Consejero",1773:"Consejero",1774:"Consejero",1775:"Profesional",1776:"Profesional",1777:"Profesional",2111:"Subactivo",2112:"Subactivo",2113:"Subactivo",2114:"Subactivo",2115:"Objetivo",2116:"Objetivo",2117:"Objetivo",2121:"Subactivo",2122:"Subactivo",2123:"Subactivo",2124:"Subactivo",2125:"Objetivo",2126:"Objetivo",2127:"Objetivo",2131:"Subactivo",2132:"Subactivo",2133:"Subactivo",2134:"Subactivo",2135:"Objetivo",2136:"Objetivo",2137:"Objetivo",2141:"Subactivo",2142:"Subactivo",2143:"Subactivo",2144:"Subactivo",2145:"Objetivo",2146:"Objetivo",2147:"Objetivo",2151:"Especialista",2152:"Especialista",2153:"Especialista",2154:"Especialista",2155:"Perfeccionista",2156:"Perfeccionista",2157:"Perfeccionista",2161:"Especialista",2162:"Especialista",2163:"Especialista",2164:"Especialista",2165:"Perfeccionista",2166:"Perfeccionista",2167:"Perfeccionista",2171:"Especialista",2172:"Especialista",2173:"Especialista",2174:"Especialista",2175:"Perfeccionista",2176:"Perfeccionista",2177:"Perfeccionista",2211:"Subactivo",2212:"Subactivo",2213:"Subactivo",2214:"Subactivo",2215:"Objetivo",2216:"Objetivo",2217:"Objetivo",2221:"Subactivo",2222:"Subactivo",2223:"Subactivo",2224:"Subactivo",2225:"Objetivo",2226:"Objetivo",2227:"Objetivo",2231:"Subactivo",2232:"Subactivo",2233:"Subactivo",2234:"Subactivo",2235:"Objetivo",2236:"Objetivo",2237:"Objetivo",2241:"Subactivo",2242:"Subactivo",2243:"Subactivo",2244:"Subactivo",2245:"Objetivo",2246:"Objetivo",2247:"Objetivo",2251:"Especialista",2252:"Especialista",2253:"Especialista",2254:"Especialista",2255:"Perfeccionista",2256:"Perfeccionista",2257:"Perfeccionista",2261:"Especialista",2262:"Especialista",2263:"Especialista",2264:"Especialista",2265:"Perfeccionista",2266:"Perfeccionista",2267:"Perfeccionista",2271:"Especialista",2272:"Especialista",2273:"Especialista",2274:"Especialista",2275:"Perfeccionista",2276:"Perfeccionista",2277:"Perfeccionista",2311:"Subactivo",2312:"Subactivo",2313:"Subactivo",2314:"Subactivo",2315:"Objetivo",2316:"Objetivo",2317:"Objetivo",2321:"Subactivo",2322:"Subactivo",2323:"Subactivo",2324:"Subactivo",2325:"Objetivo",2326:"Objetivo",2327:"Objetivo",2331:"Subactivo",2332:"Subactivo",2333:"Subactivo",2334:"Subactivo",2335:"Objetivo",2336:"Objetivo",2337:"Objetivo",2341:"Subactivo",2342:"Subactivo",2343:"Subactivo",2344:"Subactivo",2345:"Objetivo",2346:"Objetivo",2347:"Objetivo",2351:"Especialista",2352:"Especialista",2353:"Especialista",2354:"Especialista",2355:"Perfeccionista",2356:"Perfeccionista",2357:"Perfeccionista",2361:"Especialista",2362:"Especialista",2363:"Especialista",2364:"Especialista",2365:"Perfeccionista",2366:"Perfeccionista",2367:"Perfeccionista",2371:"Especialista",2372:"Especialista",2373:"Especialista",2374:"Especialista",2375:"Perfeccionista",2376:"Perfeccionista",2377:"Perfeccionista",2411:"Subactivo",2412:"Subactivo",2413:"Subactivo",2414:"Subactivo",2415:"Objetivo",2416:"Objetivo",2417:"Objetivo",2421:"Subactivo",2422:"Subactivo",2423:"Subactivo",2424:"Subactivo",2425:"Objetivo",2426:"Objetivo",2427:"Objetivo",2431:"Subactivo",2432:"Subactivo",2433:"Subactivo",2434:"Subactivo",2435:"Objetivo",2436:"Objetivo",2437:"Objetivo",2441:"Subactivo",2442:"Subactivo",2443:"Subactivo",2444:"Subactivo",2445:"Objetivo",2446:"Objetivo",2447:"Objetivo",2451:"Especialista",2452:"Especialista",2453:"Especialista",2454:"Especialista",2455:"Perfeccionista",2456:"Perfeccionista",2457:"Perfeccionista",2461:"Especialista",2462:"Especialista",2463:"Especialista",2464:"Especialista",2465:"Perfeccionista",2466:"Perfeccionista",2467:"Perfeccionista",2471:"Especialista",2472:"Especialista",2473:"Especialista",2474:"Especialista",2475:"Perfeccionista",2476:"Perfeccionista",2477:"Perfeccionista",2511:"Promotor",2512:"Promotor",2513:"Promotor",2514:"Promotor",2515:"Evaluador",2516:"Evaluador",2517:"Evaluador",2521:"Promotor",2522:"Promotor",2523:"Promotor",2524:"Promotor",2525:"Evaluador",2526:"Evaluador",2527:"Evaluador",2531:"Promotor",2532:"Promotor",2533:"Promotor",2534:"Promotor",2535:"Evaluador",2536:"Evaluador",2537:"Evaluador",2541:"Promotor",2542:"Promotor",2543:"Promotor",2544:"Promotor",2545:"Profesional",2546:"Profesional",2547:"Profesional",2551:"Consejero",2552:"Consejero",2553:"Consejero",2554:"Consejero",2555:"Profesional",2556:"Profesional",2557:"Profesional",2561:"Agente",2562:"Agente",2563:"Agente",2564:"Agente",2565:"Profesional",2566:"Profesional",2567:"Profesional",2571:"Agente",2572:"Agente",2573:"Agente",2574:"Agente",2575:"Profesional",2576:"Profesional",2577:"Profesional",2611:"Promotor",2612:"Promotor",2613:"Promotor",2614:"Promotor",2615:"Evaluador",2616:"Evaluador",2617:"Evaluador",2621:"Promotor",2622:"Promotor",2623:"Promotor",2624:"Promotor",2625:"Evaluador",2626:"Evaluador",2627:"Evaluador",2631:"Promotor",2632:"Promotor",2633:"Promotor",2634:"Promotor",2635:"Evaluador",2636:"Evaluador",2637:"Evaluador",2641:"Promotor",2642:"Promotor",2643:"Promotor",2644:"Promotor",2645:"Profesional",2646:"Profesional",2647:"Profesional",2651:"Consejero",2652:"Consejero",2653:"Consejero",2654:"Consejero",2655:"Profesional",2656:"Profesional",2657:"Profesional",2661:"Consejero",2662:"Consejero",2663:"Consejero",2664:"Consejero",2665:"Profesional",2666:"Profesional",2667:"Profesional",2671:"Agente",2672:"Agente",2673:"Agente",2674:"Agente",2675:"Profesional",2676:"Profesional",2677:"Profesional",2711:"Promotor",2712:"Promotor",2713:"Promotor",2714:"Promotor",2715:"Evaluador",2716:"Evaluador",2717:"Evaluador",2721:"Promotor",2722:"Promotor",2723:"Promotor",2724:"Promotor",2725:"Evaluador",2726:"Evaluador",2727:"Evaluador",2731:"Promotor",2732:"Promotor",2733:"Promotor",2734:"Promotor",2735:"Evaluador",2736:"Evaluador",2737:"Evaluador",2741:"Promotor",2742:"Promotor",2743:"Promotor",2744:"Promotor",2745:"Profesional",2746:"Profesional",2747:"Profesional",2751:"Consejero",2752:"Consejero",2753:"Consejero",2754:"Consejero",2755:"Profesional",2756:"Profesional",2757:"Profesional",2761:"Consejero",2762:"Consejero",2763:"Consejero",2764:"Consejero",2765:"Profesional",2766:"Profesional",2767:"Profesional",2771:"Consejero",2772:"Consejero",2773:"Consejero",2774:"Consejero",2775:"Profesional",2776:"Profesional",2777:"Profesional",3111:"Subactivo",3112:"Subactivo",3113:"Subactivo",3114:"Subactivo",3115:"Objetivo",3116:"Objetivo",3117:"Objetivo",3121:"Subactivo",3122:"Subactivo",3123:"Subactivo",3124:"Subactivo",3125:"Objetivo",3126:"Objetivo",3127:"Objetivo",3131:"Subactivo",3132:"Subactivo",3133:"Subactivo",3134:"Subactivo",3135:"Objetivo",3136:"Objetivo",3137:"Objetivo",3141:"Subactivo",3142:"Subactivo",3143:"Subactivo",3144:"Subactivo",3145:"Objetivo",3146:"Objetivo",3147:"Objetivo",3151:"Especialista",3152:"Especialista",3153:"Especialista",3154:"Especialista",3155:"Perfeccionista",3156:"Perfeccionista",3157:"Perfeccionista",3161:"Especialista",3162:"Especialista",3163:"Especialista",3164:"Especialista",3165:"Perfeccionista",3166:"Perfeccionista",3167:"Perfeccionista",3171:"Especialista",3172:"Especialista",3173:"Especialista",3174:"Especialista",3175:"Perfeccionista",3176:"Perfeccionista",3177:"Perfeccionista",3211:"Subactivo",3212:"Subactivo",3213:"Subactivo",3214:"Subactivo",3215:"Objetivo",3216:"Objetivo",3217:"Objetivo",3221:"Subactivo",3222:"Subactivo",3223:"Subactivo",3224:"Subactivo",3225:"Objetivo",3226:"Objetivo",3227:"Objetivo",3231:"Subactivo",3232:"Subactivo",3233:"Subactivo",3234:"Subactivo",3235:"Objetivo",3236:"Objetivo",3237:"Objetivo",3241:"Subactivo",3242:"Subactivo",3243:"Subactivo",3244:"Subactivo",3245:"Objetivo",3246:"Objetivo",3247:"Objetivo",3251:"Especialista",3252:"Especialista",3253:"Especialista",3254:"Especialista",3255:"Perfeccionista",3256:"Perfeccionista",3257:"Perfeccionista",3261:"Especialista",3262:"Especialista",3263:"Especialista",3264:"Especialista",3265:"Perfeccionista",3266:"Perfeccionista",3267:"Perfeccionista",3271:"Especialista",3272:"Especialista",3273:"Especialista",3274:"Especialista",3275:"Perfeccionista",3276:"Perfeccionista",3277:"Perfeccionista",3311:"Subactivo",3312:"Subactivo",3313:"Subactivo",3314:"Subactivo",3315:"Objetivo",3316:"Objetivo",3317:"Objetivo",3321:"Subactivo",3322:"Subactivo",3323:"Subactivo",3324:"Subactivo",3325:"Objetivo",3326:"Objetivo",3327:"Objetivo",3331:"Subactivo",3332:"Subactivo",3333:"Subactivo",3334:"Desconcertante",3335:"Objetivo",3336:"Objetivo",3337:"Objetivo",3341:"Subactivo",3342:"Subactivo",3343:"Desconcertante",3344:"Desconcertante",3345:"Objetivo",3346:"Objetivo",3347:"Objetivo",3351:"Especialista",3352:"Especialista",3353:"Especialista",3354:"Especialista",3355:"Perfeccionista",3356:"Perfeccionista",3357:"Perfeccionista",3361:"Especialista",3362:"Especialista",3363:"Especialista",3364:"Especialista",3365:"Perfeccionista",3366:"Perfeccionista",3367:"Perfeccionista",3371:"Especialista",3372:"Especialista",3373:"Especialista",3374:"Especialista",3375:"Perfeccionista",3376:"Perfeccionista",3377:"Perfeccionista",3411:"Subactivo",3412:"Subactivo",3413:"Subactivo",3414:"Subactivo",3415:"Objetivo",3416:"Objetivo",3417:"Objetivo",3421:"Subactivo",3422:"Subactivo",3423:"Subactivo",3424:"Subactivo",3425:"Objetivo",3426:"Objetivo",3427:"Objetivo",3431:"Subactivo",3432:"Subactivo",3433:"Desconcertante",3434:"Desconcertante",3435:"Objetivo",3436:"Objetivo",3437:"Objetivo",3441:"Subactivo",3442:"Subactivo",3443:"Desconcertante",3444:"Desconcertante",3445:"Objetivo",3446:"Objetivo",3447:"Objetivo",3451:"Especialista",3452:"Especialista",3453:"Especialista",3454:"Especialista",3455:"Perfeccionista",3456:"Perfeccionista",3457:"Perfeccionista",3461:"Especialista",3462:"Especialista",3463:"Especialista",3464:"Especialista",3465:"Perfeccionista",3466:"Perfeccionista",3467:"Perfeccionista",3471:"Especialista",3472:"Especialista",3473:"Especialista",3474:"Especialista",3475:"Perfeccionista",3476:"Perfeccionista",3477:"Perfeccionista",3511:"Promotor",3512:"Promotor",3513:"Promotor",3514:"Promotor",3515:"Evaluador",3516:"Evaluador",3517:"Evaluador",3521:"Promotor",3522:"Promotor",3523:"Promotor",3524:"Promotor",3525:"Evaluador",3526:"Evaluador",3527:"Evaluador",3531:"Promotor",3532:"Promotor",3533:"Promotor",3534:"Promotor",3535:"Evaluador",3536:"Evaluador",3537:"Evaluador",3541:"Promotor",3542:"Promotor",3543:"Promotor",3544:"Promotor",3545:"Profesional",3546:"Profesional",3547:"Profesional",3551:"Consejero",3552:"Consejero",3553:"Consejero",3554:"Consejero",3555:"Profesional",3556:"Profesional",3557:"Profesional",3561:"Agente",3562:"Agente",3563:"Agente",3564:"Agente",3565:"Profesional",3566:"Profesional",3567:"Profesional",3571:"Agente",3572:"Agente",3573:"Agente",3574:"Agente",3575:"Profesional",3576:"Profesional",3577:"Profesional",3611:"Promotor",3612:"Promotor",3613:"Promotor",3614:"Promotor",3615:"Evaluador",3616:"Evaluador",3617:"Evaluador",3621:"Promotor",3622:"Promotor",3623:"Promotor",3624:"Promotor",3625:"Evaluador",3626:"Evaluador",3627:"Evaluador",3631:"Promotor",3632:"Promotor",3633:"Promotor",3634:"Promotor",3635:"Evaluador",3636:"Evaluador",3637:"Evaluador",3641:"Promotor",3642:"Promotor",3643:"Promotor",3644:"Promotor",3645:"Profesional",3646:"Profesional",3647:"Profesional",3651:"Consejero",3652:"Consejero",3653:"Consejero",3654:"Consejero",3655:"Profesional",3656:"Profesional",3657:"Profesional",3661:"Consejero",3662:"Consejero",3663:"Consejero",3664:"Consejero",3665:"Profesional",3666:"Profesional",3667:"Profesional",3671:"Agente",3672:"Agente",3673:"Agente",3674:"Agente",3675:"Profesional",3676:"Profesional",3677:"Profesional",3711:"Promotor",3712:"Promotor",3713:"Promotor",3714:"Promotor",3715:"Evaluador",3716:"Evaluador",3717:"Evaluador",3721:"Promotor",3722:"Promotor",3723:"Promotor",3724:"Promotor",3725:"Evaluador",3726:"Evaluador",3727:"Evaluador",3731:"Promotor",3732:"Promotor",3733:"Promotor",3734:"Promotor",3735:"Evaluador",3736:"Evaluador",3737:"Evaluador",3741:"Promotor",3742:"Promotor",3743:"Promotor",3744:"Promotor",3745:"Profesional",3746:"Profesional",3747:"Profesional",3751:"Consejero",3752:"Consejero",3753:"Consejero",3754:"Consejero",3755:"Profesional",3756:"Profesional",3757:"Profesional",3761:"Consejero",3762:"Consejero",3763:"Consejero",3764:"Consejero",3765:"Profesional",3766:"Profesional",3767:"Profesional",3771:"Consejero",3772:"Consejero",3773:"Consejero",3774:"Consejero",3775:"Profesional",3776:"Profesional",3777:"Profesional",4111:"Subactivo",4112:"Subactivo",4113:"Subactivo",4114:"Subactivo",4115:"Objetivo",4116:"Objetivo",4117:"Objetivo",4121:"Subactivo",4122:"Subactivo",4123:"Subactivo",4124:"Subactivo",4125:"Objetivo",4126:"Objetivo",4127:"Objetivo",4131:"Subactivo",4132:"Subactivo",4133:"Subactivo",4134:"Subactivo",4135:"Objetivo",4136:"Objetivo",4137:"Objetivo",4141:"Subactivo",4142:"Subactivo",4143:"Subactivo",4144:"Subactivo",4145:"Objetivo",4146:"Objetivo",4147:"Objetivo",4151:"Especialista",4152:"Especialista",4153:"Especialista",4154:"Especialista",4155:"Perfeccionista",4156:"Perfeccionista",4157:"Perfeccionista",4161:"Especialista",4162:"Especialista",4163:"Especialista",4164:"Especialista",4165:"Perfeccionista",4166:"Perfeccionista",4167:"Perfeccionista",4171:"Especialista",4172:"Especialista",4173:"Especialista",4174:"Especialista",4175:"Perfeccionista",4176:"Perfeccionista",4177:"Perfeccionista",4211:"Subactivo",4212:"Subactivo",4213:"Subactivo",4214:"Subactivo",4215:"Objetivo",4216:"Objetivo",4217:"Objetivo",4221:"Subactivo",4222:"Subactivo",4223:"Subactivo",4224:"Subactivo",4225:"Objetivo",4226:"Objetivo",4227:"Objetivo",4231:"Subactivo",4232:"Subactivo",4233:"Subactivo",4234:"Subactivo",4235:"Objetivo",4236:"Objetivo",4237:"Objetivo",4241:"Subactivo",4242:"Subactivo",4243:"Subactivo",4244:"Subactivo",4245:"Objetivo",4246:"Objetivo",4247:"Objetivo",4251:"Especialista",4252:"Especialista",4253:"Especialista",4254:"Especialista",4255:"Perfeccionista",4256:"Perfeccionista",4257:"Perfeccionista",4261:"Especialista",4262:"Especialista",4263:"Especialista",4264:"Especialista",4265:"Perfeccionista",4266:"Perfeccionista",4267:"Perfeccionista",4271:"Especialista",4272:"Especialista",4273:"Especialista",4274:"Especialista",4275:"Perfeccionista",4276:"Perfeccionista",4277:"Perfeccionista",4311:"Subactivo",4312:"Subactivo",4313:"Subactivo",4314:"Subactivo",4315:"Objetivo",4316:"Objetivo",4317:"Objetivo",4321:"Subactivo",4322:"Subactivo",4323:"Subactivo",4324:"Subactivo",4325:"Objetivo",4326:"Objetivo",4327:"Objetivo",4331:"Subactivo",4332:"Subactivo",4333:"Desconcertante",4334:"Desconcertante",4335:"Objetivo",4336:"Objetivo",4337:"Objetivo",4341:"Subactivo",4342:"Subactivo",4343:"Desconcertante",4344:"Desconcertante",4345:"Objetivo",4346:"Objetivo",4347:"Objetivo",4351:"Especialista",4352:"Especialista",4353:"Especialista",4354:"Especialista",4355:"Perfeccionista",4356:"Perfeccionista",4357:"Perfeccionista",4361:"Especialista",4362:"Especialista",4363:"Especialista",4364:"Especialista",4365:"Perfeccionista",4366:"Perfeccionista",4367:"Perfeccionista",4371:"Especialista",4372:"Especialista",4373:"Especialista",4374:"Especialista",4375:"Perfeccionista",4376:"Perfeccionista",4377:"Perfeccionista",4411:"Subactivo",4412:"Subactivo",4413:"Subactivo",4414:"Subactivo",4415:"Objetivo",4416:"Objetivo",4417:"Objetivo",4421:"Subactivo",4422:"Subactivo",4423:"Subactivo",4424:"Subactivo",4425:"Objetivo",4426:"Objetivo",4427:"Objetivo",4431:"Subactivo",4432:"Subactivo",4433:"Desconcertante",4434:"Desconcertante",4435:"Objetivo",4436:"Objetivo",4437:"Objetivo",4441:"Subactivo",4442:"Subactivo",4443:"Desconcertante",4444:"Desconcertante",4445:"Desconcertante",4446:"Objetivo",4447:"Objetivo",4451:"Especialista",4452:"Especialista",4453:"Especialista",4454:"Desconcertante",4455:"Desconcertante",4456:"Perfeccionista",4457:"Perfeccionista",4461:"Especialista",4462:"Especialista",4463:"Especialista",4464:"Especialista",4465:"Perfeccionista",4466:"Perfeccionista",4467:"Perfeccionista",4471:"Especialista",4472:"Especialista",4473:"Especialista",4474:"Especialista",4475:"Perfeccionista",4476:"Perfeccionista",4477:"Perfeccionista",4511:"Promotor",4512:"Promotor",4513:"Promotor",4514:"Promotor",4515:"Evaluador",4516:"Evaluador",4517:"Evaluador",4521:"Promotor",4522:"Promotor",4523:"Promotor",4524:"Promotor",4525:"Evaluador",4526:"Evaluador",4527:"Evaluador",4531:"Promotor",4532:"Promotor",4533:"Promotor",4534:"Promotor",4535:"Evaluador",4536:"Evaluador",4537:"Evaluador",4541:"Consejero",4542:"Consejero",4543:"Consejero",4544:"Desconcertante",4545:"Profesional",4546:"Profesional",4547:"Profesional",4551:"Consejero",4552:"Consejero",4553:"Consejero",4554:"Consejero",4555:"Desconcertante",4556:"Profesional",4557:"Profesional",4561:"Agente",4562:"Agente",4563:"Agente",4564:"Agente",4565:"Profesional",4566:"Profesional",4567:"Profesional",4571:"Agente",4572:"Agente",4573:"Agente",4574:"Agente",4575:"Profesional",4576:"Profesional",4577:"Profesional",4611:"Promotor",4612:"Promotor",4613:"Promotor",4614:"Promotor",4615:"Evaluador",4616:"Evaluador",4617:"Evaluador",4621:"Promotor",4622:"Promotor",4623:"Promotor",4624:"Promotor",4625:"Evaluador",4626:"Evaluador",4627:"Evaluador",4631:"Promotor",4632:"Promotor",4633:"Promotor",4634:"Promotor",4635:"Evaluador",4636:"Evaluador",4637:"Evaluador",4641:"Promotor",4642:"Promotor",4643:"Promotor",4644:"Promotor",4645:"Evaluador",4646:"Evaluador",4647:"Evaluador",4651:"Consejero",4652:"Consejero",4653:"Consejero",4654:"Consejero",4655:"Profesional",4656:"Profesional",4657:"Profesional",4661:"Consejero",4662:"Consejero",4663:"Consejero",4664:"Consejero",4665:"Profesional",4666:"Profesional",4667:"Profesional",4671:"Agente",4672:"Agente",4673:"Agente",4674:"Agente",4675:"Profesional",4676:"Profesional",4677:"Profesional",4711:"Promotor",4712:"Promotor",4713:"Promotor",4714:"Promotor",4715:"Evaluador",4716:"Evaluador",4717:"Evaluador",4721:"Promotor",4722:"Promotor",4723:"Promotor",4724:"Promotor",4725:"Evaluador",4726:"Evaluador",4727:"Evaluador",4731:"Promotor",4732:"Promotor",4733:"Promotor",4734:"Promotor",4735:"Evaluador",4736:"Evaluador",4737:"Evaluador",4741:"Promotor",4742:"Promotor",4743:"Promotor",4744:"Promotor",4745:"Evaluador",4746:"Evaluador",4747:"Evaluador",4751:"Consejero",4752:"Consejero",4753:"Consejero",4754:"Consejero",4755:"Profesional",4756:"Profesional",4757:"Profesional",4761:"Consejero",4762:"Consejero",4763:"Consejero",4764:"Consejero",4765:"Profesional",4766:"Profesional",4767:"Profesional",4771:"Consejero",4772:"Consejero",4773:"Consejero",4774:"Consejero",4775:"Profesional",4776:"Profesional",4777:"Profesional",5111:"Resolutivo",5112:"Resolutivo",5113:"Resolutivo",5114:"Resolutivo",5115:"Creativo",5116:"Creativo",5117:"Creativo",5121:"Resolutivo",5122:"Resolutivo",5123:"Resolutivo",5124:"Resolutivo",5125:"Creativo",5126:"Creativo",5127:"Creativo",5131:"Resolutivo",5132:"Resolutivo",5133:"Resolutivo",5134:"Resolutivo",5135:"Creativo",5136:"Creativo",5137:"Creativo",5141:"Resolutivo",5142:"Resolutivo",5143:"Resolutivo",5144:"Resolutivo",5145:"Creativo",5146:"Creativo",5147:"Creativo",5151:"Realizador",5152:"Realizador",5153:"Realizador",5154:"Realizador",5155:"Investigador",5156:"Investigador",5157:"Investigador",5161:"Realizador",5162:"Realizador",5163:"Realizador",5164:"Realizador",5165:"Investigador",5166:"Investigador",5167:"Investigador",5171:"Realizador",5172:"Realizador",5173:"Realizador",5174:"Realizador",5175:"Investigador",5176:"Investigador",5177:"Investigador",5211:"Resolutivo",5212:"Resolutivo",5213:"Resolutivo",5214:"Resolutivo",5215:"Creativo",5216:"Creativo",5217:"Creativo",5221:"Resolutivo",5222:"Resolutivo",5223:"Resolutivo",5224:"Resolutivo",5225:"Creativo",5226:"Creativo",5227:"Creativo",5231:"Resolutivo",5232:"Resolutivo",5233:"Resolutivo",5234:"Resolutivo",5235:"Creativo",5236:"Creativo",5237:"Creativo",5241:"Resolutivo",5242:"Resolutivo",5243:"Resolutivo",5244:"Resolutivo",5245:"Creativo",5246:"Creativo",5247:"Creativo",5251:"Realizador",5252:"Realizador",5253:"Realizador",5254:"Realizador",5255:"Investigador",5256:"Investigador",5257:"Investigador",5261:"Realizador",5262:"Realizador",5263:"Realizador",5264:"Realizador",5265:"Investigador",5266:"Investigador",5267:"Investigador",5271:"Realizador",5272:"Realizador",5273:"Realizador",5274:"Realizador",5275:"Investigador",5276:"Investigador",5277:"Investigador",5311:"Resolutivo",5312:"Resolutivo",5313:"Resolutivo",5314:"Resolutivo",5315:"Creativo",5316:"Creativo",5317:"Creativo",5321:"Resolutivo",5322:"Resolutivo",5323:"Resolutivo",5324:"Resolutivo",5325:"Creativo",5326:"Creativo",5327:"Creativo",5331:"Resolutivo",5332:"Resolutivo",5333:"Resolutivo",5334:"Resolutivo",5335:"Creativo",5336:"Creativo",5337:"Creativo",5341:"Resolutivo",5342:"Resolutivo",5343:"Resolutivo",5344:"Resolutivo",5345:"Creativo",5346:"Creativo",5347:"Creativo",5351:"Realizador",5352:"Realizador",5353:"Realizador",5354:"Realizador",5355:"Investigador",5356:"Investigador",5357:"Investigador",5361:"Realizador",5362:"Realizador",5363:"Realizador",5364:"Realizador",5365:"Investigador",5366:"Investigador",5367:"Investigador",5371:"Realizador",5372:"Realizador",5373:"Realizador",5374:"Realizador",5375:"Investigador",5376:"Investigador",5377:"Investigador",5411:"OrientadoResultados",5412:"OrientadoResultados",5413:"OrientadoResultados",5414:"OrientadoResultados",5415:"Creativo",5416:"Creativo",5417:"Creativo",5421:"OrientadoResultados",5422:"OrientadoResultados",5423:"OrientadoResultados",5424:"OrientadoResultados",5425:"Creativo",5426:"Creativo",5427:"Creativo",5431:"OrientadoResultados",5432:"OrientadoResultados",5433:"OrientadoResultados",5434:"OrientadoResultados",5435:"Creativo",5436:"Creativo",5437:"Creativo",5441:"OrientadoResultados",5442:"OrientadoResultados",5443:"OrientadoResultados",5444:"Desconcertante",5445:"Creativo",5446:"Creativo",5447:"Creativo",5451:"Realizador",5452:"Realizador",5453:"Realizador",5454:"Realizador",5455:"Investigador",5456:"Investigador",5457:"Investigador",5461:"Realizador",5462:"Realizador",5463:"Realizador",5464:"Realizador",5465:"Investigador",5466:"Investigador",5467:"Investigador",5471:"Realizador",5472:"Realizador",5473:"Realizador",5474:"Realizador",5475:"Investigador",5476:"Investigador",5477:"Investigador",5511:"Alentador",5512:"Alentador",5513:"Alentador",5514:"Alentador",5515:"Evaluador",5516:"Evaluador",5517:"Evaluador",5521:"Alentador",5522:"Alentador",5523:"Alentador",5524:"Alentador",5525:"Evaluador",5526:"Evaluador",5527:"Evaluador",5531:"Alentador",5532:"Alentador",5533:"Alentador",5534:"Alentador",5535:"Evaluador",5536:"Evaluador",5537:"Evaluador",5541:"Alentador",5542:"Alentador",5543:"Alentador",5544:"Desconcertante",5545:"Evaluador",5546:"Evaluador",5547:"Evaluador",5551:"Consejero",5552:"Consejero",5553:"Consejero",5554:"Desconcertante",5555:"Superactivo",5556:"Superactivo",5557:"Superactivo",5561:"Agente",5562:"Agente",5563:"Agente",5564:"Agente",5565:"Superactivo",5566:"Superactivo",5567:"Superactivo",5571:"Agente",5572:"Agente",5573:"Agente",5574:"Agente",5575:"Superactivo",5576:"Superactivo",5577:"Superactivo",5611:"Persuasivo",5612:"Persuasivo",5613:"Persuasivo",5614:"Persuasivo",5615:"Evaluador",5616:"Evaluador",5617:"Evaluador",5621:"Persuasivo",5622:"Persuasivo",5623:"Persuasivo",5624:"Persuasivo",5625:"Evaluador",5626:"Evaluador",5627:"Evaluador",5631:"Persuasivo",5632:"Persuasivo",5633:"Persuasivo",5634:"Persuasivo",5635:"Evaluador",5636:"Evaluador",5637:"Evaluador",5641:"Persuasivo",5642:"Persuasivo",5643:"Persuasivo",5644:"Persuasivo",5645:"Evaluador",5646:"Evaluador",5647:"Evaluador",5651:"Persuasivo",5652:"Persuasivo",5653:"Persuasivo",5654:"Persuasivo",5655:"Superactivo",5656:"Superactivo",5657:"Superactivo",5661:"Consejero",5662:"Consejero",5663:"Consejero",5664:"Consejero",5665:"Superactivo",5666:"Superactivo",5667:"Superactivo",5671:"Agente",5672:"Agente",5673:"Agente",5674:"Agente",5675:"Superactivo",5676:"Superactivo",5677:"Superactivo",5711:"Persuasivo",5712:"Persuasivo",5713:"Persuasivo",5714:"Persuasivo",5715:"Evaluador",5716:"Evaluador",5717:"Evaluador",5721:"Persuasivo",5722:"Persuasivo",5723:"Persuasivo",5724:"Persuasivo",5725:"Evaluador",5726:"Evaluador",5727:"Evaluador",5731:"Persuasivo",5732:"Persuasivo",5733:"Persuasivo",5734:"Persuasivo",5735:"Evaluador",5736:"Evaluador",5737:"Evaluador",5741:"Persuasivo",5742:"Persuasivo",5743:"Persuasivo",5744:"Persuasivo",5745:"Evaluador",5746:"Evaluador",5747:"Evaluador",5751:"Persuasivo",5752:"Persuasivo",5753:"Persuasivo",5754:"Persuasivo",5755:"Superactivo",5756:"Superactivo",5757:"Superactivo",5761:"Consejero",5762:"Consejero",5763:"Consejero",5764:"Consejero",5765:"Superactivo",5766:"Superactivo",5767:"Superactivo",5771:"Consejero",5772:"Consejero",5773:"Consejero",5774:"Consejero",5775:"Superactivo",5776:"Superactivo",5777:"Superactivo",6111:"Resolutivo",6112:"Resolutivo",6113:"Resolutivo",6114:"Resolutivo",6115:"Creativo",6116:"Creativo",6117:"Creativo",6121:"Resolutivo",6122:"Resolutivo",6123:"Resolutivo",6124:"Resolutivo",6125:"Creativo",6126:"Creativo",6127:"Creativo",6131:"Resolutivo",6132:"Resolutivo",6133:"Resolutivo",6134:"Resolutivo",6135:"Creativo",6136:"Creativo",6137:"Creativo",6141:"Resolutivo",6142:"Resolutivo",6143:"Resolutivo",6144:"Resolutivo",6145:"Creativo",6146:"Creativo",6147:"Creativo",6151:"Realizador",6152:"Realizador",6153:"Realizador",6154:"Realizador",6155:"Investigador",6156:"Investigador",6157:"Investigador",6161:"Realizador",6162:"Realizador",6163:"Realizador",6164:"Realizador",6165:"Investigador",6166:"Investigador",6167:"Investigador",6171:"Realizador",6172:"Realizador",6173:"Realizador",6174:"Realizador",6175:"Investigador",6176:"Investigador",6177:"Investigador",6211:"Resolutivo",6212:"Resolutivo",6213:"Resolutivo",6214:"Resolutivo",6215:"Creativo",6216:"Creativo",6217:"Creativo",6221:"Resolutivo",6222:"Resolutivo",6223:"Resolutivo",6224:"Resolutivo",6225:"Creativo",6226:"Creativo",6227:"Creativo",6231:"Resolutivo",6232:"Resolutivo",6233:"Resolutivo",6234:"Resolutivo",6235:"Creativo",6236:"Creativo",6237:"Creativo",6241:"Resolutivo",6242:"Resolutivo",6243:"Resolutivo",6244:"Resolutivo",6245:"Creativo",6246:"Creativo",6247:"Creativo",6251:"Realizador",6252:"Realizador",6253:"Realizador",6254:"Realizador",6255:"Investigador",6256:"Investigador",6257:"Investigador",6261:"Realizador",6262:"Realizador",6263:"Realizador",6264:"Realizador",6265:"Investigador",6266:"Investigador",6267:"Investigador",6271:"Realizador",6272:"Realizador",6273:"Realizador",6274:"Realizador",6275:"Investigador",6276:"Investigador",6277:"Investigador",6311:"Resolutivo",6312:"Resolutivo",6313:"Resolutivo",6314:"Resolutivo",6315:"Creativo",6316:"Creativo",6317:"Creativo",6321:"Resolutivo",6322:"Resolutivo",6323:"Resolutivo",6324:"Resolutivo",6325:"Creativo",6326:"Creativo",6327:"Creativo",6331:"Resolutivo",6332:"Resolutivo",6333:"Resolutivo",6334:"Resolutivo",6335:"Creativo",6336:"Creativo",6337:"Creativo",6341:"Resolutivo",6342:"Resolutivo",6343:"Resolutivo",6344:"Resolutivo",6345:"Creativo",6346:"Creativo",6347:"Creativo",6351:"Realizador",6352:"Realizador",6353:"Realizador",6354:"Realizador",6355:"Investigador",6356:"Investigador",6357:"Investigador",6361:"Realizador",6362:"Realizador",6363:"Realizador",6364:"Realizador",6365:"Investigador",6366:"Investigador",6367:"Investigador",6371:"Realizador",6372:"Realizador",6373:"Realizador",6374:"Realizador",6375:"Investigador",6376:"Investigador",6377:"Investigador",6411:"OrientadoResultados",6412:"OrientadoResultados",6413:"OrientadoResultados",6414:"OrientadoResultados",6415:"Creativo",6416:"Creativo",6417:"Creativo",6421:"OrientadoResultados",6422:"OrientadoResultados",6423:"OrientadoResultados",6424:"OrientadoResultados",6425:"Creativo",6426:"Creativo",6427:"Creativo",6431:"OrientadoResultados",6432:"OrientadoResultados",6433:"OrientadoResultados",6434:"OrientadoResultados",6435:"Creativo",6436:"Creativo",6437:"Creativo",6441:"OrientadoResultados",6442:"OrientadoResultados",6443:"OrientadoResultados",6444:"OrientadoResultados",6445:"Creativo",6446:"Creativo",6447:"Creativo",6451:"Realizador",6452:"Realizador",6453:"Realizador",6454:"Realizador",6455:"Investigador",6456:"Investigador",6457:"Investigador",6461:"Realizador",6462:"Realizador",6463:"Realizador",6464:"Realizador",6465:"Investigador",6466:"Investigador",6467:"Investigador",6471:"Realizador",6472:"Realizador",6473:"Realizador",6474:"Realizador",6475:"Investigador",6476:"Investigador",6477:"Investigador",6511:"OrientadoResultados",6512:"OrientadoResultados",6513:"OrientadoResultados",6514:"OrientadoResultados",6515:"Creativo",6516:"Creativo",6517:"Creativo",6521:"OrientadoResultados",6522:"OrientadoResultados",6523:"OrientadoResultados",6524:"OrientadoResultados",6525:"Creativo",6526:"Creativo",6527:"Creativo",6531:"OrientadoResultados",6532:"OrientadoResultados",6533:"OrientadoResultados",6534:"OrientadoResultados",6535:"Creativo",6536:"Creativo",6537:"Creativo",6541:"OrientadoResultados",6542:"OrientadoResultados",6543:"OrientadoResultados",6544:"OrientadoResultados",6545:"Creativo",6546:"Creativo",6547:"Creativo",6551:"OrientadoResultados",6552:"OrientadoResultados",6553:"OrientadoResultados",6554:"OrientadoResultados",6555:"Superactivo",6556:"Superactivo",6557:"Superactivo",6561:"Realizador",6562:"Realizador",6563:"Realizador",6564:"Realizador",6565:"Superactivo",6566:"Superactivo",6567:"Superactivo",6571:"Realizador",6572:"Realizador",6573:"Realizador",6574:"Realizador",6575:"Superactivo",6576:"Superactivo",6577:"Superactivo",6611:"Alentador",6612:"Alentador",6613:"Alentador",6614:"Alentador",6615:"Evaluador",6616:"Evaluador",6617:"Evaluador",6621:"Alentador",6622:"Alentador",6623:"Alentador",6624:"Alentador",6625:"Evaluador",6626:"Evaluador",6627:"Evaluador",6631:"Alentador",6632:"Alentador",6633:"Alentador",6634:"Alentador",6635:"Evaluador",6636:"Evaluador",6637:"Evaluador",6641:"Alentador",6642:"Alentador",6643:"Alentador",6644:"Alentador",6645:"Evaluador",6646:"Evaluador",6647:"Evaluador",6651:"Alentador",6652:"Alentador",6653:"Alentador",6654:"Alentador",6655:"Superactivo",6656:"Superactivo",6657:"Superactivo",6661:"Alentador",6662:"Alentador",6663:"Alentador",6664:"Alentador",6665:"Superactivo",6666:"Superactivo",6667:"Superactivo",6671:"Alentador",6672:"Alentador",6673:"Alentador",6674:"Alentador",6675:"Superactivo",6676:"Superactivo",6677:"Superactivo",6711:"Alentador",6712:"Alentador",6713:"Alentador",6714:"Alentador",6715:"Evaluador",6716:"Evaluador",6717:"Evaluador",6721:"Alentador",6722:"Alentador",6723:"Alentador",6724:"Alentador",6725:"Evaluador",6726:"Evaluador",6727:"Evaluador",6731:"Alentador",6732:"Alentador",6733:"Alentador",6734:"Alentador",6735:"Evaluador",6736:"Evaluador",6737:"Evaluador",6741:"Alentador",6742:"Alentador",6743:"Alentador",6744:"Alentador",6745:"Evaluador",6746:"Evaluador",6747:"Evaluador",6751:"Alentador",6752:"Alentador",6753:"Alentador",6754:"Alentador",6755:"Superactivo",6756:"Superactivo",6757:"Superactivo",6761:"Alentador",6762:"Alentador",6763:"Alentador",6764:"Alentador",6765:"Superactivo",6766:"Superactivo",6767:"Superactivo",6771:"Alentador",6772:"Alentador",6773:"Alentador",6774:"Alentador",6775:"Superactivo",6776:"Superactivo",6777:"Superactivo",7111:"Resolutivo",7112:"Resolutivo",7113:"Resolutivo",7114:"Resolutivo",7115:"Creativo",7116:"Creativo",7117:"Creativo",7121:"Resolutivo",7122:"Resolutivo",7123:"Resolutivo",7124:"Resolutivo",7125:"Creativo",7126:"Creativo",7127:"Creativo",7131:"Resolutivo",7132:"Resolutivo",7133:"Resolutivo",7134:"Resolutivo",7135:"Creativo",7136:"Creativo",7137:"Creativo",7141:"Resolutivo",7142:"Resolutivo",7143:"Resolutivo",7144:"Resolutivo",7145:"Creativo",7146:"Creativo",7147:"Creativo",7151:"Realizador",7152:"Realizador",7153:"Realizador",7154:"Realizador",7155:"Investigador",7156:"Investigador",7157:"Investigador",7161:"Realizador",7162:"Realizador",7163:"Realizador",7164:"Realizador",7165:"Investigador",7166:"Investigador",7167:"Investigador",7171:"Realizador",7172:"Realizador",7173:"Realizador",7174:"Realizador",7175:"Investigador",7176:"Investigador",7177:"Investigador",7211:"Resolutivo",7212:"Resolutivo",7213:"Resolutivo",7214:"Resolutivo",7215:"Creativo",7216:"Creativo",7217:"Creativo",7221:"Resolutivo",7222:"Resolutivo",7223:"Resolutivo",7224:"Resolutivo",7225:"Creativo",7226:"Creativo",7227:"Creativo",7231:"Resolutivo",7232:"Resolutivo",7233:"Resolutivo",7234:"Resolutivo",7235:"Creativo",7236:"Creativo",7237:"Creativo",7241:"Resolutivo",7242:"Resolutivo",7243:"Resolutivo",7244:"Resolutivo",7245:"Creativo",7246:"Creativo",7247:"Creativo",7251:"Realizador",7252:"Realizador",7253:"Realizador",7254:"Realizador",7255:"Investigador",7256:"Investigador",7257:"Investigador",7261:"Realizador",7262:"Realizador",7263:"Realizador",7264:"Realizador",7265:"Investigador",7266:"Investigador",7267:"Investigador",7271:"Realizador",7272:"Realizador",7273:"Realizador",7274:"Realizador",7275:"Investigador",7276:"Investigador",7277:"Investigador",7311:"Resolutivo",7312:"Resolutivo",7313:"Resolutivo",7314:"Resolutivo",7315:"Creativo",7316:"Creativo",7317:"Creativo",7321:"Resolutivo",7322:"Resolutivo",7323:"Resolutivo",7324:"Resolutivo",7325:"Creativo",7326:"Creativo",7327:"Creativo",7331:"Resolutivo",7332:"Resolutivo",7333:"Resolutivo",7334:"Resolutivo",7335:"Creativo",7336:"Creativo",7337:"Creativo",7341:"Resolutivo",7342:"Resolutivo",7343:"Resolutivo",7344:"Resolutivo",7345:"Creativo",7346:"Creativo",7347:"Creativo",7351:"Realizador",7352:"Realizador",7353:"Realizador",7354:"Realizador",7355:"Investigador",7356:"Investigador",7357:"Investigador",7361:"Realizador",7362:"Realizador",7363:"Realizador",7364:"Realizador",7365:"Investigador",7366:"Investigador",7367:"Investigador",7371:"Realizador",7372:"Realizador",7373:"Realizador",7374:"Realizador",7375:"Investigador",7376:"Investigador",7377:"Investigador",7411:"OrientadoResultados",7412:"OrientadoResultados",7413:"OrientadoResultados",7414:"OrientadoResultados",7415:"Creativo",7416:"Creativo",7417:"Creativo",7421:"OrientadoResultados",7422:"OrientadoResultados",7423:"OrientadoResultados",7424:"OrientadoResultados",7425:"Creativo",7426:"Creativo",7427:"Creativo",7431:"OrientadoResultados",7432:"OrientadoResultados",7433:"OrientadoResultados",7434:"OrientadoResultados",7435:"Creativo",7436:"Creativo",7437:"Creativo",7441:"OrientadoResultados",7442:"OrientadoResultados",7443:"OrientadoResultados",7444:"OrientadoResultados",7445:"Creativo",7446:"Creativo",7447:"Creativo",7451:"Realizador",7452:"Realizador",7453:"Realizador",7454:"Realizador",7455:"Investigador",7456:"Investigador",7457:"Investigador",7461:"Realizador",7462:"Realizador",7463:"Realizador",7464:"Realizador",7465:"Investigador",7466:"Investigador",7467:"Investigador",7471:"Realizador",7472:"Realizador",7473:"Realizador",7474:"Realizador",7475:"Investigador",7476:"Investigador",7477:"Investigador",7511:"OrientadoResultados",7512:"OrientadoResultados",7513:"OrientadoResultados",7514:"OrientadoResultados",7515:"Creativo",7516:"Creativo",7517:"Creativo",7521:"OrientadoResultados",7522:"OrientadoResultados",7523:"OrientadoResultados",7524:"OrientadoResultados",7525:"Creativo",7526:"Creativo",7527:"Creativo",7531:"OrientadoResultados",7532:"OrientadoResultados",7533:"OrientadoResultados",7534:"OrientadoResultados",7535:"Creativo",7536:"Creativo",7537:"Creativo",7541:"OrientadoResultados",7542:"OrientadoResultados",7543:"OrientadoResultados",7544:"OrientadoResultados",7545:"Creativo",7546:"Creativo",7547:"Creativo",7551:"OrientadoResultados",7552:"OrientadoResultados",7553:"OrientadoResultados",7554:"OrientadoResultados",7555:"Superactivo",7556:"Superactivo",7557:"Superactivo",7561:"Realizador",7562:"Realizador",7563:"Realizador",7564:"Realizador",7565:"Superactivo",7566:"Superactivo",7567:"Superactivo",7571:"Realizador",7572:"Realizador",7573:"Realizador",7574:"Realizador",7575:"Superactivo",7576:"Superactivo",7577:"Superactivo",7611:"Alentador",7612:"Alentador",7613:"Alentador",7614:"Alentador",7615:"Creativo",7616:"Creativo",7617:"Creativo",7621:"Alentador",7622:"Alentador",7623:"Alentador",7624:"Alentador",7625:"Creativo",7626:"Creativo",7627:"Creativo",7631:"Alentador",7632:"Alentador",7633:"Alentador",7634:"Alentador",7635:"Creativo",7636:"Creativo",7637:"Creativo",7641:"Alentador",7642:"Alentador",7643:"Alentador",7644:"Alentador",7645:"Creativo",7646:"Creativo",7647:"Creativo",7651:"Alentador",7652:"Alentador",7653:"Alentador",7654:"Alentador",7655:"Superactivo",7656:"Superactivo",7657:"Superactivo",7661:"Alentador",7662:"Alentador",7663:"Alentador",7664:"Alentador",7665:"Superactivo",7666:"Superactivo",7667:"Superactivo",7671:"Realizador",7672:"Realizador",7673:"Realizador",7674:"Realizador",7675:"Superactivo",7676:"Superactivo",7677:"Superactivo",7711:"Alentador",7712:"Alentador",7713:"Alentador",7714:"Alentador",7715:"Evaluador",7716:"Evaluador",7717:"Evaluador",7721:"Alentador",7722:"Alentador",7723:"Alentador",7724:"Alentador",7725:"Evaluador",7726:"Evaluador",7727:"Evaluador",7731:"Alentador",7732:"Alentador",7733:"Alentador",7734:"Alentador",7735:"Evaluador",7736:"Evaluador",7737:"Evaluador",7741:"Alentador",7742:"Alentador",7743:"Alentador",7744:"Alentador",7745:"Evaluador",7746:"Evaluador",7747:"Evaluador",7751:"Alentador",7752:"Alentador",7753:"Alentador",7754:"Alentador",7755:"Superactivo",7756:"Superactivo",7757:"Superactivo",7761:"Alentador",7762:"Alentador",7763:"Alentador",7764:"Alentador",7765:"Superactivo",7766:"Superactivo",7767:"Superactivo",7771:"Alentador",7772:"Alentador",7773:"Alentador",7774:"Alentador",7775:"Superactivo",7776:"Superactivo",7777:"Superactivo"};
+
+// ---- Contenido narrativo por patrón (redacción propia de Amplifica) ----
+const PATTERNS = {
+Alentador: {
+  nombre: "Alentador",
+  resumen: "Combina asertividad y sociabilidad: toma la iniciativa con confianza y al mismo tiempo genera entusiasmo en quienes lo rodean. Prefiere avanzar rápido y con el respaldo del grupo, antes que seguir procesos rígidos o esperar instrucciones detalladas.",
+  atributos: ["Persuasivo/a","Enérgico/a","Sociable","Seguro/a de sí mismo/a","Directo/a","Optimista"],
+  emociones: "Se entusiasma con facilidad y contagia ese ánimo a su equipo; puede impacientarse cuando el entusiasmo inicial no se traduce en avances concretos.",
+  metas: "Busca resultados visibles logrados junto a otras personas, y reconocimiento por su capacidad de movilizar al equipo.",
+  influye: "Influye combinando cercanía personal con firmeza: convence primero por simpatía y luego respalda con decisión.",
+  juzga: "Juzga a los demás por su disposición a actuar y por la energía que aportan al equipo, más que por su apego a los procedimientos.",
+  valor: "Aporta liderazgo motivador: es capaz de alinear a un equipo detrás de un objetivo y sostener el ritmo cuando otros decaen.",
+  abusa: "Puede abusar de su capacidad de persuasión para saltarse controles o de su seguridad para no pedir opinión antes de decidir.",
+  presion: "Bajo presión, tiende a acelerar el ritmo y a presionar al equipo, pudiendo pasar por alto el cansancio o las dudas de otros.",
+  teme: "Teme perder el control de la situación o quedar en una posición donde no puede influir en el resultado.",
+  eficaz: "Sería más eficaz si dedicara tiempo a escuchar objeciones antes de avanzar, y si delegara el detalle operativo sin perder el ritmo."
+},
+Persuasivo: {
+  nombre: "Persuasivo",
+  resumen: "Es, ante todo, un comunicador convincente: se apoya en su entusiasmo y su seguridad para ganar apoyo hacia sus ideas. Le interesa más el impacto de lo que dice que el análisis exhaustivo de los datos que lo respaldan.",
+  atributos: ["Convincente","Entusiasta","Seguro/a","Sociable","Optimista","Espontáneo/a"],
+  emociones: "Expresa entusiasmo abiertamente y espera que otros lo compartan; puede frustrarse ante el escepticismo o la indiferencia.",
+  metas: "Persigue el reconocimiento social y la validación de sus ideas por parte de otros.",
+  influye: "Influye principalmente a través de su capacidad verbal y su energía positiva, apelando a la emoción antes que al detalle técnico.",
+  juzga: "Juzga a los demás por su capacidad de entusiasmarse y de dejarse convencer.",
+  valor: "Aporta la capacidad de vender ideas y generar adhesión rápida en el equipo o con clientes.",
+  abusa: "Puede abusar del optimismo, minimizando riesgos reales para no perder el impulso de una idea.",
+  presion: "Bajo presión, redobla el discurso persuasivo en lugar de revisar los hechos, buscando convencer antes que analizar.",
+  teme: "Teme el rechazo social y que sus ideas no sean bien recibidas.",
+  eficaz: "Sería más eficaz si contrastara su entusiasmo con datos concretos antes de comprometerse públicamente con un resultado."
+},
+Promotor: {
+  nombre: "Promotor",
+  resumen: "Es marcadamente sociable y espontáneo, con un perfil energético que no se apoya especialmente en la asertividad, la constancia ni el control de detalles. Disfruta el contacto con personas y los ambientes dinámicos por sobre la estructura o la rutina.",
+  atributos: ["Sociable","Espontáneo/a","Entusiasta","Comunicativo/a","Flexible","Optimista"],
+  emociones: "Vive las emociones de forma expresiva e inmediata, compartiéndolas abiertamente con quienes lo rodean.",
+  metas: "Busca variedad, interacción social constante y reconocimiento por su simpatía y cercanía.",
+  influye: "Influye generando simpatía y un buen clima; rara vez impone su posición con firmeza.",
+  juzga: "Juzga a los demás por su calidez y su disposición a socializar, más que por su rendimiento o disciplina.",
+  valor: "Aporta un buen ambiente de trabajo y facilidad para conectar con distintos perfiles de personas.",
+  abusa: "Puede abusar de la informalidad, postergando tareas de detalle o compromisos que exigen seguimiento estricto.",
+  presion: "Bajo presión, busca apoyo social y conversación antes que enfrentar el problema en solitario.",
+  teme: "Teme el rechazo social, la soledad y los ambientes fríos o excesivamente formales.",
+  eficaz: "Sería más eficaz si sostuviera el seguimiento de sus compromisos con la misma energía con que los propone."
+},
+Consejero: {
+  nombre: "Consejero",
+  resumen: "Combina calidez interpersonal con paciencia: genera confianza con facilidad y sostiene relaciones de forma constante en el tiempo. Prioriza el bienestar del equipo por sobre la exposición personal o el enfrentamiento directo.",
+  atributos: ["Cálido/a","Paciente","Empático/a","Leal","Buen/a oyente","Colaborador/a"],
+  emociones: "Es sensible al estado emocional de los demás y tiende a acompañar antes que a confrontar.",
+  metas: "Busca relaciones de confianza duraderas y un ambiente de trabajo armonioso.",
+  influye: "Influye escuchando primero y ofreciendo apoyo genuino, ganándose la confianza antes de proponer cambios.",
+  juzga: "Juzga a los demás por su calidez y su disposición a cuidar al equipo.",
+  valor: "Aporta estabilidad emocional al grupo y capacidad real de mediar en conflictos interpersonales.",
+  abusa: "Puede abusar de la contemporización, evitando decisiones incómodas por no querer generar tensión.",
+  presion: "Bajo presión, busca consenso y evita tomar postura unilateral, lo que puede retrasar una decisión necesaria.",
+  teme: "Teme el conflicto abierto y decepcionar a las personas que confían en él o ella.",
+  eficaz: "Sería más eficaz si expresara desacuerdos de forma directa cuando la situación realmente lo requiere."
+},
+Agente: {
+  nombre: "Agente",
+  resumen: "Es paciente y estable, con una sociabilidad moderada que lo hace un buen facilitador entre personas o posiciones distintas. No busca protagonismo ni control; prefiere operar como puente antes que como líder al frente.",
+  atributos: ["Paciente","Diplomático/a","Confiable","Tranquilo/a","Colaborador/a","Discreto/a"],
+  emociones: "Mantiene la calma incluso en situaciones tensas, y transmite esa estabilidad a su entorno.",
+  metas: "Busca acuerdos que funcionen para todas las partes y estabilidad en las relaciones de trabajo.",
+  influye: "Influye mediando entre posiciones distintas, facilitando el entendimiento antes que imponiendo una postura.",
+  juzga: "Juzga a los demás por su disposición a cooperar y a mantener la armonía del grupo.",
+  valor: "Aporta capacidad real de conciliar intereses distintos sin generar bandos ni resentimientos.",
+  abusa: "Puede abusar de la neutralidad, evitando tomar una posición clara cuando se necesita liderazgo.",
+  presion: "Bajo presión, busca serenar el ambiente antes de resolver el fondo del problema.",
+  teme: "Teme quedar atrapado en medio de un conflicto que no pueda mediar.",
+  eficaz: "Sería más eficaz si estuviera dispuesto/a a tomar postura propia, no solo a facilitar la de otros."
+},
+Evaluador: {
+  nombre: "Evaluador",
+  resumen: "Une sociabilidad con pensamiento analítico: se comunica con facilidad y al mismo tiempo examina con ojo crítico lo que observa. Se aburre con la rutina y prefiere entornos donde pueda opinar y cuestionar.",
+  atributos: ["Analítico/a","Comunicativo/a","Crítico/a","Curioso/a","Directo/a","Perspicaz"],
+  emociones: "Expresa sus opiniones con soltura, incluyendo las críticas, sin mayor filtro emocional.",
+  metas: "Busca variedad de estímulos y la oportunidad de aplicar su juicio crítico a problemas reales.",
+  influye: "Influye argumentando con lógica y datos, comunicados de forma directa y persuasiva.",
+  juzga: "Juzga a los demás por la calidad de sus argumentos y su capacidad de sostener una posición con fundamento.",
+  valor: "Aporta una mirada crítica que detecta riesgos u errores que otros pasan por alto.",
+  abusa: "Puede abusar de la crítica, cuestionando en exceso decisiones ya tomadas o el trabajo de otros.",
+  presion: "Bajo presión, se vuelve más impaciente y más incisivo/a en sus juicios sobre lo que está saliendo mal.",
+  teme: "Teme la rutina prolongada y verse forzado/a a aceptar algo sin poder cuestionarlo.",
+  eficaz: "Sería más eficaz si equilibrara la crítica con reconocimiento explícito de lo que sí funciona."
+},
+Investigador: {
+  nombre: "Investigador",
+  resumen: "Es decidido, constante y meticuloso a la vez: avanza con determinación pero sin descuidar el detalle, y prefiere trabajar de forma autónoma antes que depender de la interacción social constante. Es reservado en su forma de comunicarse.",
+  atributos: ["Meticuloso/a","Persistente","Independiente","Reservado/a","Riguroso/a","Determinado/a"],
+  emociones: "Controla la expresión de sus emociones y prefiere mostrarse mediante hechos antes que mediante palabras.",
+  metas: "Busca dominar en profundidad un tema o problema y sostener sus conclusiones con evidencia sólida.",
+  influye: "Influye mediante la solidez de sus argumentos y la consistencia de su trabajo en el tiempo, no mediante el carisma.",
+  juzga: "Juzga a los demás por su rigurosidad y su capacidad de sostener un compromiso hasta el final.",
+  valor: "Aporta profundidad de análisis y constancia para llevar proyectos complejos hasta su conclusión.",
+  abusa: "Puede abusar del control, revisando en exceso o desconfiando del trabajo delegado a otros.",
+  presion: "Bajo presión, se repliega y profundiza el análisis en lugar de buscar apoyo o delegar.",
+  teme: "Teme equivocarse por falta de información y que su trabajo sea juzgado sin el contexto adecuado.",
+  eficaz: "Sería más eficaz si compartiera su razonamiento con el equipo antes de llegar a una conclusión final."
+},
+Objetivo: {
+  nombre: "Objetivo",
+  resumen: "Es predominantemente analítico y reservado: procesa la información con method y prefiere la precisión sobre la velocidad. No busca protagonismo social ni imponer su punto de vista; deja que los datos hablen por sí mismos.",
+  atributos: ["Analítico/a","Reservado/a","Preciso/a","Metódico/a","Objetivo/a","Cauteloso/a"],
+  emociones: "Mantiene una expresión emocional contenida y prefiere separar los hechos de las impresiones personales.",
+  metas: "Busca exactitud y comprobación antes de comprometerse con una conclusión o recomendación.",
+  influye: "Influye presentando evidencia clara y bien organizada, dejando que los hechos sostengan el argumento.",
+  juzga: "Juzga a los demás por la precisión y la lógica de lo que plantean, no por su capacidad de persuasión.",
+  valor: "Aporta objetividad y rigor técnico en decisiones que requieren análisis cuidadoso.",
+  abusa: "Puede abusar del análisis, postergando una decisión mientras busca información que quizás nunca sea suficiente.",
+  presion: "Bajo presión, se vuelve más cauteloso/a y pide más tiempo o más datos antes de actuar.",
+  teme: "Teme equivocarse por haber actuado con información incompleta.",
+  eficaz: "Sería más eficaz si aceptara decidir con información razonable, sin esperar certeza absoluta."
+},
+OrientadoResultados: {
+  nombre: "Orientado a Resultados",
+  resumen: "Es decidido y con una sociabilidad moderada que le permite movilizar a otros hacia una meta concreta. Actúa con rapidez y prioriza el avance tangible por sobre el consenso extendido o el análisis prolongado.",
+  atributos: ["Decidido/a","Pragmático/a","Directo/a","Enérgico/a","Competitivo/a","Autónomo/a"],
+  emociones: "Muestra sus emociones con moderación, principalmente cuando se relacionan con el avance o el estancamiento de un objetivo.",
+  metas: "Busca metas medibles y la satisfacción de verlas cumplidas en plazos concretos.",
+  influye: "Influye mostrando resultados concretos y proponiendo un camino de acción claro.",
+  juzga: "Juzga a los demás por su capacidad de producir resultados, más que por su proceso para llegar a ellos.",
+  valor: "Aporta foco y capacidad de ejecución en contextos donde se necesita avanzar rápido.",
+  abusa: "Puede abusar de la velocidad, saltándose pasos de validación que a la larga generan retrabajo.",
+  presion: "Bajo presión, acelera la toma de decisiones y puede volverse impaciente con quienes necesitan más tiempo.",
+  teme: "Teme el estancamiento y la sensación de no estar avanzando hacia ninguna meta.",
+  eficaz: "Sería más eficaz si validara el camino con el equipo antes de acelerar la ejecución."
+},
+Perfeccionista: {
+  nombre: "Perfeccionista",
+  resumen: "Es cuidadoso, constante y meticuloso: prioriza hacer las cosas bien por sobre hacerlas rápido, y prefiere la estabilidad y los estándares claros antes que el cambio constante o la improvisación.",
+  atributos: ["Meticuloso/a","Constante","Cauteloso/a","Disciplinado/a","Confiable","Detallista"],
+  emociones: "Prefiere mantener la calma y evitar reacciones impulsivas, incluso frente a la presión.",
+  metas: "Busca calidad consistente y evitar errores, más que la velocidad de ejecución.",
+  influye: "Influye mediante la calidad demostrada de su trabajo y el cumplimiento estricto de lo acordado.",
+  juzga: "Juzga a los demás por su prolijidad y su respeto a los procesos establecidos.",
+  valor: "Aporta consistencia y confiabilidad en tareas que exigen exactitud sostenida en el tiempo.",
+  abusa: "Puede abusar del control de calidad, retrasando entregas por buscar una perfección que el contexto no siempre exige.",
+  presion: "Bajo presión, se vuelve aún más cauteloso/a y necesita más tiempo del disponible para sentirse seguro/a.",
+  teme: "Teme cometer errores visibles y ser asociado/a con un trabajo de baja calidad.",
+  eficaz: "Sería más eficaz si aceptara que un resultado \"suficientemente bueno\" a tiempo vale más que uno perfecto y tarde."
+},
+Creativo: {
+  nombre: "Creativo",
+  resumen: "Combina asertividad con pensamiento analítico: propone ideas con confianza y las sostiene con lógica, aunque sin mucho interés en el consenso social o la paciencia frente a procesos lentos.",
+  atributos: ["Innovador/a","Analítico/a","Independiente","Directo/a","Seguro/a de sí mismo/a","Curioso/a"],
+  emociones: "Se involucra intelectualmente más que emocionalmente, y puede parecer distante en el trato cotidiano.",
+  metas: "Busca resolver problemas de forma novedosa y demostrar la solidez lógica de sus ideas.",
+  influye: "Influye proponiendo soluciones originales y defendiéndolas con argumentos racionales firmes.",
+  juzga: "Juzga a los demás por la originalidad y coherencia lógica de sus ideas, no por su calidez interpersonal.",
+  valor: "Aporta soluciones poco convencionales a problemas que los enfoques tradicionales no logran resolver.",
+  abusa: "Puede abusar de la independencia, descartando el aporte de otros sin considerarlo seriamente.",
+  presion: "Bajo presión, se vuelve más cortante en el trato y más rígido/a en defender su propia idea.",
+  teme: "Teme quedar atrapado/a en procesos rígidos que no dejan espacio para nuevas soluciones.",
+  eficaz: "Sería más eficaz si invirtiera tiempo en explicar sus ideas de forma más accesible para el resto del equipo."
+},
+Realizador: {
+  nombre: "Realizador",
+  resumen: "Combina decisión con constancia: actúa con firmeza pero sostiene sus compromisos en el tiempo, en lugar de perder el impulso tras el arranque inicial. Es exigente, pero también confiable en el largo plazo.",
+  atributos: ["Decidido/a","Constante","Confiable","Exigente","Firme","Perseverante"],
+  emociones: "Se mantiene estable emocionalmente incluso en contextos demandantes, sin grandes altibajos.",
+  metas: "Busca resultados sostenidos en el tiempo, no solo logros puntuales.",
+  influye: "Influye demostrando consistencia entre lo que promete y lo que efectivamente entrega.",
+  juzga: "Juzga a los demás por su compromiso sostenido, más que por su desempeño en un momento aislado.",
+  valor: "Aporta la combinación, poco común, de firmeza en la decisión y estabilidad en la ejecución.",
+  abusa: "Puede abusar de su exigencia personal, imponiendo ese mismo estándar a otros sin considerar sus límites.",
+  presion: "Bajo presión, mantiene el rumbo con firmeza, aunque puede volverse inflexible ante alternativas distintas a la suya.",
+  teme: "Teme que un cambio de rumbo brusco eche a perder un esfuerzo sostenido en el tiempo.",
+  eficaz: "Sería más eficaz si diera espacio a ajustar el plan cuando la evidencia indica que es necesario."
+},
+Resolutivo: {
+  nombre: "Resolutivo",
+  resumen: "Es marcadamente decidido y directo, con baja dependencia de la interacción social, la paciencia o el detalle para actuar. Prefiere resolver rápido y avanzar, incluso con información parcial.",
+  atributos: ["Decidido/a","Directo/a","Independiente","Pragmático/a","Enérgico/a","Autosuficiente"],
+  emociones: "Expresa poca vulnerabilidad emocional y prioriza la acción por sobre la reflexión compartida.",
+  metas: "Busca resolver el problema que tiene enfrente, sin mayor necesidad de validación externa.",
+  influye: "Influye por la fuerza de sus decisiones y su disposición a actuar cuando otros dudan.",
+  juzga: "Juzga a los demás por su capacidad de decidir y actuar sin depender de otros.",
+  valor: "Aporta capacidad real de resolver situaciones urgentes cuando nadie más se hace cargo.",
+  abusa: "Puede abusar de la unilateralidad, decidiendo solo/a en temas que requerían la opinión del equipo.",
+  presion: "Bajo presión, decide aún más rápido, arriesgando pasar por alto información relevante.",
+  teme: "Teme depender de otros para resolver algo que considera que puede resolver solo/a.",
+  eficaz: "Sería más eficaz si consultara antes de decidir en temas que afectan directamente a otras personas."
+},
+Profesional: {
+  nombre: "Profesional",
+  resumen: "Combina calidez, constancia y precisión, con un perfil poco asertivo que privilegia la buena relación y el trabajo bien hecho por sobre la exposición personal. Es un perfil que rara vez genera friction en un equipo.",
+  atributos: ["Meticuloso/a","Cálido/a","Constante","Colaborador/a","Confiable","Prudente"],
+  emociones: "Es sensible al ambiente del equipo y prefiere evitar la tensión antes que confrontarla abiertamente.",
+  metas: "Busca hacer bien su trabajo y mantener buenas relaciones con todo su entorno.",
+  influye: "Influye con calidad de trabajo y buen trato, más que con asertividad o presión directa.",
+  juzga: "Juzga a los demás por su prolijidad y su disposición a colaborar sin generar conflicto.",
+  valor: "Aporta una combinación estable de calidad técnica y buen ambiente de trabajo.",
+  abusa: "Puede abusar de la prudencia, evitando decir lo que piensa cuando implica generar una diferencia de opinión.",
+  presion: "Bajo presión, se enfoca en no fallar y en no generar tensión, aunque eso implique no tomar una postura firme.",
+  teme: "Teme el conflicto interpersonal y ser percibido/a como alguien poco confiable en su trabajo.",
+  eficaz: "Sería más eficaz si expresara su opinión con más firmeza cuando el contexto realmente lo requiere."
+},
+Especialista: {
+  nombre: "Especialista",
+  resumen: "Es marcadamente paciente y constante, sin mayor necesidad de protagonismo social, asertividad o control del detalle ajeno. Rinde bien en tareas estables que puede sostener en el tiempo sin sobresaltos.",
+  atributos: ["Paciente","Constante","Discreto/a","Confiable","Calmado/a","Metódico/a"],
+  emociones: "Mantiene la calma de forma casi constante, sin grandes variaciones emocionales visibles.",
+  metas: "Busca estabilidad laboral y la posibilidad de dominar bien una tarea específica.",
+  influye: "Influye poco de forma directa; su aporte se nota más en la consistencia que en la persuasión.",
+  juzga: "Juzga a los demás por su constancia y su respeto a los tiempos y compromisos acordados.",
+  valor: "Aporta continuidad operativa: es quien sostiene procesos estables sin necesitar supervisión constante.",
+  abusa: "Puede abusar de la rutina, resistiéndose a cambios que en realidad serían beneficiosos.",
+  presion: "Bajo presión, prefiere retraerse y seguir el procedimiento conocido antes que improvisar.",
+  teme: "Teme los cambios abruptos y quedar expuesto/a en un rol que exija visibilidad o confrontación.",
+  eficaz: "Sería más eficaz si se animara a proponer ideas propias en vez de esperar siempre indicaciones externas."
+},
+Desconcertante: {
+  nombre: "Desconcertante",
+  resumen: "Presenta un perfil equilibrado, sin una dimensión claramente dominante sobre las demás. Esto suele traducirse en un comportamiento que varía según el contexto, más que en un patrón fijo y predecible.",
+  atributos: ["Adaptable","Situacional","Versátil","Ecléctico/a","Flexible","Contextual"],
+  emociones: "Su expresión emocional varía según la situación, sin un patrón único y estable.",
+  metas: "Sus prioridades pueden variar de un contexto a otro, más que responder a un mismo motor constante.",
+  influye: "Influye de forma distinta según el interlocutor y el contexto, adaptando su enfoque caso a caso.",
+  juzga: "Juzga a los demás con criterios que varían según la situación específica que esté viviendo.",
+  valor: "Aporta versatilidad: puede ajustarse a roles y contextos distintos sin quedar encasillado/a en uno solo.",
+  abusa: "Puede resultar difícil de predecir para sus colaboradores, lo que en ocasiones genera cierta incertidumbre en el equipo.",
+  presion: "Bajo presión, su reacción es menos predecible que en otros perfiles, y puede variar de una situación a otra.",
+  teme: "Teme ser encasillado/a en una única forma de ser, cuando en la práctica se adapta según el contexto.",
+  eficaz: "Sería más eficaz si comunicara con claridad qué enfoque va a usar en cada situación, para dar más previsibilidad a su equipo."
+},
+Superactivo: {
+  nombre: "Superactivo",
+  resumen: "Muestra una intensidad alta en las cuatro dimensiones a la vez: es asertivo, sociable, constante y meticuloso, todo con fuerza. Esto suele traducirse en un nivel de energía y exigencia notablemente alto, tanto consigo mismo/a como con su entorno.",
+  atributos: ["Intenso/a","Exigente","Multifacético/a","Enérgico/a","Perfeccionista","Determinado/a"],
+  emociones: "Vive todo con intensidad: sus emociones, su exigencia y su energía suelen estar por sobre el promedio.",
+  metas: "Busca destacar en múltiples frentes a la vez, sin conformarse con cumplir solo lo mínimo esperado.",
+  influye: "Influye por la suma de asertividad, cercanía, constancia y rigor, lo que puede resultar abrumador para otros.",
+  juzga: "Juzga a los demás con estándares altos, esperando un nivel de compromiso similar al propio.",
+  valor: "Aporta una capacidad de trabajo y de exigencia que puede elevar el estándar de todo un equipo.",
+  abusa: "Puede abusar de su propia intensidad, generando agotamiento en sí mismo/a o presión excesiva en su entorno.",
+  presion: "Bajo presión, redobla el esfuerzo en todos los frentes a la vez, lo que puede ser insostenible en el tiempo.",
+  teme: "Teme no estar dando lo suficiente, incluso cuando objetivamente ya está rindiendo por sobre el estándar.",
+  eficaz: "Sería más eficaz si priorizara menos frentes a la vez y aceptara que no todo puede sostenerse al máximo nivel."
+},
+Subactivo: {
+  nombre: "Subactivo",
+  resumen: "Muestra una intensidad baja en las cuatro dimensiones a la vez: sus respuestas tienden a ser moderadas y reservadas, sin una inclinación marcada hacia la asertividad, la sociabilidad, la constancia o el control del detalle.",
+  atributos: ["Reservado/a","Moderado/a","Cauteloso/a","Discreto/a","Ecuánime","Bajo perfil"],
+  emociones: "Expresa sus emociones de forma contenida, sin grandes manifestaciones en ningún sentido.",
+  metas: "Sus objetivos suelen ser modestos y poco ambiciosos en comparación con otros perfiles.",
+  influye: "Influye poco de forma activa; prefiere no imponerse ni buscar protagonismo.",
+  juzga: "Juzga a los demás con criterios moderados, evitando posiciones extremas.",
+  valor: "Aporta un perfil de bajo conflicto, que rara vez genera tensión o fricción en el equipo.",
+  abusa: "Puede abusar del bajo perfil, evitando asumir responsabilidad o visibilidad cuando el rol lo requiere.",
+  presion: "Bajo presión, tiende a replegarse aún más, en lugar de activar una respuesta visible.",
+  teme: "Teme la exposición y verse forzado/a a asumir un rol de mayor protagonismo del que le es cómodo.",
+  eficaz: "Sería más eficaz si se permitiera mostrar más iniciativa propia, incluso cuando nadie se la exige explícitamente."
+}
 };
 
-// ---- Contenido detallado por dimensión dominante (elaboración propia de Amplifica) ----
-const PROFILE_DETAIL = {
-  d: {
-    atributos: ["Decidido/a","Directo/a","Seguro/a de sí mismo/a","Competitivo/a","Orientado/a a la acción","Asertivo/a","Independiente","Exigente","Pragmático/a"],
-    motivadores: ["Autonomía para decidir","Desafíos concretos y metas ambiciosas","Resultados medibles","Reconocimiento por logros","Autoridad real para actuar"],
-    desmotivadores: ["Procesos burocráticos lentos","Microgestión constante","Falta de autonomía","Tareas repetitivas sin desafío","Ambigüedad prolongada"],
-    comunicacion: "Directo y breve, va al grano y prefiere conclusiones antes que contexto extenso. Puede sonar brusco bajo presión y valora la franqueza en los demás.",
-    decision: "Rápida y autónoma, basada en el resultado esperado más que en el consenso. Puede subestimar el análisis detallado o la opinión de otros si percibe que retrasa el avance.",
-    supervisor: "Necesita un supervisor que delegue con claridad, dé autonomía real, entregue feedback directo y no imponga controles ni supervisión excesiva.",
-    fortalezas: ["Iniciativa y capacidad de decisión bajo presión","Orientación a resultados","Disposición a asumir riesgos calculados","Liderazgo natural en momentos de crisis"],
-    desarrollo: ["Escuchar antes de decidir","Delegar sin perder el control del resultado","Moderar la impaciencia con procesos o personas más metódicas","Cuidar el impacto de su forma de comunicar"]
-  },
-  i: {
-    atributos: ["Sociable","Expresivo/a","Optimista","Persuasivo/a","Entusiasta","Espontáneo/a","Cálido/a","Comunicativo/a","Flexible en el trato"],
-    motivadores: ["Reconocimiento social","Interacción constante con personas","Ambientes dinámicos","Libertad para expresar ideas","Buen clima laboral"],
-    desmotivadores: ["Aislamiento y tareas solitarias","Ambientes fríos o muy formales","Falta de espacio para socializar","Exceso de reglas rígidas","Rutinas muy repetitivas"],
-    comunicacion: "Expresivo, cercano y entusiasta. Comunica con emoción y busca conectar antes de entrar en detalles técnicos; puede extenderse más de lo necesario.",
-    decision: "Intuitiva y rápida, influida por el entusiasmo del momento y la opinión de otros. Puede pasar por alto el análisis detallado de riesgos.",
-    supervisor: "Necesita un supervisor cercano, que reconozca sus logros públicamente, permita espacio de interacción social y no sea excesivamente rígido con los procedimientos.",
-    fortalezas: ["Generar buen clima de trabajo","Motivar a otros","Construir relaciones de confianza rápidamente","Comunicar ideas con entusiasmo contagioso"],
-    desarrollo: ["Sostener el foco en tareas de detalle","Seguir procesos hasta el final","Moderar el optimismo con análisis de riesgos","Cumplir plazos sin depender solo de la motivación"]
-  },
-  s: {
-    atributos: ["Paciente","Leal","Constante","Buen/a oyente","Colaborador/a","Calmado/a","Confiable","Discreto/a","Adaptable al ritmo del equipo"],
-    motivadores: ["Estabilidad laboral","Ambiente de trabajo predecible","Buenas relaciones de largo plazo","Reconocimiento sincero","Tiempo suficiente para adaptarse a los cambios"],
-    desmotivadores: ["Cambios bruscos sin aviso","Conflictos abiertos","Presión por decisiones rápidas sin tiempo de análisis","Ambientes de alta rotación o inestabilidad"],
-    comunicacion: "Tranquilo, atento y respetuoso. Escucha antes de opinar, evita el conflicto directo y busca el consenso antes de imponer su punto de vista.",
-    decision: "Reflexiva y prudente. Prefiere contar con tiempo, información suficiente y el respaldo del equipo antes de decidir; puede postergar decisiones difíciles.",
-    supervisor: "Necesita un supervisor paciente, que explique el 'por qué' de los cambios, dé tiempo para adaptarse y reconozca el trabajo constante sin exigir decisiones bajo presión permanente.",
-    fortalezas: ["Consistencia y lealtad al equipo","Capacidad de mediar conflictos","Confiabilidad en tareas de largo plazo","Buen soporte emocional para otros"],
-    desarrollo: ["Adaptarse con mayor rapidez a cambios inesperados","Tomar postura en situaciones de conflicto cuando es necesario","Expresar desacuerdo de forma más directa"]
-  },
-  c: {
-    atributos: ["Preciso/a","Analítico/a","Metódico/a","Cauteloso/a","Orientado/a al detalle","Disciplinado/a","Reservado/a","Crítico/a constructivo/a"],
-    motivadores: ["Información completa antes de actuar","Procesos claros y bien documentados","Estándares de calidad altos","Tiempo para analizar antes de decidir","Reconocimiento por la precisión de su trabajo"],
-    desmotivadores: ["Ambigüedad","Decisiones apresuradas sin datos","Incoherencias entre lo que se dice y se hace","Falta de tiempo para revisar el trabajo","Críticas informales sin fundamento"],
-    comunicacion: "Reservado y preciso. Prefiere argumentar con datos antes que con opiniones; puede parecer distante o excesivamente crítico si el interlocutor no maneja el mismo nivel de detalle.",
-    decision: "Analítica y cautelosa, basada en evidencia y en la revisión exhaustiva de alternativas. Puede demorar más de lo esperado cuando falta información.",
-    supervisor: "Necesita un supervisor organizado, que entregue instrucciones claras y por escrito, respete los tiempos de análisis y no presione con decisiones improvisadas.",
-    fortalezas: ["Rigurosidad y atención al detalle","Calidad consistente del trabajo","Capacidad de anticipar errores","Pensamiento estructurado"],
-    desarrollo: ["Actuar con mayor rapidez cuando la situación lo requiere","Tolerar mejor la ambigüedad","Flexibilizar estándares cuando el contexto lo amerita","Comunicar el feedback de forma menos crítica"]
-  }
-};
+// ---- Clasificación en patrones clásicos (misma lógica que la tabulación oficial de Amplifica) ----
+function classifyD(x){
+  if(x<-7) return 1;
+  if(x<-3 && x>-8) return 2;
+  if(x<0 && x>-4) return 3;
+  if(x<2 && x>-1) return 4;
+  if(x>1 && x<5) return 5;
+  if(x>4 && x<9) return 6;
+  return 7;
+}
+function classifyI(x){
+  if(x<-7) return 1;
+  if(x<-3 && x>-8) return 2;
+  if(x<-1 && x>-4) return 3;
+  if(x<2 && x>-2) return 4;
+  if(x>1 && x<4) return 5;
+  if(x>3 && x<7) return 6;
+  return 7;
+}
+function classifyS(x){
+  if(x<-10) return 1;
+  if(x<-6 && x>-11) return 2;
+  if(x<-3 && x>-7) return 3;
+  if(x<0 && x>-4) return 4;
+  if(x>-1 && x<3) return 5;
+  if(x>2 && x<8) return 6;
+  return 7;
+}
+function classifyC(x){
+  if(x<-5) return 1;
+  if(x<-2 && x>-6) return 2;
+  if(x<0 && x>-3) return 3;
+  if(x<3 && x>-1) return 4;
+  if(x>2 && x<5) return 5;
+  if(x>4 && x<9) return 6;
+  return 7;
+}
+function classifyProfile(raw){
+  const subIndex = { d: classifyD(raw.d), i: classifyI(raw.i), s: classifyS(raw.s), c: classifyC(raw.c) };
+  const code = '' + subIndex.d + subIndex.i + subIndex.s + subIndex.c;
+  const patternKey = CODE_TO_PATTERN[code] || 'Desconcertante';
+  return { subIndex, code, patternKey };
+}
+
 
 // ---- Competencias comportamentales calculadas a partir del DISC ----
 const COMPETENCIAS = [
@@ -647,7 +900,7 @@ const COMPETENCIAS = [
   { key:'servicio_cliente', label:'Servicio al cliente', desc:'Capacidad de generar una experiencia positiva y de confianza en quienes reciben el servicio.', weights:{d:0, i:0.35, s:0.45, c:0.20} }
 ];
 
-function pctFromRaw(score){ return Math.max(0, Math.min(100, Math.round(((score+26)/52)*100))); }
+function pctFromRaw(score){ return Math.max(0, Math.min(100, Math.round(((score+28)/56)*100))); }
 
 function computeCompetencies(raw){
   const pct = { d: pctFromRaw(raw.d), i: pctFromRaw(raw.i), s: pctFromRaw(raw.s), c: pctFromRaw(raw.c) };
@@ -750,10 +1003,8 @@ async function renderAdminList(){
   container.innerHTML = '';
   adminRecords.forEach((record, i)=>{
     const raw = record.scores;
-    const sorted = DIMS.slice().sort((a,b)=>raw[b]-raw[a]);
-    const top1 = sorted[0], top2 = sorted[1];
-    const closeGap = Math.abs(raw[top1]-raw[top2]) <= 3;
-    const code = closeGap ? `${top1.toUpperCase()}-${top2.toUpperCase()}` : top1.toUpperCase();
+    const { patternKey } = classifyProfile(raw);
+    const pattern = PATTERNS[patternKey] || PATTERNS.Desconcertante;
     const item = document.createElement('div');
     item.className = 'admin-item';
     item.innerHTML = `
@@ -761,7 +1012,7 @@ async function renderAdminList(){
         <div class="admin-item-name">${record.nombre}</div>
         <div class="admin-item-sub">${record.cargo} · ${new Date(record.submittedAt).toLocaleDateString('es-CL')}</div>
       </div>
-      <div class="admin-item-code">${code}</div>
+      <div class="admin-item-code" style="font-size:16px;">${pattern.nombre}</div>
     `;
     item.addEventListener('click', ()=>{ showResultDetail(record); });
     container.appendChild(item);
@@ -772,10 +1023,8 @@ document.getElementById('backToListBtn').addEventListener('click', ()=>{ showScr
 function showResultDetail(record){
   showScreen('results');
   const raw = record.scores;
-  const sorted = DIMS.slice().sort((a,b)=>raw[b]-raw[a]);
-  const top1 = sorted[0], top2 = sorted[1];
-  const closeGap = Math.abs(raw[top1]-raw[top2]) <= 3;
-  const code = closeGap ? `${top1.toUpperCase()}-${top2.toUpperCase()}` : top1.toUpperCase();
+  const { subIndex, code, patternKey } = classifyProfile(raw);
+  const pattern = PATTERNS[patternKey] || PATTERNS.Desconcertante;
 
   document.getElementById('candidateMeta').innerHTML = `
     <div><strong>Nombre:</strong> ${record.nombre}</div>
@@ -784,25 +1033,23 @@ function showResultDetail(record){
     <div><strong>Correo:</strong> ${record.email}</div>
     <div><strong>Fecha:</strong> ${new Date(record.submittedAt).toLocaleString('es-CL')}</div>
   `;
-  document.getElementById('profileCode').textContent = code;
-  document.getElementById('profileName').textContent = closeGap ? `${DIM_LABEL[top1]} · ${DIM_LABEL[top2]}` : DIM_LABEL[top1];
+  document.getElementById('profileCode').textContent = pattern.nombre;
+  document.getElementById('profileName').textContent = `Patrón clásico · código ${code} (D${subIndex.d} I${subIndex.i} S${subIndex.s} C${subIndex.c})`;
 
-  const narrative = closeGap ? (COMBO_NARRATIVES[`${top1}-${top2}`] || NARRATIVES[top1]) : NARRATIVES[top1];
-  document.getElementById('narrativeText').textContent = narrative;
-
-  // Secciones detalladas: se basan en la dimensión dominante (top1)
-  const detail = PROFILE_DETAIL[top1];
+  document.getElementById('narrativeText').textContent = pattern.resumen;
 
   const atribContainer = document.getElementById('atributosContainer');
-  atribContainer.innerHTML = detail.atributos.map(a=>`<span class="tag-pill">${a}</span>`).join('');
+  atribContainer.innerHTML = pattern.atributos.map(a=>`<span class="tag-pill">${a}</span>`).join('');
 
-  document.getElementById('motivadoresList').innerHTML = detail.motivadores.map(m=>`<li>${m}</li>`).join('');
-  document.getElementById('desmotivadoresList').innerHTML = detail.desmotivadores.map(m=>`<li>${m}</li>`).join('');
-  document.getElementById('comunicacionText').textContent = detail.comunicacion;
-  document.getElementById('decisionText').textContent = detail.decision;
-  document.getElementById('supervisorText').textContent = detail.supervisor;
-  document.getElementById('fortalezasList').innerHTML = detail.fortalezas.map(f=>`<li>${f}</li>`).join('');
-  document.getElementById('desarrolloList').innerHTML = detail.desarrollo.map(d=>`<li>${d}</li>`).join('');
+  document.getElementById('emocionesText').textContent = pattern.emociones;
+  document.getElementById('metasText').textContent = pattern.metas;
+  document.getElementById('influyeText').textContent = pattern.influye;
+  document.getElementById('juzgaText').textContent = pattern.juzga;
+  document.getElementById('valorText').textContent = pattern.valor;
+  document.getElementById('abusaText').textContent = pattern.abusa;
+  document.getElementById('presionText').textContent = pattern.presion;
+  document.getElementById('temeText').textContent = pattern.teme;
+  document.getElementById('eficazText').textContent = pattern.eficaz;
 
   const competencias = computeCompetencies(raw);
   const compContainer = document.getElementById('competenciasContainer');
@@ -823,7 +1070,7 @@ function showResultDetail(record){
   barsContainer.innerHTML = '';
   DIMS.forEach(dim=>{
     const score = raw[dim];
-    const pct = Math.max(0, Math.round(((score+26)/52)*100));
+    const pct = Math.max(0, Math.round(((score+28)/56)*100));
     const row = document.createElement('div');
     row.className = 'bar-row';
     row.innerHTML = `

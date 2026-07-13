@@ -361,6 +361,7 @@ const DIMS = ['d','i','s','c'];
 const DIM_LABEL = {d:'Dominancia', i:'Influencia', s:'Estabilidad', c:'Cumplimiento'};
 const DIM_COLOR = {d:'#121755', i:'#F7DC4B', s:'#4548FF', c:'#1D1D1F'};
 const ADMIN_PASSCODE = "amplifica2026";
+const DISC_DB_URL = "https://polla-amplifica-default-rtdb.firebaseio.com/disc";
 
 function shuffle(arr){
   const a = arr.slice();
@@ -608,11 +609,13 @@ function buildRecord(){
 
 async function finishQuiz(){
   const record = buildRecord();
-  const safeKey = 'results:' + record.rut.replace(/[^a-zA-Z0-9]/g,'') + '-' + Date.now();
+  const safeKey = record.rut.replace(/[^a-zA-Z0-9]/g,'') + '-' + Date.now();
   try{
-    if(window.storage){
-      await window.storage.set(safeKey, JSON.stringify(record), true);
-    }
+    await fetch(DISC_DB_URL + '/results/' + safeKey + '.json', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(record)
+    });
   }catch(e){
     console.error('No se pudo guardar el resultado', e);
   }
@@ -645,17 +648,14 @@ async function renderAdminList(){
   container.innerHTML = '<div class="empty-state">Cargando...</div>';
   adminRecords = [];
   try{
-    const listResult = await window.storage.list('results:', true);
-    const keys = (listResult && listResult.keys) ? listResult.keys : [];
-    for(const key of keys){
-      try{
-        const res = await window.storage.get(key, true);
-        if(res && res.value){
-          const record = JSON.parse(res.value);
-          record._key = key;
-          adminRecords.push(record);
-        }
-      }catch(e){ /* key missing or malformed, skip */ }
+    const r = await fetch(DISC_DB_URL + '/results.json?nocache=' + Date.now());
+    const data = await r.json();
+    if(data && typeof data === 'object'){
+      Object.keys(data).forEach(key=>{
+        const record = data[key];
+        record._key = key;
+        adminRecords.push(record);
+      });
     }
   }catch(e){
     console.error('No se pudo listar resultados', e);

@@ -229,15 +229,19 @@
     <a href="#" class="link-quiet" id="adminLink">Acceso equipo de Personas</a>
   </div>
 
-  <!-- ADMIN: passcode gate -->
+  <!-- ADMIN: login gate -->
   <div class="screen" id="adminGate">
     <div class="eyebrow">Amplifica · Panel interno</div>
     <h1 style="font-size:28px;">Acceso equipo de Personas</h1>
     <div class="card" style="margin-top:20px;">
       <div class="field">
-        <label for="adminPass">Clave de acceso</label>
+        <label for="adminEmail">Correo</label>
+        <input type="email" id="adminEmail" placeholder="tucorreo@amplifica.io">
+      </div>
+      <div class="field">
+        <label for="adminPass">Contraseña</label>
         <input type="password" id="adminPass" placeholder="••••••">
-        <div class="field-error" id="errPass">Clave incorrecta.</div>
+        <div class="field-error" id="errPass">Correo o contraseña incorrectos.</div>
       </div>
       <button class="btn-primary" id="adminEnterBtn">Ingresar</button>
     </div>
@@ -327,7 +331,24 @@
 
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
 <script>
+// ---------- FIREBASE ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyBKi4N_hfRvsCIbLW2cErTaPoEqeMj-0x4",
+  authDomain: "discamplifica.firebaseapp.com",
+  databaseURL: "https://discamplifica-default-rtdb.firebaseio.com",
+  projectId: "discamplifica",
+  storageBucket: "discamplifica.firebasestorage.app",
+  messagingSenderId: "57383148148",
+  appId: "1:57383148148:web:942d4626055214ff7d8f21"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const rtdb = firebase.database();
+
 // ---------- DATA: 26 bloques (d, i, s, c) ----------
 const BLOCKS = [
 ["Toma decisiones rápido, incluso bajo presión","Disfruta conocer gente nueva","Prefiere rutinas y procesos estables","Revisa los detalles antes de actuar"],
@@ -360,8 +381,6 @@ const BLOCKS = [
 const DIMS = ['d','i','s','c'];
 const DIM_LABEL = {d:'Dominancia', i:'Influencia', s:'Estabilidad', c:'Cumplimiento'};
 const DIM_COLOR = {d:'#121755', i:'#F7DC4B', s:'#4548FF', c:'#1D1D1F'};
-const ADMIN_PASSCODE = "amplifica2026";
-const DISC_DB_URL = "https://polla-amplifica-default-rtdb.firebaseio.com/disc";
 
 function shuffle(arr){
   const a = arr.slice();
@@ -611,11 +630,7 @@ async function finishQuiz(){
   const record = buildRecord();
   const safeKey = record.rut.replace(/[^a-zA-Z0-9]/g,'') + '-' + Date.now();
   try{
-    await fetch(DISC_DB_URL + '/results/' + safeKey + '.json', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record)
-    });
+    await rtdb.ref('results/' + safeKey).set(record);
   }catch(e){
     console.error('No se pudo guardar el resultado', e);
   }
@@ -632,8 +647,11 @@ document.getElementById('adminLinkIntro').addEventListener('click', (e)=>{
   showScreen('adminGate');
 });
 document.getElementById('adminEnterBtn').addEventListener('click', async ()=>{
+  const email = document.getElementById('adminEmail').value.trim();
   const pass = document.getElementById('adminPass').value;
-  if(pass !== ADMIN_PASSCODE){
+  try{
+    await auth.signInWithEmailAndPassword(email, pass);
+  }catch(e){
     document.getElementById('errPass').style.display = 'block';
     return;
   }
@@ -648,8 +666,8 @@ async function renderAdminList(){
   container.innerHTML = '<div class="empty-state">Cargando...</div>';
   adminRecords = [];
   try{
-    const r = await fetch(DISC_DB_URL + '/results.json?nocache=' + Date.now());
-    const data = await r.json();
+    const snapshot = await rtdb.ref('results').once('value');
+    const data = snapshot.val();
     if(data && typeof data === 'object'){
       Object.keys(data).forEach(key=>{
         const record = data[key];

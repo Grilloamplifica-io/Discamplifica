@@ -285,6 +285,8 @@
         <div class="field-error" id="errPass">Correo o contraseña incorrectos.</div>
       </div>
       <button class="btn-primary" id="adminEnterBtn">Ingresar</button>
+      <button class="btn-ghost" id="adminResetBtn" style="width:100%; text-align:center;">¿Olvidaste tu contraseña?</button>
+      <div class="field-error" id="resetMsg" style="color:var(--blue);"></div>
     </div>
   </div>
 
@@ -697,8 +699,28 @@ document.getElementById('adminEnterBtn').addEventListener('click', async ()=>{
     return;
   }
   document.getElementById('errPass').style.display = 'none';
+  document.getElementById('resetMsg').style.display = 'none';
   await renderAdminList();
   showScreen('adminList');
+});
+document.getElementById('adminResetBtn').addEventListener('click', async ()=>{
+  const email = document.getElementById('adminEmail').value.trim();
+  const resetMsg = document.getElementById('resetMsg');
+  if(!email){
+    resetMsg.textContent = 'Escribe tu correo arriba primero.';
+    resetMsg.style.color = '#c0392b';
+    resetMsg.style.display = 'block';
+    return;
+  }
+  try{
+    await auth.sendPasswordResetEmail(email);
+    resetMsg.textContent = 'Te enviamos un correo para restablecer tu contraseña.';
+    resetMsg.style.color = 'var(--blue)';
+  }catch(e){
+    resetMsg.textContent = 'No se pudo enviar el correo de restablecimiento.';
+    resetMsg.style.color = '#c0392b';
+  }
+  resetMsg.style.display = 'block';
 });
 
 let adminRecords = [];

@@ -81,16 +81,6 @@
   }
   .tag-btn.mas.selected{ background:var(--blue); border-color:var(--blue); color:#fff; }
   .tag-btn.menos.selected{ background:var(--navy); border-color:var(--navy); color:#fff; }
-
-  .belbin-total{ font-family:'Barlow Condensed', sans-serif; font-size:16px; font-weight:600; color:var(--navy); margin-bottom:14px; padding:10px 14px; background:var(--bg); border-radius:8px; }
-  .belbin-total.complete{ color:#1b7a3d; }
-  .belbin-row{ display:flex; align-items:center; gap:16px; padding:14px 0; border-bottom:1px solid var(--lightgray); }
-  .belbin-row:last-child{ border-bottom:none; }
-  .belbin-text{ flex:1; font-size:15.5px; color:var(--gray); }
-  .belbin-stepper{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
-  .belbin-stepper button{ width:32px; height:32px; padding:0; border-radius:8px; border:1.5px solid var(--lightgray); background:#fff; color:var(--navy); font-size:16px; font-weight:700; }
-  .belbin-stepper button:disabled{ opacity:0.3; }
-  .belbin-stepper .belbin-value{ width:28px; text-align:center; font-family:'Barlow Condensed', sans-serif; font-size:18px; font-weight:700; color:var(--navy); }
   .nav-row{ display:flex; gap:14px; margin-top:26px; }
   .nav-row .btn-primary{ margin-top:0; }
 
@@ -160,8 +150,6 @@
     h1{ font-size:34px; } .card{ padding:26px; } .profile-code{ font-size:32px; } .app-logo{ height:36px; margin-bottom:22px; }
     .phrase-row{ flex-direction:column; align-items:flex-start; gap:10px; }
     .tag-buttons{ align-self:flex-end; }
-    .belbin-row{ flex-direction:column; align-items:flex-start; gap:10px; }
-    .belbin-stepper{ align-self:flex-end; }
   }
   @media (min-width: 820px){
     .app{ max-width:920px; }
@@ -211,10 +199,10 @@
   <!-- INTRO -->
   <div class="screen active" id="intro">
     <div class="eyebrow">Amplifica · Evaluación complementaria</div>
-    <h1>Perfil de comportamiento y roles de equipo</h1>
+    <h1>Perfil de comportamiento DISC</h1>
     <div class="card" style="margin-top:20px;">
-      <p>Esta evaluación tiene <strong>2 etapas</strong>: primero un perfil de comportamiento <strong>DISC</strong> (28 bloques de 4 palabras cada uno, eligiendo la que MÁS y la que MENOS te representa) y luego un test de <strong>roles de equipo (Belbin)</strong>, donde repartes puntos entre distintas frases según cuánto te representen.</p>
-      <p>No hay respuestas correctas o incorrectas. Te tomará entre 20 y 25 minutos en total.</p>
+      <p>Este cuestionario consta de <strong>28 bloques</strong> con 4 palabras cada uno. En cada bloque, elige la palabra que <strong>MÁS</strong> te representa y la que <strong>MENOS</strong> te representa.</p>
+      <p>No hay respuestas correctas o incorrectas. Te tomará entre 10 y 15 minutos.</p>
       <p>Este resultado es un <strong>insumo complementario</strong> del proceso de selección, no un factor excluyente de decisión. Los resultados serán revisados por el equipo de Personas de Amplifica.</p>
       <div class="consent">
         <input type="checkbox" id="consentCheck">
@@ -255,9 +243,8 @@
     </div>
   </div>
 
-  <!-- QUESTIONS: DISC (Etapa 1) -->
+  <!-- QUESTIONS -->
   <div class="screen" id="quiz">
-    <div class="eyebrow">Etapa 1 de 2 · Perfil DISC</div>
     <div class="progress-wrap">
       <div class="progress-label"><span id="progressText">Bloque 1 de 28</span><span id="progressPct">4%</span></div>
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:4%"></div></div>
@@ -268,24 +255,6 @@
       <div class="nav-row">
         <button class="btn-ghost" id="backBtn">← Volver</button>
         <button class="btn-primary" id="nextBtn" disabled style="margin-top:0;">Siguiente</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- QUESTIONS: Belbin (Etapa 2) -->
-  <div class="screen" id="belbinQuiz">
-    <div class="eyebrow">Etapa 2 de 2 · Roles de equipo (Belbin)</div>
-    <div class="progress-wrap">
-      <div class="progress-label"><span id="belbinProgressText">Sección 1 de 7</span><span id="belbinProgressPct">14%</span></div>
-      <div class="progress-track"><div class="progress-fill" id="belbinProgressFill" style="width:14%"></div></div>
-    </div>
-    <div class="card">
-      <div class="block-instruction" id="belbinSectionTitle"></div>
-      <div class="belbin-total" id="belbinTotal">Puntos repartidos: <strong>0 / 10</strong></div>
-      <div id="belbinContainer"></div>
-      <div class="nav-row">
-        <button class="btn-ghost" id="belbinBackBtn">← Volver</button>
-        <button class="btn-primary" id="belbinNextBtn" disabled style="margin-top:0;">Siguiente</button>
       </div>
     </div>
   </div>
@@ -334,7 +303,7 @@
   <div class="screen" id="results">
     <div class="eyebrow">Amplifica · Panel interno</div>
     <button class="btn-ghost" id="backToListBtn" style="padding:0; margin-bottom:12px;">← Volver al listado</button>
-    <h1 style="font-size:28px;">Reporte de perfil DISC + Belbin</h1>
+    <h1 style="font-size:28px;">Reporte de perfil DISC</h1>
     <div class="card" style="margin-top:20px;">
       <div class="candidate-meta" id="candidateMeta"></div>
       <div class="profile-summary">
@@ -405,23 +374,6 @@
         <div id="competenciasContainer"></div>
       </div>
 
-      <div class="report-section">
-        <h3>Roles de equipo (Belbin)</h3>
-        <div class="two-col" style="margin-bottom:14px;">
-          <div>
-            <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Rol principal: <span id="belbinTop1Name"></span></h4>
-            <p id="belbinTop1Aporte" style="font-size:14px; margin-bottom:8px;"></p>
-            <p id="belbinTop1Ciego" style="font-size:13px; color:#8a8a8e;"></p>
-          </div>
-          <div>
-            <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Rol secundario: <span id="belbinTop2Name"></span></h4>
-            <p id="belbinTop2Aporte" style="font-size:14px; margin-bottom:8px;"></p>
-            <p id="belbinTop2Ciego" style="font-size:13px; color:#8a8a8e;"></p>
-          </div>
-        </div>
-        <div id="belbinBarsContainer"></div>
-      </div>
-
       <div class="disclaimer">
         Este informe es una herramienta complementaria de apoyo al proceso de selección de Amplifica. No constituye un diagnóstico psicológico ni un criterio único de decisión. Los resultados deben interpretarse junto con la entrevista, la evaluación técnica y las referencias del candidato.
       </div>
@@ -486,99 +438,6 @@ const DIMS = ['d','i','s','c'];
 const DIM_LABEL = {d:'Dominancia', i:'Influencia', s:'Estabilidad', c:'Cumplimiento'};
 const DIM_COLOR = {d:'#121755', i:'#F7DC4B', s:'#4548FF', c:'#1D1D1F'};
 
-// ---------- BELBIN: roles de equipo (autoinforme clásico, redacción propia) ----------
-const BELBIN_ROLES = {
-  CE: { nombre: "Cerebro", aporte: "Genera ideas originales y enfoques poco convencionales para resolver problemas complejos.", puntoCiego: "Puede ignorar detalles prácticos y comunicar sus ideas de forma poco clara para el resto del equipo." },
-  IR: { nombre: "Investigador de Recursos", aporte: "Explora oportunidades, construye contactos y trae información y recursos nuevos al equipo.", puntoCiego: "Puede perder el entusiasmo inicial una vez que pasa la novedad de la tarea." },
-  CO: { nombre: "Coordinador", aporte: "Clarifica las metas, delega con criterio y logra que el equipo avance de forma coordinada.", puntoCiego: "Puede delegar en exceso su propia carga de trabajo hacia otras personas." },
-  IM: { nombre: "Impulsor", aporte: "Aporta energía y determinación para que el equipo supere obstáculos y no pierda impulso.", puntoCiego: "Puede generar tensión al presionar con demasiada fuerza al resto del equipo." },
-  ME: { nombre: "Monitor Evaluador", aporte: "Evalúa las opciones con objetividad y evita decisiones apresuradas basadas solo en el entusiasmo.", puntoCiego: "Puede parecer excesivamente crítico/a y con poca capacidad de motivar a otros." },
-  CH: { nombre: "Cohesionador", aporte: "Genera buen clima de equipo, media en los conflictos y hace que todos se sientan escuchados.", puntoCiego: "Puede evitar tomar postura firme en momentos donde el equipo necesita una decisión clara." },
-  IP: { nombre: "Implementador", aporte: "Convierte los acuerdos en planes de trabajo concretos y los ejecuta con disciplina.", puntoCiego: "Puede ser rígido/a frente a cambios de última hora en el plan original." },
-  FI: { nombre: "Finalizador", aporte: "Cuida los detalles y asegura que el trabajo se entregue completo, a tiempo y sin errores.", puntoCiego: "Puede demorar entregas por querer revisar más de lo necesario, y le cuesta delegar." }
-};
-const BELBIN_ROLE_ORDER = ["CE","IR","CO","IM","ME","CH","IP","FI"];
-
-const BELBIN_SECTIONS = [
-{ title:"Lo que creo que puedo aportar a un equipo:", statements:{
-  CE:"Tiendo a proponer ideas y enfoques poco convencionales para resolver problemas difíciles.",
-  IR:"Encuentro con facilidad contactos y recursos útiles fuera del equipo.",
-  CO:"Ayudo a clarificar las metas del grupo y a que cada persona aporte lo mejor de sí.",
-  IM:"Tengo la energía y la determinación para que el equipo no pierda impulso ante los obstáculos.",
-  ME:"Evalúo las opciones disponibles con calma y sin dejarme llevar por el entusiasmo del momento.",
-  CH:"Escucho a todos y ayudo a que el equipo trabaje de forma más armoniosa.",
-  IP:"Transformo las ideas acordadas en un plan de trabajo concreto y ordenado.",
-  FI:"Reviso los detalles con cuidado para que nada quede a medio terminar."
-}},
-{ title:"Un posible punto débil mío en el trabajo en equipo:", statements:{
-  CE:"Puedo estar tan concentrado/a en mis propias ideas que paso por alto sugerencias prácticas de otros.",
-  IR:"Pierdo el interés en una tarea apenas se pasa el entusiasmo inicial.",
-  CO:"Puedo delegar tanto que otros perciben que evito hacer mi parte del trabajo.",
-  IM:"A veces impaciento a otros o hiero susceptibilidades por mi forma directa de presionar.",
-  ME:"Puedo parecer excesivamente crítico/a y poco entusiasta frente a las ideas de otros.",
-  CH:"Me cuesta tomar una decisión firme cuando la situación se pone tensa.",
-  IP:"Me cuesta adaptarme cuando surgen nuevas posibilidades que rompen el plan ya definido.",
-  FI:"Me preocupo en exceso por los detalles y me cuesta delegar tareas."
-}},
-{ title:"Cuando participo en un proyecto junto a otras personas:", statements:{
-  CE:"Me gusta explorar soluciones originales, incluso si al principio parecen poco viables.",
-  IR:"Disfruto salir a buscar ideas, contactos u oportunidades fuera del grupo.",
-  CO:"Trato de que todos tengan claridad sobre el objetivo y su rol dentro de él.",
-  IM:"Empujo al grupo a avanzar y a no quedarse estancado frente a las dificultades.",
-  ME:"Prefiero analizar todas las alternativas antes de inclinarme por una.",
-  CH:"Busco mantener el buen ánimo del grupo y evitar que se generen conflictos.",
-  IP:"Me enfoco en organizar el trabajo de forma metódica y realista.",
-  FI:"Me aseguro de que los plazos se cumplan y de que no queden cabos sueltos."
-}},
-{ title:"Mi forma característica de abordar el trabajo en grupo es:", statements:{
-  CE:"Pensar distinto al resto y proponer alternativas que nadie había considerado.",
-  IR:"Conectar al equipo con personas o recursos externos que pueden ayudar.",
-  CO:"Facilitar que las decisiones se tomen de forma ordenada y participativa.",
-  IM:"Marcar un ritmo de trabajo exigente y no conformarme con la primera solución.",
-  ME:"Mantener una mirada objetiva, incluso cuando el resto del equipo se entusiasma.",
-  CH:"Adaptarme a las necesidades del grupo y suavizar las tensiones que puedan surgir.",
-  IP:"Convertir los acuerdos en tareas concretas, con pasos claros y realizables.",
-  FI:"Revisar minuciosamente el resultado final antes de darlo por terminado."
-}},
-{ title:"Obtengo satisfacción en un trabajo porque:", statements:{
-  CE:"Me permite pensar con libertad y generar ideas realmente nuevas.",
-  IR:"Me da la oportunidad de conocer gente y explorar posibilidades nuevas.",
-  CO:"Logro que un grupo diverso trabaje de forma coordinada hacia una meta común.",
-  IM:"Implica desafíos concretos que exigen superar obstáculos reales.",
-  ME:"Me permite analizar en profundidad antes de llegar a una conclusión.",
-  CH:"Contribuyo a que el ambiente de trabajo sea grato para todos.",
-  IP:"Veo que un plan bien organizado se ejecuta tal como fue diseñado.",
-  FI:"Entrego un resultado cuidado, sin errores ni detalles pendientes."
-}},
-{ title:"Si de pronto me asignan una tarea difícil, con poco tiempo y personas que no conozco:", statements:{
-  CE:"Busco una forma distinta de abordar el problema, aunque sea poco convencional.",
-  IR:"Recurro a mis contactos para reunir rápido la información o ayuda que necesito.",
-  CO:"Organizo al grupo según lo que cada persona puede aportar mejor.",
-  IM:"Tomo la iniciativa y presiono para que el equipo avance rápido.",
-  ME:"Analizo con frialdad las opciones antes de comprometerme con una.",
-  CH:"Busco generar confianza rápida con el grupo para que todos se sientan cómodos aportando.",
-  IP:"Ordeno la tarea en pasos manejables y me enfoco en ejecutar.",
-  FI:"Me preocupo de no dejar ningún detalle sin revisar, pese a la premura."
-}},
-{ title:"Mis dificultades típicas al trabajar en grupo son:", statements:{
-  CE:"Se me hace difícil comunicar mis ideas de forma simple para que otros las entiendan.",
-  IR:"Pierdo impulso una vez que la novedad de la tarea se acaba.",
-  CO:"Puedo ser visto/a como alguien que controla en exceso la dirección del grupo.",
-  IM:"Puedo generar roce al presionar demasiado para que las cosas avancen.",
-  ME:"Puedo transmitir desánimo al enfocarme demasiado en lo que podría salir mal.",
-  CH:"Evito tomar postura firme por no generar conflicto, incluso cuando es necesario.",
-  IP:"Me cuesta salir del plan original aunque el contexto haya cambiado.",
-  FI:"Puedo demorar la entrega final por querer revisar un detalle más."
-}}
-];
-
-const belbinSession = BELBIN_SECTIONS.map(section=>{
-  const items = BELBIN_ROLE_ORDER.map(role=>({role, text: section.statements[role]}));
-  return shuffle(items);
-});
-let belbinCurrent = 0;
-const belbinAnswers = belbinSession.map(items=> items.map(()=>0));
-
 function shuffle(arr){
   const a = arr.slice();
   for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
@@ -607,18 +466,12 @@ consentCheck.addEventListener('change', ()=>{ startBtn.disabled = !consentCheck.
 startBtn.addEventListener('click', ()=>{ showScreen('datos'); });
 
 document.getElementById('fakeSubmitBtn').addEventListener('click', async ()=>{
-  // Genera respuestas aleatorias válidas para los 28 bloques DISC
+  // Genera respuestas aleatorias válidas para los 26 bloques
   for(let i=0;i<session.length;i++){
     const mas = Math.floor(Math.random()*4);
     let menos = Math.floor(Math.random()*4);
     while(menos===mas){ menos = Math.floor(Math.random()*4); }
     answers[i] = { mas, menos };
-  }
-  // Genera respuestas aleatorias válidas para las 7 secciones Belbin (10 puntos repartidos entre 8 frases)
-  for(let si=0; si<belbinSession.length; si++){
-    const arr = new Array(8).fill(0);
-    for(let p=0;p<10;p++){ arr[Math.floor(Math.random()*8)]++; }
-    belbinAnswers[si] = arr;
   }
   const names = ["Tony Stark","Pepper Potts","Bruce Banner","Natasha Romanoff"];
   const cargos = ["Analista de Comercio Exterior","Encargado de Bodega","Ejecutivo Comercial","Analista de Datos"];
@@ -712,61 +565,6 @@ function updateNav(){
 document.getElementById('backBtn').addEventListener('click', ()=>{ if(current>0){ current--; renderBlock(); } });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
   if(current<session.length-1){ current++; renderBlock(); }
-  else { showScreen('belbinQuiz'); renderBelbinSection(); }
-});
-
-// ---- BELBIN QUIZ (Etapa 2) ----
-function renderBelbinSection(){
-  const items = belbinSession[belbinCurrent];
-  const savedAnswers = belbinAnswers[belbinCurrent];
-  const container = document.getElementById('belbinContainer');
-  container.innerHTML = '';
-  items.forEach((item, i)=>{
-    const row = document.createElement('div');
-    row.className = 'belbin-row';
-    row.innerHTML = `
-      <div class="belbin-text">${item.text}</div>
-      <div class="belbin-stepper">
-        <button type="button" data-i="${i}" data-delta="-1">−</button>
-        <span class="belbin-value" data-value-i="${i}">${savedAnswers[i]}</span>
-        <button type="button" data-i="${i}" data-delta="1">+</button>
-      </div>
-    `;
-    container.appendChild(row);
-  });
-  container.querySelectorAll('.belbin-stepper button').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const i = parseInt(btn.dataset.i);
-      const delta = parseInt(btn.dataset.delta);
-      const arr = belbinAnswers[belbinCurrent];
-      const sum = arr.reduce((a,b)=>a+b,0);
-      const newVal = arr[i] + delta;
-      if(newVal < 0) return;
-      if(delta > 0 && sum >= 10) return;
-      arr[i] = newVal;
-      renderBelbinSection();
-    });
-  });
-  document.getElementById('belbinSectionTitle').textContent = BELBIN_SECTIONS[belbinCurrent].title;
-  document.getElementById('belbinProgressText').textContent = `Sección ${belbinCurrent+1} de ${belbinSession.length}`;
-  const pct = Math.round(((belbinCurrent+1)/belbinSession.length)*100);
-  document.getElementById('belbinProgressPct').textContent = pct + '%';
-  document.getElementById('belbinProgressFill').style.width = pct + '%';
-  document.getElementById('belbinBackBtn').style.visibility = belbinCurrent===0 ? 'hidden' : 'visible';
-  updateBelbinNav();
-}
-function updateBelbinNav(){
-  const sum = belbinAnswers[belbinCurrent].reduce((a,b)=>a+b,0);
-  const totalEl = document.getElementById('belbinTotal');
-  totalEl.innerHTML = `Puntos repartidos: <strong>${sum} / 10</strong>`;
-  totalEl.classList.toggle('complete', sum===10);
-  const nextBtn = document.getElementById('belbinNextBtn');
-  nextBtn.disabled = sum !== 10;
-  nextBtn.textContent = belbinCurrent===belbinSession.length-1 ? 'Finalizar' : 'Siguiente';
-}
-document.getElementById('belbinBackBtn').addEventListener('click', ()=>{ if(belbinCurrent>0){ belbinCurrent--; renderBelbinSection(); } });
-document.getElementById('belbinNextBtn').addEventListener('click', ()=>{
-  if(belbinCurrent<belbinSession.length-1){ belbinCurrent++; renderBelbinSection(); }
   else { finishQuiz(); }
 });
 
@@ -1112,26 +910,14 @@ function computeCompetencies(raw){
   });
 }
 
-function computeBelbinScores(){
-  const totals = {}; BELBIN_ROLE_ORDER.forEach(r=>totals[r]=0);
-  belbinSession.forEach((items, si)=>{
-    items.forEach((item, ii)=>{
-      totals[item.role] += belbinAnswers[si][ii];
-    });
-  });
-  return totals;
-}
-
 function buildRecord(){
   const raw = computeScores();
-  const belbin = computeBelbinScores();
   return {
     nombre: candidate.nombre,
     rut: candidate.rut,
     cargo: candidate.cargo,
     email: candidate.email,
     scores: raw,
-    belbin: belbin,
     submittedAt: new Date().toISOString()
   };
 }
@@ -1295,41 +1081,6 @@ function showResultDetail(record){
     barsContainer.appendChild(row);
     requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = pct + '%'; }, 50); });
   });
-
-  const belbin = record.belbin;
-  const belbinBarsContainer = document.getElementById('belbinBarsContainer');
-  belbinBarsContainer.innerHTML = '';
-  if(belbin){
-    const sortedRoles = BELBIN_ROLE_ORDER.slice().sort((a,b)=>belbin[b]-belbin[a]);
-    const top1 = sortedRoles[0], top2 = sortedRoles[1];
-    document.getElementById('belbinTop1Name').textContent = BELBIN_ROLES[top1].nombre;
-    document.getElementById('belbinTop1Aporte').textContent = BELBIN_ROLES[top1].aporte;
-    document.getElementById('belbinTop1Ciego').textContent = BELBIN_ROLES[top1].puntoCiego;
-    document.getElementById('belbinTop2Name').textContent = BELBIN_ROLES[top2].nombre;
-    document.getElementById('belbinTop2Aporte').textContent = BELBIN_ROLES[top2].aporte;
-    document.getElementById('belbinTop2Ciego').textContent = BELBIN_ROLES[top2].puntoCiego;
-
-    sortedRoles.forEach(role=>{
-      const score = belbin[role];
-      const pct = Math.round((score/70)*100);
-      const row = document.createElement('div');
-      row.className = 'bar-row';
-      row.innerHTML = `
-        <div class="bar-head"><span>${BELBIN_ROLES[role].nombre}</span><span>${score} pts</span></div>
-        <div class="bar-track"><div class="bar-fill" style="background:var(--blue)"></div></div>
-      `;
-      belbinBarsContainer.appendChild(row);
-      requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = pct + '%'; }, 50); });
-    });
-  } else {
-    belbinBarsContainer.innerHTML = '<div class="empty-state">Este candidato no tiene resultados de Belbin (evaluación anterior a la etapa 2).</div>';
-    document.getElementById('belbinTop1Name').textContent = '—';
-    document.getElementById('belbinTop2Name').textContent = '—';
-    document.getElementById('belbinTop1Aporte').textContent = '';
-    document.getElementById('belbinTop1Ciego').textContent = '';
-    document.getElementById('belbinTop2Aporte').textContent = '';
-    document.getElementById('belbinTop2Ciego').textContent = '';
-  }
 }
 </script>
 </body>

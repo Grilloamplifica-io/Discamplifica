@@ -406,6 +406,7 @@
 
       <div class="report-section">
         <h3>Estilo de pensamiento (Benziger)</h3>
+        <div id="bzBrainContainer" style="margin-bottom:18px;"></div>
         <div class="two-col" style="margin-bottom:14px;">
           <div>
             <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Modo dominante: <span id="bzTop1Name"></span></h4>
@@ -1130,6 +1131,90 @@ function computeBenzigerScores(){
   return totals;
 }
 
+// ---- Gráfico "cerebro" con el polígono de puntajes Benziger ----
+function renderBenzigerBrainSVG(scores){
+  const cx = 200, cy = 200, maxR = 115, minScore = 15, maxScore = 75;
+  const dirsRaw = { FI:[-1,-1], FD:[1,-1], BD:[1,1], BI:[-1,1] };
+  const dirs = {};
+  Object.keys(dirsRaw).forEach(k=>{
+    const [x,y] = dirsRaw[k];
+    const len = Math.sqrt(x*x+y*y);
+    dirs[k] = [x/len, y/len];
+  });
+  const order = ['FI','FD','BD','BI'];
+  const ticks = [15,30,45,60,75];
+
+  function radiusFor(score){
+    const t = Math.max(0, Math.min(1, (score-minScore)/(maxScore-minScore)));
+    return 18 + t*(maxR-18);
+  }
+  function pointFor(q, score){
+    const [dx,dy] = dirs[q];
+    const r = radiusFor(score);
+    return [cx+dx*r, cy+dy*r];
+  }
+
+  function brainBlobPath(R, bumps, amp){
+    const N = bumps*6;
+    const pts = [];
+    for(let i=0;i<N;i++){
+      const theta = (i/N)*Math.PI*2;
+      const r = R + amp*Math.sin(bumps*theta + 0.7);
+      pts.push([cx+r*Math.cos(theta), cy+r*Math.sin(theta)]);
+    }
+    let d = `M ${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)} `;
+    for(let i=0;i<N;i++){
+      const cur = pts[i], next = pts[(i+1)%N];
+      const mx = (cur[0]+next[0])/2, my = (cur[1]+next[1])/2;
+      d += `Q ${cur[0].toFixed(1)},${cur[1].toFixed(1)} ${mx.toFixed(1)},${my.toFixed(1)} `;
+    }
+    return d + 'Z';
+  }
+
+  let axesSvg = '';
+  order.forEach(q=>{
+    const [dx,dy] = dirs[q];
+    const x2 = cx+dx*maxR, y2 = cy+dy*maxR;
+    axesSvg += `<line x1="${cx}" y1="${cy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.9"/>`;
+    ticks.forEach(tk=>{
+      const [tx,ty] = pointFor(q, tk);
+      axesSvg += `<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="1.5" fill="#ffffff" opacity="0.7"/>`;
+    });
+  });
+
+  const pts = order.map(q=>pointFor(q, scores[q]));
+  const polyPoints = pts.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ');
+
+  let vertexSvg = '';
+  pts.forEach(([x,y])=>{
+    vertexSvg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#121755" stroke="#fff" stroke-width="2"/>`;
+  });
+
+  const labelR = maxR + 45;
+  let labelSvg = '';
+  order.forEach(q=>{
+    const [dx,dy] = dirs[q];
+    const lx = cx+dx*labelR, ly = cy+dy*labelR;
+    const anchor = dx<0 ? 'end' : 'start';
+    labelSvg += `<text x="${lx.toFixed(1)}" y="${(ly-4).toFixed(1)}" text-anchor="${anchor}" font-family="Barlow Condensed, sans-serif" font-size="14" font-weight="700" fill="#121755">${BENZIGER_QUADRANTS[q].nombre}</text>`;
+    labelSvg += `<text x="${lx.toFixed(1)}" y="${(ly+13).toFixed(1)}" text-anchor="${anchor}" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#4548FF">${scores[q]}/75</text>`;
+  });
+
+  const blobPath = brainBlobPath(132, 10, 6);
+
+  return `
+    <svg viewBox="0 0 400 400" style="width:100%; max-width:380px; display:block; margin:0 auto;">
+      <path d="${blobPath}" fill="#7fb3ad" opacity="0.30"/>
+      <line x1="${cx}" y1="30" x2="${cx}" y2="370" stroke="#ffffff" stroke-width="4"/>
+      <line x1="30" y1="${cy}" x2="370" y2="${cy}" stroke="#ffffff" stroke-width="4"/>
+      ${axesSvg}
+      <polygon points="${polyPoints}" fill="rgba(69,72,255,0.18)" stroke="#4548FF" stroke-width="2.5"/>
+      ${vertexSvg}
+      ${labelSvg}
+    </svg>
+  `;
+}
+
 function buildRecord(){
   const raw = computeScores();
   const benziger = computeBenzigerScores();
@@ -1316,6 +1401,7 @@ function showResultDetail(record){
     document.getElementById('bzLowName').textContent = `${BENZIGER_QUADRANTS[low].nombre} (${BENZIGER_QUADRANTS[low].subtitulo})`;
     document.getElementById('bzLowResumen').textContent = BENZIGER_QUADRANTS[low].resumen;
     document.getElementById('bzLowRiesgo').textContent = BENZIGER_QUADRANTS[low].riesgoFalsificacion;
+    document.getElementById('bzBrainContainer').innerHTML = renderBenzigerBrainSVG(benziger);
 
     sortedQ.forEach(q=>{
       const score = benziger[q];
@@ -1331,6 +1417,7 @@ function showResultDetail(record){
     });
   } else {
     bzBarsContainer.innerHTML = '<div class="empty-state">Este candidato no tiene resultados de Benziger (evaluación anterior a la etapa 2).</div>';
+    document.getElementById('bzBrainContainer').innerHTML = '';
     document.getElementById('bzTop1Name').textContent = '—';
     document.getElementById('bzLowName').textContent = '—';
     document.getElementById('bzTop1Resumen').textContent = '';

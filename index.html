@@ -213,8 +213,8 @@
     <div class="eyebrow">Amplifica · Evaluación complementaria</div>
     <h1>Perfil de comportamiento y estilo de pensamiento</h1>
     <div class="card" style="margin-top:20px;">
-      <p>Esta evaluación tiene <strong>2 etapas</strong>: primero un perfil de comportamiento <strong>DISC</strong> (28 bloques de 4 palabras cada uno, eligiendo la que MÁS y la que MENOS te representa) y luego un test de <strong>estilo de pensamiento (Benziger)</strong>, donde calificas 60 afirmaciones según cuánto te representen.</p>
-      <p>No hay respuestas correctas o incorrectas. Te tomará entre 20 y 25 minutos en total.</p>
+      <p id="introDesc"></p>
+      <p>No hay respuestas correctas o incorrectas.</p>
       <p>Este resultado es un <strong>insumo complementario</strong> del proceso de selección, no un factor excluyente de decisión. Los resultados serán revisados por el equipo de Personas de Amplifica.</p>
       <div class="consent">
         <input type="checkbox" id="consentCheck">
@@ -257,7 +257,7 @@
 
   <!-- QUESTIONS: DISC (Etapa 1) -->
   <div class="screen" id="quiz">
-    <div class="eyebrow">Etapa 1 de 2 · Perfil DISC</div>
+    <div class="eyebrow" id="discEyebrow">Perfil DISC</div>
     <div class="progress-wrap">
       <div class="progress-label"><span id="progressText">Bloque 1 de 28</span><span id="progressPct">4%</span></div>
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:4%"></div></div>
@@ -274,7 +274,7 @@
 
   <!-- QUESTIONS: Benziger (Etapa 2) -->
   <div class="screen" id="benzigerQuiz">
-    <div class="eyebrow">Etapa 2 de 2 · Estilo de pensamiento (Benziger)</div>
+    <div class="eyebrow" id="bzEyebrow">Estilo de pensamiento (Benziger)</div>
     <div class="progress-wrap">
       <div class="progress-label"><span id="bzProgressText">Página 1 de 6</span><span id="bzProgressPct">17%</span></div>
       <div class="progress-track"><div class="progress-fill" id="bzProgressFill" style="width:17%"></div></div>
@@ -336,6 +336,8 @@
     <h1 style="font-size:28px;">Reporte de perfil DISC + Benziger</h1>
     <div class="card" style="margin-top:20px;">
       <div class="candidate-meta" id="candidateMeta"></div>
+
+      <div id="discSection">
       <div class="profile-summary">
         <div class="profile-code" id="profileCode">Alentador</div>
         <div class="profile-name" id="profileName">Patrón clásico</div>
@@ -403,7 +405,9 @@
         <h3>Competencias comportamentales</h3>
         <div id="competenciasContainer"></div>
       </div>
+      </div>
 
+      <div id="benzigerSection">
       <div class="report-section">
         <h3>Estilo de pensamiento (Benziger)</h3>
         <div id="bzBrainContainer" style="margin-bottom:18px;"></div>
@@ -420,6 +424,7 @@
           </div>
         </div>
         <div id="bzBarsContainer"></div>
+      </div>
       </div>
 
       <div class="disclaimer">
@@ -618,12 +623,33 @@ let current = 0;
 const answers = new Array(session.length).fill(null);
 let candidate = { nombre:'', rut:'', cargo:'', email:'' };
 
+// ---- SELECCIÓN DE EVALUACIÓN (vía link ?test=disc | ?test=benziger | ?test=ambos) ----
+const urlParams = new URLSearchParams(window.location.search);
+let testMode = (urlParams.get('test') || '').toLowerCase();
+if(!['disc','benziger','ambos'].includes(testMode)) testMode = 'ambos';
+const doDisc = testMode==='disc' || testMode==='ambos';
+const doBenziger = testMode==='benziger' || testMode==='ambos';
+const totalStages = (doDisc?1:0) + (doBenziger?1:0);
+
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
 // ---- INTRO ----
+(function initIntroText(){
+  const introDesc = document.getElementById('introDesc');
+  if(doDisc && doBenziger){
+    introDesc.innerHTML = 'Esta evaluación tiene <strong>2 etapas</strong>: primero un perfil de comportamiento <strong>DISC</strong> (28 bloques de 4 palabras cada uno, eligiendo la que MÁS y la que MENOS te representa) y luego un test de <strong>estilo de pensamiento (Benziger)</strong>, donde calificas 60 afirmaciones según cuánto te representen. Te tomará entre 20 y 25 minutos en total.';
+  } else if(doDisc){
+    introDesc.innerHTML = 'Esta evaluación consta de un perfil de comportamiento <strong>DISC</strong>: 28 bloques de 4 palabras cada uno, donde eliges la que <strong>MÁS</strong> y la que <strong>MENOS</strong> te representa. Te tomará entre 10 y 15 minutos.';
+  } else {
+    introDesc.innerHTML = 'Esta evaluación consta de un test de <strong>estilo de pensamiento (Benziger)</strong>: 60 afirmaciones que calificas del 1 al 5 según cuánto te representen. Te tomará entre 10 y 15 minutos.';
+  }
+  document.getElementById('discEyebrow').textContent = totalStages>1 ? 'Etapa 1 de 2 · Perfil DISC' : 'Perfil DISC';
+  document.getElementById('bzEyebrow').textContent = totalStages>1 ? 'Etapa 2 de 2 · Estilo de pensamiento (Benziger)' : 'Estilo de pensamiento (Benziger)';
+})();
+
 const consentCheck = document.getElementById('consentCheck');
 const startBtn = document.getElementById('startBtn');
 consentCheck.addEventListener('change', ()=>{ startBtn.disabled = !consentCheck.checked; });
@@ -678,8 +704,8 @@ document.getElementById('continueBtn').addEventListener('click', ()=>{
 
   if(!valid) return;
   candidate = { nombre, rut, cargo, email };
-  showScreen('quiz');
-  renderBlock();
+  if(doDisc){ showScreen('quiz'); renderBlock(); }
+  else { showScreen('benzigerQuiz'); renderBzPage(); }
 });
 
 // ---- QUIZ ----
@@ -731,7 +757,8 @@ function updateNav(){
 document.getElementById('backBtn').addEventListener('click', ()=>{ if(current>0){ current--; renderBlock(); } });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
   if(current<session.length-1){ current++; renderBlock(); }
-  else { showScreen('benzigerQuiz'); renderBzPage(); }
+  else if(doBenziger){ showScreen('benzigerQuiz'); renderBzPage(); }
+  else { finishQuiz(); }
 });
 
 // ---- BENZIGER QUIZ (Etapa 2) ----
@@ -1216,17 +1243,16 @@ function renderBenzigerBrainSVG(scores){
 }
 
 function buildRecord(){
-  const raw = computeScores();
-  const benziger = computeBenzigerScores();
-  return {
+  const record = {
     nombre: candidate.nombre,
     rut: candidate.rut,
     cargo: candidate.cargo,
     email: candidate.email,
-    scores: raw,
-    benziger: benziger,
     submittedAt: new Date().toISOString()
   };
+  if(doDisc) record.scores = computeScores();
+  if(doBenziger) record.benziger = computeBenzigerScores();
+  return record;
 }
 
 async function finishQuiz(){
@@ -1309,9 +1335,14 @@ async function renderAdminList(){
   }
   container.innerHTML = '';
   adminRecords.forEach((record, i)=>{
-    const raw = record.scores;
-    const { patternKey } = classifyProfile(raw);
-    const pattern = PATTERNS[patternKey] || PATTERNS.Desconcertante;
+    let codeLabel = '—';
+    if(record.scores){
+      const { patternKey } = classifyProfile(record.scores);
+      codeLabel = (PATTERNS[patternKey] || PATTERNS.Desconcertante).nombre;
+    } else if(record.benziger){
+      const topQ = BENZIGER_QUADRANT_ORDER.slice().sort((a,b)=>record.benziger[b]-record.benziger[a])[0];
+      codeLabel = BENZIGER_QUADRANTS[topQ].nombre;
+    }
     const item = document.createElement('div');
     item.className = 'admin-item';
     item.innerHTML = `
@@ -1319,7 +1350,7 @@ async function renderAdminList(){
         <div class="admin-item-name">${record.nombre}</div>
         <div class="admin-item-sub">${record.cargo} · ${new Date(record.submittedAt).toLocaleDateString('es-CL')}</div>
       </div>
-      <div class="admin-item-code" style="font-size:16px;">${pattern.nombre}</div>
+      <div class="admin-item-code" style="font-size:16px;">${codeLabel}</div>
     `;
     item.addEventListener('click', ()=>{ showResultDetail(record); });
     container.appendChild(item);
@@ -1329,9 +1360,6 @@ document.getElementById('backToListBtn').addEventListener('click', ()=>{ showScr
 
 function showResultDetail(record){
   showScreen('results');
-  const raw = record.scores;
-  const { subIndex, code, patternKey } = classifyProfile(raw);
-  const pattern = PATTERNS[patternKey] || PATTERNS.Desconcertante;
 
   document.getElementById('candidateMeta').innerHTML = `
     <div><strong>Nombre:</strong> ${record.nombre}</div>
@@ -1340,6 +1368,15 @@ function showResultDetail(record){
     <div><strong>Correo:</strong> ${record.email}</div>
     <div><strong>Fecha:</strong> ${new Date(record.submittedAt).toLocaleString('es-CL')}</div>
   `;
+
+  const discSection = document.getElementById('discSection');
+  if(!record.scores){ discSection.style.display = 'none'; return renderBenzigerReportSection(record); }
+  discSection.style.display = 'block';
+
+  const raw = record.scores;
+  const { subIndex, code, patternKey } = classifyProfile(raw);
+  const pattern = PATTERNS[patternKey] || PATTERNS.Desconcertante;
+
   document.getElementById('profileCode').textContent = pattern.nombre;
   document.getElementById('profileName').textContent = `Patrón clásico · código ${code} (D${subIndex.d} I${subIndex.i} S${subIndex.s} C${subIndex.c})`;
 
@@ -1389,42 +1426,39 @@ function showResultDetail(record){
     requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = pct + '%'; }, 50); });
   });
 
+  renderBenzigerReportSection(record);
+}
+
+function renderBenzigerReportSection(record){
   const benziger = record.benziger;
+  const benzigerSection = document.getElementById('benzigerSection');
+  if(!benziger){ benzigerSection.style.display = 'none'; return; }
+  benzigerSection.style.display = 'block';
+
   const bzBarsContainer = document.getElementById('bzBarsContainer');
   bzBarsContainer.innerHTML = '';
-  if(benziger){
-    const sortedQ = BENZIGER_QUADRANT_ORDER.slice().sort((a,b)=>benziger[b]-benziger[a]);
-    const top1 = sortedQ[0], low = sortedQ[sortedQ.length-1];
-    document.getElementById('bzTop1Name').textContent = `${BENZIGER_QUADRANTS[top1].nombre} (${BENZIGER_QUADRANTS[top1].subtitulo})`;
-    document.getElementById('bzTop1Resumen').textContent = BENZIGER_QUADRANTS[top1].resumen;
-    document.getElementById('bzTop1Energiza').textContent = BENZIGER_QUADRANTS[top1].leEnergiza;
-    document.getElementById('bzLowName').textContent = `${BENZIGER_QUADRANTS[low].nombre} (${BENZIGER_QUADRANTS[low].subtitulo})`;
-    document.getElementById('bzLowResumen').textContent = BENZIGER_QUADRANTS[low].resumen;
-    document.getElementById('bzLowRiesgo').textContent = BENZIGER_QUADRANTS[low].riesgoFalsificacion;
-    document.getElementById('bzBrainContainer').innerHTML = renderBenzigerBrainSVG(benziger);
+  const sortedQ = BENZIGER_QUADRANT_ORDER.slice().sort((a,b)=>benziger[b]-benziger[a]);
+  const top1 = sortedQ[0], low = sortedQ[sortedQ.length-1];
+  document.getElementById('bzTop1Name').textContent = `${BENZIGER_QUADRANTS[top1].nombre} (${BENZIGER_QUADRANTS[top1].subtitulo})`;
+  document.getElementById('bzTop1Resumen').textContent = BENZIGER_QUADRANTS[top1].resumen;
+  document.getElementById('bzTop1Energiza').textContent = BENZIGER_QUADRANTS[top1].leEnergiza;
+  document.getElementById('bzLowName').textContent = `${BENZIGER_QUADRANTS[low].nombre} (${BENZIGER_QUADRANTS[low].subtitulo})`;
+  document.getElementById('bzLowResumen').textContent = BENZIGER_QUADRANTS[low].resumen;
+  document.getElementById('bzLowRiesgo').textContent = BENZIGER_QUADRANTS[low].riesgoFalsificacion;
+  document.getElementById('bzBrainContainer').innerHTML = renderBenzigerBrainSVG(benziger);
 
-    sortedQ.forEach(q=>{
-      const score = benziger[q];
-      const pct = Math.round(((score-15)/(75-15))*100);
-      const row = document.createElement('div');
-      row.className = 'bar-row';
-      row.innerHTML = `
-        <div class="bar-head"><span>${BENZIGER_QUADRANTS[q].nombre} · ${BENZIGER_QUADRANTS[q].subtitulo}</span><span>${score} / 75</span></div>
-        <div class="bar-track"><div class="bar-fill" style="background:var(--blue)"></div></div>
-      `;
-      bzBarsContainer.appendChild(row);
-      requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = Math.max(0,pct) + '%'; }, 50); });
-    });
-  } else {
-    bzBarsContainer.innerHTML = '<div class="empty-state">Este candidato no tiene resultados de Benziger (evaluación anterior a la etapa 2).</div>';
-    document.getElementById('bzBrainContainer').innerHTML = '';
-    document.getElementById('bzTop1Name').textContent = '—';
-    document.getElementById('bzLowName').textContent = '—';
-    document.getElementById('bzTop1Resumen').textContent = '';
-    document.getElementById('bzTop1Energiza').textContent = '';
-    document.getElementById('bzLowResumen').textContent = '';
-    document.getElementById('bzLowRiesgo').textContent = '';
-  }
+  sortedQ.forEach(q=>{
+    const score = benziger[q];
+    const pct = Math.round(((score-15)/(75-15))*100);
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-head"><span>${BENZIGER_QUADRANTS[q].nombre} · ${BENZIGER_QUADRANTS[q].subtitulo}</span><span>${score} / 75</span></div>
+      <div class="bar-track"><div class="bar-fill" style="background:var(--blue)"></div></div>
+    `;
+    bzBarsContainer.appendChild(row);
+    requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = Math.max(0,pct) + '%'; }, 50); });
+  });
 }
 </script>
 </body>

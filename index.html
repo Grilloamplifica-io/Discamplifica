@@ -81,6 +81,18 @@
   }
   .tag-btn.mas.selected{ background:var(--blue); border-color:var(--blue); color:#fff; }
   .tag-btn.menos.selected{ background:var(--navy); border-color:var(--navy); color:#fff; }
+
+  .bz-row{ padding:16px 0; border-bottom:1px solid var(--lightgray); }
+  .bz-row:last-child{ border-bottom:none; }
+  .bz-text{ font-size:15px; color:var(--gray); margin-bottom:10px; }
+  .bz-scale{ display:flex; gap:8px; }
+  .bz-scale button{
+    flex:1; font-family:'Inter', sans-serif; font-size:14px; font-weight:700;
+    padding:9px 4px; border-radius:9px; border:1.5px solid var(--lightgray); background:#fff; color:#9a9a9e;
+    cursor:pointer; transition:all .12s ease;
+  }
+  .bz-scale button.selected{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .bz-scale-legend{ display:flex; justify-content:space-between; font-size:11.5px; color:#9a9a9e; margin-bottom:16px; }
   .nav-row{ display:flex; gap:14px; margin-top:26px; }
   .nav-row .btn-primary{ margin-top:0; }
 
@@ -199,10 +211,10 @@
   <!-- INTRO -->
   <div class="screen active" id="intro">
     <div class="eyebrow">Amplifica · Evaluación complementaria</div>
-    <h1>Perfil de comportamiento DISC</h1>
+    <h1>Perfil de comportamiento y estilo de pensamiento</h1>
     <div class="card" style="margin-top:20px;">
-      <p>Este cuestionario consta de <strong>28 bloques</strong> con 4 palabras cada uno. En cada bloque, elige la palabra que <strong>MÁS</strong> te representa y la que <strong>MENOS</strong> te representa.</p>
-      <p>No hay respuestas correctas o incorrectas. Te tomará entre 10 y 15 minutos.</p>
+      <p>Esta evaluación tiene <strong>2 etapas</strong>: primero un perfil de comportamiento <strong>DISC</strong> (28 bloques de 4 palabras cada uno, eligiendo la que MÁS y la que MENOS te representa) y luego un test de <strong>estilo de pensamiento (Benziger)</strong>, donde calificas 60 afirmaciones según cuánto te representen.</p>
+      <p>No hay respuestas correctas o incorrectas. Te tomará entre 20 y 25 minutos en total.</p>
       <p>Este resultado es un <strong>insumo complementario</strong> del proceso de selección, no un factor excluyente de decisión. Los resultados serán revisados por el equipo de Personas de Amplifica.</p>
       <div class="consent">
         <input type="checkbox" id="consentCheck">
@@ -243,8 +255,9 @@
     </div>
   </div>
 
-  <!-- QUESTIONS -->
+  <!-- QUESTIONS: DISC (Etapa 1) -->
   <div class="screen" id="quiz">
+    <div class="eyebrow">Etapa 1 de 2 · Perfil DISC</div>
     <div class="progress-wrap">
       <div class="progress-label"><span id="progressText">Bloque 1 de 28</span><span id="progressPct">4%</span></div>
       <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:4%"></div></div>
@@ -255,6 +268,23 @@
       <div class="nav-row">
         <button class="btn-ghost" id="backBtn">← Volver</button>
         <button class="btn-primary" id="nextBtn" disabled style="margin-top:0;">Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS: Benziger (Etapa 2) -->
+  <div class="screen" id="benzigerQuiz">
+    <div class="eyebrow">Etapa 2 de 2 · Estilo de pensamiento (Benziger)</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="bzProgressText">Página 1 de 6</span><span id="bzProgressPct">17%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="bzProgressFill" style="width:17%"></div></div>
+    </div>
+    <div class="card">
+      <div class="block-instruction">Para cada afirmación, marca qué tanto te representa: 1 = Nada como yo · 5 = Totalmente como yo.</div>
+      <div id="bzContainer"></div>
+      <div class="nav-row">
+        <button class="btn-ghost" id="bzBackBtn">← Volver</button>
+        <button class="btn-primary" id="bzNextBtn" disabled style="margin-top:0;">Siguiente</button>
       </div>
     </div>
   </div>
@@ -303,7 +333,7 @@
   <div class="screen" id="results">
     <div class="eyebrow">Amplifica · Panel interno</div>
     <button class="btn-ghost" id="backToListBtn" style="padding:0; margin-bottom:12px;">← Volver al listado</button>
-    <h1 style="font-size:28px;">Reporte de perfil DISC</h1>
+    <h1 style="font-size:28px;">Reporte de perfil DISC + Benziger</h1>
     <div class="card" style="margin-top:20px;">
       <div class="candidate-meta" id="candidateMeta"></div>
       <div class="profile-summary">
@@ -372,6 +402,23 @@
       <div class="report-section">
         <h3>Competencias comportamentales</h3>
         <div id="competenciasContainer"></div>
+      </div>
+
+      <div class="report-section">
+        <h3>Estilo de pensamiento (Benziger)</h3>
+        <div class="two-col" style="margin-bottom:14px;">
+          <div>
+            <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Modo dominante: <span id="bzTop1Name"></span></h4>
+            <p id="bzTop1Resumen" style="font-size:14px; margin-bottom:8px;"></p>
+            <p id="bzTop1Energiza" style="font-size:13px; color:#8a8a8e;"></p>
+          </div>
+          <div>
+            <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Modo menos preferido: <span id="bzLowName"></span></h4>
+            <p id="bzLowResumen" style="font-size:14px; margin-bottom:8px;"></p>
+            <p id="bzLowRiesgo" style="font-size:13px; color:#8a8a8e;"></p>
+          </div>
+        </div>
+        <div id="bzBarsContainer"></div>
       </div>
 
       <div class="disclaimer">
@@ -443,6 +490,122 @@ function shuffle(arr){
   for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
+
+// ---------- BENZIGER: estilo de pensamiento / dominancia cerebral (redacción propia) ----------
+const BENZIGER_QUADRANTS = {
+  FI: {
+    nombre: "Analítico",
+    subtitulo: "Frontal Izquierdo",
+    resumen: "Piensa de forma lógica, crítica y orientada a hechos. Le resulta natural analizar información, cuestionar argumentos y decidir en base a evidencia antes que a impresiones.",
+    fortalezas: ["Pensamiento lógico","Análisis crítico","Orientación a datos","Toma de decisiones objetiva","Resolución de problemas técnicos","Evaluación de riesgos"],
+    leEnergiza: "Le energiza analizar problemas complejos, debatir ideas con rigor y llegar a conclusiones basadas en evidencia.",
+    entornoIdeal: "Rinde mejor en entornos donde puede evaluar información con criterio propio y donde las decisiones se sostienen con datos, no solo con consenso.",
+    comunicacion: "Se comunica de forma directa y basada en hechos, y espera el mismo nivel de rigor de quienes lo/a rodean.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en tareas puramente relacionales o de detalle administrativo sin margen de análisis), tiende a agotarse aunque pueda hacerlo bien."
+  },
+  BI: {
+    nombre: "Estructurado",
+    subtitulo: "Basal Izquierdo",
+    resumen: "Piensa de forma ordenada, secuencial y orientada a procesos. Le resulta natural planificar, seguir procedimientos y llevar las cosas hasta su conclusión de forma confiable.",
+    fortalezas: ["Organización","Planificación","Disciplina","Atención al detalle","Cumplimiento de plazos","Confiabilidad"],
+    leEnergiza: "Le energiza ordenar información, seguir un plan claro y ver una tarea llevada hasta el final sin cabos sueltos.",
+    entornoIdeal: "Rinde mejor en entornos con procesos claros, expectativas explícitas y estabilidad en el día a día.",
+    comunicacion: "Se comunica de forma clara, concreta y estructurada, prefiriendo instrucciones precisas antes que la ambigüedad.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en ambientes muy improvisados o cambiantes, sin procesos definidos), tiende a agotarse aunque logre adaptarse."
+  },
+  BD: {
+    nombre: "Relacional",
+    subtitulo: "Basal Derecho",
+    resumen: "Piensa de forma interpersonal y emocional. Le resulta natural conectar con las personas, percibir el clima emocional de un grupo y priorizar la armonía y el vínculo humano.",
+    fortalezas: ["Empatía","Escucha activa","Construcción de confianza","Trabajo en equipo","Mediación de conflictos","Comunicación cálida"],
+    leEnergiza: "Le energiza conectar con otras personas, apoyar a su equipo y sentir que las relaciones de trabajo son genuinas.",
+    entornoIdeal: "Rinde mejor en entornos colaborativos, con buen clima humano y espacio real para el vínculo interpersonal.",
+    comunicacion: "Se comunica con calidez, cuidando el efecto emocional de lo que dice antes que la eficiencia del mensaje.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en tareas muy solitarias o en ambientes fríos y puramente técnicos), tiende a agotarse aunque pueda cumplir igualmente."
+  },
+  FD: {
+    nombre: "Conceptual",
+    subtitulo: "Frontal Derecho",
+    resumen: "Piensa de forma intuitiva, conceptual y orientada al futuro. Le resulta natural imaginar posibilidades, conectar ideas distintas entre sí y ver el panorama completo antes que el detalle.",
+    fortalezas: ["Pensamiento estratégico","Creatividad","Visión de futuro","Síntesis de información compleja","Innovación","Adaptabilidad"],
+    leEnergiza: "Le energiza imaginar posibilidades nuevas, explorar ideas poco convencionales y conectar conceptos de áreas distintas.",
+    entornoIdeal: "Rinde mejor en entornos flexibles, con espacio para experimentar y sin exigencia de seguir siempre el mismo procedimiento.",
+    comunicacion: "Se comunica en términos de panorama general e ideas grandes, y puede pasar por alto el detalle operativo al hacerlo.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en tareas muy repetitivas y detalladas, sin espacio para explorar), tiende a agotarse aunque logre concentrarse igual."
+  }
+};
+const BENZIGER_QUADRANT_ORDER = ["FI","BI","BD","FD"];
+
+const BENZIGER_STATEMENTS = [
+{q:"FI",t:"Me energiza analizar datos para encontrar la explicación lógica de un problema."},
+{q:"FI",t:"Disfruto detectar inconsistencias o errores en un razonamiento."},
+{q:"FI",t:"Prefiero decidir en base a hechos y evidencia, no en base a lo que \"se siente bien\"."},
+{q:"FI",t:"Me resulta natural desglosar un problema complejo en sus partes componentes."},
+{q:"FI",t:"Cuestiono las cosas hasta que la lógica me convence, no antes."},
+{q:"FI",t:"Me siento cómodo/a debatiendo ideas de forma directa y crítica."},
+{q:"FI",t:"Prefiero la precisión técnica por sobre la ambigüedad emocional."},
+{q:"FI",t:"Evalúo el rendimiento de algo en términos de eficiencia y resultados medibles."},
+{q:"FI",t:"Me interesa entender el \"por qué\" detrás de cómo funcionan las cosas."},
+{q:"FI",t:"Tomo decisiones rápidas cuando tengo datos suficientes, sin necesitar consenso."},
+{q:"FI",t:"Prefiero la verdad objetiva, aunque sea incómoda, a una versión suavizada."},
+{q:"FI",t:"Disfruto competir y medir resultados frente a un estándar claro."},
+{q:"FI",t:"Me cuesta entender por qué alguien tomaría una decisión sin datos que la respalden."},
+{q:"FI",t:"Analizar riesgos y costos/beneficios me resulta natural y agradable."},
+{q:"FI",t:"Prefiero liderar con argumentos sólidos antes que con carisma."},
+{q:"BI",t:"Me siento cómodo/a siguiendo procedimientos claros y probados."},
+{q:"BI",t:"Disfruto organizar información en listas, calendarios o sistemas ordenados."},
+{q:"BI",t:"Prefiero terminar una tarea antes de empezar otra."},
+{q:"BI",t:"Me energiza planificar los detalles de una actividad con anticipación."},
+{q:"BI",t:"Valoro mucho la puntualidad y el cumplimiento de plazos."},
+{q:"BI",t:"Prefiero la estabilidad y la rutina antes que la improvisación constante."},
+{q:"BI",t:"Reviso mi trabajo varias veces para asegurarme de que esté correcto."},
+{q:"BI",t:"Me resulta natural mantener el orden en mi espacio y mis materiales de trabajo."},
+{q:"BI",t:"Sigo las reglas incluso cuando nadie está supervisando."},
+{q:"BI",t:"Prefiero instrucciones específicas antes que la ambigüedad de \"arréglatelas como puedas\"."},
+{q:"BI",t:"Disfruto los procesos repetitivos cuando sé que llevan a un buen resultado."},
+{q:"BI",t:"Me siento incómodo/a cuando un plan cambia sin previo aviso."},
+{q:"BI",t:"Guardar registros y documentar lo que hago me resulta natural."},
+{q:"BI",t:"Prefiero la confiabilidad constante antes que la innovación arriesgada."},
+{q:"BI",t:"Me energiza ver una tarea grande dividida en pasos pequeños y manejables."},
+{q:"BD",t:"Me energiza conectar emocionalmente con las personas que me rodean."},
+{q:"BD",t:"Percibo con facilidad cuando alguien está incómodo o triste, aunque no lo diga."},
+{q:"BD",t:"Prefiero tomar decisiones considerando cómo afectarán a las personas involucradas."},
+{q:"BD",t:"Disfruto crear un ambiente cálido y de confianza en un grupo."},
+{q:"BD",t:"Me resulta natural expresar afecto y apoyo a quienes me rodean."},
+{q:"BD",t:"Prefiero el consenso del grupo antes que imponer mi propia postura."},
+{q:"BD",t:"Me importa profundamente mantener la armonía en mis relaciones."},
+{q:"BD",t:"Escuchar a otros sin juzgarlos me resulta fácil y natural."},
+{q:"BD",t:"Disfruto celebrar y compartir momentos significativos con otros."},
+{q:"BD",t:"Me cuesta avanzar en un tema si siento que alguien quedó dolido en el camino."},
+{q:"BD",t:"Prefiero trabajar en equipo antes que en solitario."},
+{q:"BD",t:"Me energiza ayudar a otros a sentirse valorados y comprendidos."},
+{q:"BD",t:"Soy sensible al ambiente emocional de una sala apenas entro en ella."},
+{q:"BD",t:"Prefiero la lealtad personal por sobre la eficiencia fría."},
+{q:"BD",t:"Disfruto actividades que fortalecen los vínculos humanos, como compartir historias o experiencias."},
+{q:"FD",t:"Me energiza imaginar posibilidades que todavía no existen."},
+{q:"FD",t:"Disfruto conectar ideas de áreas muy distintas entre sí."},
+{q:"FD",t:"Prefiero pensar en el panorama completo antes que en los detalles específicos."},
+{q:"FD",t:"Me resulta natural intuir hacia dónde va una situación, incluso sin todos los datos."},
+{q:"FD",t:"Me aburro con la rutina y busco constantemente nuevas formas de hacer las cosas."},
+{q:"FD",t:"Disfruto explorar preguntas grandes y abstractas, aunque no tengan respuesta inmediata."},
+{q:"FD",t:"Prefiero la experimentación antes que seguir un manual paso a paso."},
+{q:"FD",t:"Se me ocurren ideas originales con facilidad, incluso en temas que no domino."},
+{q:"FD",t:"Me energiza soñar con el futuro y con lo que podría llegar a ser."},
+{q:"FD",t:"Prefiero adaptarme sobre la marcha antes que seguir un plan rígido."},
+{q:"FD",t:"Disfruto sintetizar información compleja en una visión simple y potente."},
+{q:"FD",t:"Me siento cómodo/a con la ambigüedad y lo no resuelto."},
+{q:"FD",t:"Cuestiono el \"siempre se ha hecho así\" y busco reinventar procesos."},
+{q:"FD",t:"Prefiero trabajar en varios proyectos a la vez que en uno solo, de forma lineal."},
+{q:"FD",t:"Me atrae explorar lo desconocido más que perfeccionar lo ya conocido."}
+];
+
+const BZ_PAGE_SIZE = 10;
+const bzSession = shuffle(BENZIGER_STATEMENTS.map((s,i)=>({...s, origIdx:i})));
+const bzPages = [];
+for(let i=0;i<bzSession.length;i+=BZ_PAGE_SIZE){ bzPages.push(bzSession.slice(i,i+BZ_PAGE_SIZE)); }
+let bzCurrentPage = 0;
+const bzAnswers = new Array(bzSession.length).fill(0);
+
 const blockOrder = shuffle(BLOCKS.map((_,i)=>i));
 const session = blockOrder.map(idx=>{
   const block = BLOCKS[idx];
@@ -466,13 +629,15 @@ consentCheck.addEventListener('change', ()=>{ startBtn.disabled = !consentCheck.
 startBtn.addEventListener('click', ()=>{ showScreen('datos'); });
 
 document.getElementById('fakeSubmitBtn').addEventListener('click', async ()=>{
-  // Genera respuestas aleatorias válidas para los 26 bloques
+  // Genera respuestas aleatorias válidas para los 28 bloques DISC
   for(let i=0;i<session.length;i++){
     const mas = Math.floor(Math.random()*4);
     let menos = Math.floor(Math.random()*4);
     while(menos===mas){ menos = Math.floor(Math.random()*4); }
     answers[i] = { mas, menos };
   }
+  // Genera respuestas aleatorias válidas para las 60 afirmaciones Benziger
+  for(let i=0;i<bzAnswers.length;i++){ bzAnswers[i] = 1 + Math.floor(Math.random()*5); }
   const names = ["Tony Stark","Pepper Potts","Bruce Banner","Natasha Romanoff"];
   const cargos = ["Analista de Comercio Exterior","Encargado de Bodega","Ejecutivo Comercial","Analista de Datos"];
   candidate = {
@@ -565,6 +730,55 @@ function updateNav(){
 document.getElementById('backBtn').addEventListener('click', ()=>{ if(current>0){ current--; renderBlock(); } });
 document.getElementById('nextBtn').addEventListener('click', ()=>{
   if(current<session.length-1){ current++; renderBlock(); }
+  else { showScreen('benzigerQuiz'); renderBzPage(); }
+});
+
+// ---- BENZIGER QUIZ (Etapa 2) ----
+function renderBzPage(){
+  const page = bzPages[bzCurrentPage];
+  const container = document.getElementById('bzContainer');
+  container.innerHTML = '';
+  page.forEach(item=>{
+    const row = document.createElement('div');
+    row.className = 'bz-row';
+    const val = bzAnswers[item.origIdx];
+    row.innerHTML = `
+      <div class="bz-text">${item.t}</div>
+      <div class="bz-scale">
+        ${[1,2,3,4,5].map(n=>`<button type="button" data-idx="${item.origIdx}" data-val="${n}" class="${val===n?'selected':''}">${n}</button>`).join('')}
+      </div>
+    `;
+    container.appendChild(row);
+  });
+  if(bzCurrentPage===0){
+    const legend = document.createElement('div');
+    legend.className = 'bz-scale-legend';
+    legend.innerHTML = '<span>1 · Nada como yo</span><span>5 · Totalmente como yo</span>';
+    container.prepend(legend);
+  }
+  container.querySelectorAll('.bz-scale button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      bzAnswers[parseInt(btn.dataset.idx)] = parseInt(btn.dataset.val);
+      renderBzPage();
+    });
+  });
+  document.getElementById('bzProgressText').textContent = `Página ${bzCurrentPage+1} de ${bzPages.length}`;
+  const pct = Math.round(((bzCurrentPage+1)/bzPages.length)*100);
+  document.getElementById('bzProgressPct').textContent = pct + '%';
+  document.getElementById('bzProgressFill').style.width = pct + '%';
+  document.getElementById('bzBackBtn').style.visibility = bzCurrentPage===0 ? 'hidden' : 'visible';
+  updateBzNav();
+}
+function updateBzNav(){
+  const page = bzPages[bzCurrentPage];
+  const complete = page.every(item=> bzAnswers[item.origIdx] !== 0);
+  const nextBtn = document.getElementById('bzNextBtn');
+  nextBtn.disabled = !complete;
+  nextBtn.textContent = bzCurrentPage===bzPages.length-1 ? 'Finalizar' : 'Siguiente';
+}
+document.getElementById('bzBackBtn').addEventListener('click', ()=>{ if(bzCurrentPage>0){ bzCurrentPage--; renderBzPage(); } });
+document.getElementById('bzNextBtn').addEventListener('click', ()=>{
+  if(bzCurrentPage<bzPages.length-1){ bzCurrentPage++; renderBzPage(); }
   else { finishQuiz(); }
 });
 
@@ -910,14 +1124,22 @@ function computeCompetencies(raw){
   });
 }
 
+function computeBenzigerScores(){
+  const totals = {}; BENZIGER_QUADRANT_ORDER.forEach(q=>totals[q]=0);
+  bzSession.forEach(item=>{ totals[item.q] += bzAnswers[item.origIdx]; });
+  return totals;
+}
+
 function buildRecord(){
   const raw = computeScores();
+  const benziger = computeBenzigerScores();
   return {
     nombre: candidate.nombre,
     rut: candidate.rut,
     cargo: candidate.cargo,
     email: candidate.email,
     scores: raw,
+    benziger: benziger,
     submittedAt: new Date().toISOString()
   };
 }
@@ -1081,6 +1303,41 @@ function showResultDetail(record){
     barsContainer.appendChild(row);
     requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = pct + '%'; }, 50); });
   });
+
+  const benziger = record.benziger;
+  const bzBarsContainer = document.getElementById('bzBarsContainer');
+  bzBarsContainer.innerHTML = '';
+  if(benziger){
+    const sortedQ = BENZIGER_QUADRANT_ORDER.slice().sort((a,b)=>benziger[b]-benziger[a]);
+    const top1 = sortedQ[0], low = sortedQ[sortedQ.length-1];
+    document.getElementById('bzTop1Name').textContent = `${BENZIGER_QUADRANTS[top1].nombre} (${BENZIGER_QUADRANTS[top1].subtitulo})`;
+    document.getElementById('bzTop1Resumen').textContent = BENZIGER_QUADRANTS[top1].resumen;
+    document.getElementById('bzTop1Energiza').textContent = BENZIGER_QUADRANTS[top1].leEnergiza;
+    document.getElementById('bzLowName').textContent = `${BENZIGER_QUADRANTS[low].nombre} (${BENZIGER_QUADRANTS[low].subtitulo})`;
+    document.getElementById('bzLowResumen').textContent = BENZIGER_QUADRANTS[low].resumen;
+    document.getElementById('bzLowRiesgo').textContent = BENZIGER_QUADRANTS[low].riesgoFalsificacion;
+
+    sortedQ.forEach(q=>{
+      const score = benziger[q];
+      const pct = Math.round(((score-15)/(75-15))*100);
+      const row = document.createElement('div');
+      row.className = 'bar-row';
+      row.innerHTML = `
+        <div class="bar-head"><span>${BENZIGER_QUADRANTS[q].nombre} · ${BENZIGER_QUADRANTS[q].subtitulo}</span><span>${score} / 75</span></div>
+        <div class="bar-track"><div class="bar-fill" style="background:var(--blue)"></div></div>
+      `;
+      bzBarsContainer.appendChild(row);
+      requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = Math.max(0,pct) + '%'; }, 50); });
+    });
+  } else {
+    bzBarsContainer.innerHTML = '<div class="empty-state">Este candidato no tiene resultados de Benziger (evaluación anterior a la etapa 2).</div>';
+    document.getElementById('bzTop1Name').textContent = '—';
+    document.getElementById('bzLowName').textContent = '—';
+    document.getElementById('bzTop1Resumen').textContent = '';
+    document.getElementById('bzTop1Energiza').textContent = '';
+    document.getElementById('bzLowResumen').textContent = '';
+    document.getElementById('bzLowRiesgo').textContent = '';
+  }
 }
 </script>
 </body>

@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación DISC · Amplifica</title>
+<link rel="icon" type="image/png" href="logo-amplifica.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#4548FF;
+    --yellow:#F7DC4B;
+    --navy:#121755;
+    --gray:#1D1D1F;
+    --lightgray:#E1E0E0;
+    --bg:#FAFAFA;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--bg);
+    color:var(--gray);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+    line-height:1.5;
+  }
+  .app{ width:100%; max-width:760px; }
+  .app-logo{ display:block; height:52px; margin:0 auto 28px; }
+  .eyebrow{
+    font-family:'Inter', sans-serif; font-size:13px; font-weight:600;
+    letter-spacing:0.08em; text-transform:uppercase; color:var(--blue); margin-bottom:10px;
+  }
+  h1{ font-family:'Barlow Condensed', sans-serif; font-weight:700; font-size:46px; color:var(--navy); line-height:1.05; letter-spacing:-0.01em; }
+  h2{ font-family:'Barlow Condensed', sans-serif; font-weight:600; font-size:30px; color:var(--navy); }
+  p{ color:#4a4a4d; font-size:16.5px; }
+  .card{ background:#fff; border-radius:18px; padding:42px; box-shadow:0 1px 3px rgba(18,23,85,0.08), 0 8px 24px rgba(18,23,85,0.06); }
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+
+  .consent{ margin-top:26px; padding:18px; background:var(--bg); border-radius:12px; display:flex; gap:14px; align-items:flex-start; }
+  .consent input{ margin-top:3px; accent-color:var(--blue); width:18px; height:18px; flex-shrink:0; }
+  .consent label{ font-size:14.5px; color:#4a4a4d; }
+  button{ font-family:'Inter', sans-serif; font-weight:600; font-size:16.5px; border:none; border-radius:11px; padding:15px 30px; cursor:pointer; transition:transform .12s ease, opacity .12s ease; }
+  button:active{ transform:scale(0.98); }
+  button:disabled{ opacity:0.35; cursor:not-allowed; }
+  .btn-primary{ background:var(--blue); color:#fff; width:100%; margin-top:26px; }
+  .btn-primary:hover:not(:disabled){ opacity:0.9; }
+  .btn-ghost{ background:transparent; color:var(--navy); padding:11px 0; font-size:15.5px; }
+  .btn-secondary{ background:var(--yellow); color:var(--navy); }
+  .link-quiet{ display:block; text-align:center; margin-top:30px; font-size:13.5px; color:#b3b3b7; text-decoration:none; }
+
+  /* Form fields */
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-size:14px; font-weight:600; color:var(--navy); margin-bottom:7px; }
+  .field input, .field select{
+    width:100%; padding:14px 16px; border-radius:9px; border:1.5px solid var(--lightgray);
+    font-family:'Inter', sans-serif; font-size:16.5px; color:var(--gray); background:#fff;
+  }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--blue); }
+  .field-error{ font-size:13px; color:#c0392b; margin-top:5px; display:none; }
+
+  /* Progress */
+  .progress-wrap{ margin-bottom:30px; }
+  .progress-label{ display:flex; justify-content:space-between; font-family:'Barlow Condensed', sans-serif; font-size:16.5px; font-weight:600; color:var(--navy); margin-bottom:9px; }
+  .progress-track{ height:5px; background:var(--lightgray); border-radius:5px; overflow:hidden; }
+  .progress-fill{ height:100%; background:var(--blue); border-radius:5px; transition:width .3s ease; }
+
+  .block-instruction{ font-size:14.5px; color:#8a8a8e; margin-bottom:22px; }
+  .phrase-row{ display:flex; align-items:center; gap:16px; padding:16px 0; border-bottom:1px solid var(--lightgray); }
+  .phrase-row:last-child{ border-bottom:none; }
+  .phrase-text{ flex:1; font-size:17px; color:var(--gray); font-weight:500; }
+  .tag-buttons{ display:flex; gap:9px; flex-shrink:0; }
+  .tag-btn{
+    font-family:'Inter', sans-serif; font-size:13.5px; font-weight:700; letter-spacing:0.03em;
+    padding:9px 14px; border-radius:9px; border:1.5px solid var(--lightgray); background:#fff; color:#9a9a9e;
+    cursor:pointer; transition:all .12s ease; white-space:nowrap;
+  }
+  .tag-btn.mas.selected{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .tag-btn.menos.selected{ background:var(--navy); border-color:var(--navy); color:#fff; }
+
+  .bz-row{ padding:16px 0; border-bottom:1px solid var(--lightgray); }
+  .bz-row:last-child{ border-bottom:none; }
+  .bz-text{ font-size:15px; color:var(--gray); margin-bottom:10px; }
+  .bz-scale{ display:flex; gap:8px; }
+  .bz-scale button{
+    flex:1; font-family:'Inter', sans-serif; font-size:14px; font-weight:700;
+    padding:9px 4px; border-radius:9px; border:1.5px solid var(--lightgray); background:#fff; color:#9a9a9e;
+    cursor:pointer; transition:all .12s ease;
+  }
+  .bz-scale button.selected{ background:var(--blue); border-color:var(--blue); color:#fff; }
+  .bz-scale-legend{ display:flex; justify-content:space-between; font-size:11.5px; color:#9a9a9e; margin-bottom:16px; }
+  .nav-row{ display:flex; gap:14px; margin-top:26px; }
+  .nav-row .btn-primary{ margin-top:0; }
+
+  /* Thanks screen */
+  .thanks-icon{
+    width:72px; height:72px; border-radius:50%; background:var(--blue);
+    display:flex; align-items:center; justify-content:center; margin:0 auto 22px;
+    color:#fff; font-size:34px; font-family:'Barlow Condensed', sans-serif; font-weight:700;
+  }
+  .thanks-wrap{ text-align:center; }
+
+  /* Results (admin view) */
+  .profile-summary{ text-align:center; padding:30px 0 10px; }
+  .profile-code{ font-family:'Barlow Condensed', sans-serif; font-size:42px; font-weight:700; color:var(--navy); letter-spacing:0.01em; line-height:1.1; }
+  .profile-name{ font-size:15.5px; color:var(--blue); font-weight:600; text-transform:uppercase; letter-spacing:0.06em; margin-top:5px; }
+  .bars{ margin:34px 0; }
+  .bar-row{ margin-bottom:20px; }
+  .bar-head{ display:flex; justify-content:space-between; font-family:'Barlow Condensed', sans-serif; font-size:19px; font-weight:600; color:var(--navy); margin-bottom:7px; }
+  .bar-track{ height:12px; background:var(--lightgray); border-radius:7px; overflow:hidden; }
+  .bar-fill{ height:100%; border-radius:7px; width:0%; transition:width 1.1s cubic-bezier(.22,.9,.32,1); }
+  .bar-level{ font-size:13px; color:#8a8a8e; margin-top:5px; }
+  .narrative{ background:var(--bg); border-radius:14px; padding:22px; margin-top:9px; }
+  .narrative h3{ font-family:'Barlow Condensed', sans-serif; font-size:20px; color:var(--navy); margin-bottom:9px; }
+  .narrative p{ font-size:16px; }
+  .disclaimer{ font-size:13px; color:#9a9a9e; margin-top:22px; line-height:1.6; border-top:1px solid var(--lightgray); padding-top:18px; }
+  .footer-actions{ display:flex; gap:14px; margin-top:26px; }
+  .footer-actions button{ flex:1; }
+  .candidate-meta{ background:var(--bg); border-radius:11px; padding:16px 18px; margin-bottom:22px; font-size:15px; }
+  .candidate-meta div{ margin-bottom:3px; }
+  .candidate-meta strong{ color:var(--navy); }
+
+  /* Report sections */
+  .report-section{ margin-top:26px; }
+  .report-section h3{
+    font-family:'Barlow Condensed', sans-serif; font-size:21px; font-weight:600; color:var(--navy);
+    margin-bottom:11px; padding-bottom:9px; border-bottom:2px solid var(--lightgray);
+  }
+  .report-section p{ font-size:15.5px; }
+  .tag-pill-row{ display:flex; flex-wrap:wrap; gap:9px; }
+  .tag-pill{ background:var(--bg); border:1px solid var(--lightgray); border-radius:22px; padding:7px 14px; font-size:13.5px; color:var(--gray); }
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  @media (max-width:480px){ .two-col{ grid-template-columns:1fr; } }
+  .list-col h4{ font-family:'Barlow Condensed', sans-serif; font-size:16.5px; color:var(--navy); margin-bottom:9px; font-weight:600; }
+  .list-col ul{ padding-left:20px; }
+  .list-col li{ font-size:14.5px; margin-bottom:6px; color:#4a4a4d; }
+  .list-col.fortalezas h4{ color:var(--blue); }
+  .list-col.desarrollo h4{ color:#8a6d00; }
+  .competency-row{ margin-bottom:18px; }
+  .competency-head{ display:flex; justify-content:space-between; font-size:14.5px; font-weight:600; color:var(--navy); margin-bottom:5px; }
+  .competency-desc{ font-size:13px; color:#8a8a8e; margin-bottom:7px; }
+  .competency-track{ height:9px; background:var(--lightgray); border-radius:6px; overflow:hidden; }
+  .competency-fill{ height:100%; background:var(--blue); border-radius:6px; width:0%; transition:width 1s ease; }
+
+  /* Admin list */
+  .admin-item{
+    display:flex; justify-content:space-between; align-items:center; padding:16px 18px;
+    border:1.5px solid var(--lightgray); border-radius:11px; margin-bottom:11px; cursor:pointer; transition:border-color .12s ease;
+  }
+  .admin-item:hover{ border-color:var(--blue); }
+  .admin-item-name{ font-weight:600; font-size:16px; color:var(--navy); }
+  .admin-item-sub{ font-size:13px; color:#9a9a9e; margin-top:2px; }
+  .admin-item-code{ font-family:'Barlow Condensed', sans-serif; font-size:25px; font-weight:700; color:var(--blue); }
+  .empty-state{ text-align:center; color:#9a9a9e; font-size:15.5px; padding:44px 0; }
+
+  @media print{ body{ padding:0; background:#fff; } .footer-actions{ display:none; } .card{ box-shadow:none; } }
+  @media (max-width: 480px){
+    h1{ font-size:34px; } .card{ padding:26px; } .profile-code{ font-size:32px; } .app-logo{ height:36px; margin-bottom:22px; }
+    .phrase-row{ flex-direction:column; align-items:flex-start; gap:10px; }
+    .tag-buttons{ align-self:flex-end; }
+  }
+  @media (min-width: 820px){
+    .app{ max-width:920px; }
+    .app-logo{ height:72px; margin-bottom:32px; }
+    .eyebrow{ font-size:14px; }
+    h1{ font-size:56px; }
+    h2{ font-size:34px; }
+    p{ font-size:18px; }
+    .card{ padding:48px; }
+    .consent label{ font-size:16px; }
+    button{ font-size:18px; padding:17px 32px; }
+    .btn-ghost{ font-size:17px; }
+    .field label{ font-size:15px; }
+    .field input, .field select{ font-size:18px; padding:16px 18px; }
+    .progress-label{ font-size:18px; }
+    .block-instruction{ font-size:16px; }
+    .phrase-text{ font-size:18.5px; }
+    .tag-btn{ font-size:14.5px; padding:10px 16px; }
+    .thanks-icon{ width:88px; height:88px; font-size:40px; }
+    .profile-code{ font-size:50px; }
+    .profile-name{ font-size:17px; }
+    .bar-head{ font-size:21px; }
+    .narrative h3{ font-size:22px; }
+    .narrative p{ font-size:17.5px; }
+    .disclaimer{ font-size:14px; }
+    .candidate-meta{ font-size:16px; }
+    .report-section h3{ font-size:23px; }
+    .report-section p{ font-size:17px; }
+    .tag-pill{ font-size:14.5px; }
+    .list-col h4{ font-size:18px; }
+    .list-col li{ font-size:15.5px; }
+    .competency-head{ font-size:15.5px; }
+    .competency-desc{ font-size:14px; }
+    .admin-item-name{ font-size:17.5px; }
+    .admin-item-sub{ font-size:14px; }
+    .admin-item-code{ font-size:28px; }
+    .empty-state{ font-size:17px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <img src="logo-amplifica.png" alt="Amplifica" class="app-logo">
+
+  <!-- INTRO -->
+  <div class="screen active" id="intro">
+    <div class="eyebrow">Amplifica · Evaluación complementaria</div>
+    <h1>Perfil de comportamiento y estilo de pensamiento</h1>
+    <div class="card" style="margin-top:20px;">
+      <p id="introDesc"></p>
+      <p>No hay respuestas correctas o incorrectas.</p>
+      <p>Este resultado es un <strong>insumo complementario</strong> del proceso de selección, no un factor excluyente de decisión. Los resultados serán revisados por el equipo de Personas de Amplifica.</p>
+      <div class="consent">
+        <input type="checkbox" id="consentCheck">
+        <label for="consentCheck">Entiendo que mis respuestas serán utilizadas como parte del proceso de evaluación psicolaboral de Amplifica, con carácter complementario, y autorizo su tratamiento conforme a la política de datos personales de la empresa.</label>
+      </div>
+      <button class="btn-primary" id="startBtn" disabled>Continuar</button>
+      <button class="btn-ghost" id="fakeSubmitBtn" style="width:100%; margin-top:10px; border:1.5px dashed var(--lightgray); border-radius:10px; color:#9a9a9e;">⚙ Generar respuesta ficticia (solo prueba)</button>
+    </div>
+    <a href="#" class="link-quiet" id="adminLinkIntro">Acceso equipo de Personas</a>
+  </div>
+
+  <!-- DATOS DEL CANDIDATO -->
+  <div class="screen" id="datos">
+    <div class="eyebrow">Amplifica · Tus datos</div>
+    <h1 style="font-size:30px;">Antes de comenzar</h1>
+    <div class="card" style="margin-top:20px;">
+      <div class="field">
+        <label for="fNombre">Nombre completo</label>
+        <input type="text" id="fNombre" placeholder="Ej: Tony Stark">
+        <div class="field-error" id="errNombre">Ingresa tu nombre completo.</div>
+      </div>
+      <div class="field">
+        <label for="fRut">RUT</label>
+        <input type="text" id="fRut" placeholder="Ej: 12.345.678-9">
+        <div class="field-error" id="errRut">Ingresa un RUT válido.</div>
+      </div>
+      <div class="field">
+        <label for="fCargo">Cargo al que postulas</label>
+        <input type="text" id="fCargo" placeholder="Ej: Analista de Comercio Exterior">
+        <div class="field-error" id="errCargo">Ingresa el cargo al que postulas.</div>
+      </div>
+      <div class="field">
+        <label for="fEmail">Correo de contacto</label>
+        <input type="email" id="fEmail" placeholder="tucorreo@ejemplo.com">
+        <div class="field-error" id="errEmail">Ingresa un correo válido.</div>
+      </div>
+      <button class="btn-primary" id="continueBtn">Comenzar evaluación</button>
+    </div>
+  </div>
+
+  <!-- QUESTIONS: DISC (Etapa 1) -->
+  <div class="screen" id="quiz">
+    <div class="eyebrow" id="discEyebrow">Perfil DISC</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="progressText">Bloque 1 de 28</span><span id="progressPct">4%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:4%"></div></div>
+    </div>
+    <div class="card">
+      <div class="block-instruction">Marca la palabra que MÁS te representa y la que MENOS te representa.</div>
+      <div id="phraseContainer"></div>
+      <div class="nav-row">
+        <button class="btn-ghost" id="backBtn">← Volver</button>
+        <button class="btn-primary" id="nextBtn" disabled style="margin-top:0;">Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUESTIONS: Benziger (Etapa 2) -->
+  <div class="screen" id="benzigerQuiz">
+    <div class="eyebrow" id="bzEyebrow">Estilo de pensamiento (Benziger)</div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span id="bzProgressText">Página 1 de 6</span><span id="bzProgressPct">17%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="bzProgressFill" style="width:17%"></div></div>
+    </div>
+    <div class="card">
+      <div class="block-instruction">Para cada afirmación, marca qué tanto te representa: 1 = Nada como yo · 5 = Totalmente como yo.</div>
+      <div id="bzContainer"></div>
+      <div class="nav-row">
+        <button class="btn-ghost" id="bzBackBtn">← Volver</button>
+        <button class="btn-primary" id="bzNextBtn" disabled style="margin-top:0;">Siguiente</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- THANK YOU (candidate-facing, no results shown) -->
+  <div class="screen" id="thanks">
+    <div class="card thanks-wrap">
+      <div class="thanks-icon">✓</div>
+      <h2>¡Gracias por completar la evaluación!</h2>
+      <p style="margin-top:12px;">Tus respuestas fueron registradas correctamente y serán revisadas por el equipo de Personas de Amplifica como parte de tu proceso de selección.</p>
+      <p style="margin-top:12px; font-size:13px; color:#9a9a9e;">Puedes cerrar esta ventana.</p>
+    </div>
+    <a href="#" class="link-quiet" id="adminLink">Acceso equipo de Personas</a>
+  </div>
+
+  <!-- ADMIN: login gate -->
+  <div class="screen" id="adminGate">
+    <div class="eyebrow">Amplifica · Panel interno</div>
+    <h1 style="font-size:28px;">Acceso equipo de Personas</h1>
+    <div class="card" style="margin-top:20px;">
+      <div class="field">
+        <label for="adminEmail">Correo</label>
+        <input type="email" id="adminEmail" placeholder="tucorreo@amplifica.io">
+      </div>
+      <div class="field">
+        <label for="adminPass">Contraseña</label>
+        <input type="password" id="adminPass" placeholder="••••••">
+        <div class="field-error" id="errPass">Correo o contraseña incorrectos.</div>
+      </div>
+      <button class="btn-primary" id="adminEnterBtn">Ingresar</button>
+      <button class="btn-ghost" id="adminResetBtn" style="width:100%; text-align:center;">¿Olvidaste tu contraseña?</button>
+      <div class="field-error" id="resetMsg" style="color:var(--blue);"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN: list -->
+  <div class="screen" id="adminList">
+    <div class="eyebrow">Amplifica · Panel interno</div>
+    <h1 style="font-size:28px;">Resultados recibidos</h1>
+    <div class="card" style="margin-top:20px;">
+      <div id="adminListContainer"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN: detail (results report) -->
+  <div class="screen" id="results">
+    <div class="eyebrow">Amplifica · Panel interno</div>
+    <button class="btn-ghost" id="backToListBtn" style="padding:0; margin-bottom:12px;">← Volver al listado</button>
+    <h1 style="font-size:28px;">Reporte de perfil DISC + Benziger</h1>
+    <div class="card" style="margin-top:20px;">
+      <div class="candidate-meta" id="candidateMeta"></div>
+
+      <div id="discSection">
+      <div class="profile-summary">
+        <div class="profile-code" id="profileCode">Alentador</div>
+        <div class="profile-name" id="profileName">Patrón clásico</div>
+      </div>
+      <div class="bars" id="barsContainer"></div>
+      <div class="narrative">
+        <h3>Descripción del perfil</h3>
+        <p id="narrativeText"></p>
+      </div>
+
+      <div class="report-section">
+        <h3>Atributos</h3>
+        <div class="tag-pill-row" id="atributosContainer"></div>
+      </div>
+
+      <div class="report-section two-col">
+        <div>
+          <h3>Emociones</h3>
+          <p id="emocionesText"></p>
+        </div>
+        <div>
+          <h3>Motivadores</h3>
+          <p id="metasText"></p>
+        </div>
+      </div>
+
+      <div class="report-section">
+        <h3>Cómo influye en los demás</h3>
+        <p id="influyeText"></p>
+      </div>
+
+      <div class="report-section">
+        <h3>Cómo juzga a los demás</h3>
+        <p id="juzgaText"></p>
+      </div>
+
+      <div class="report-section two-col">
+        <div class="list-col fortalezas">
+          <h4>Su valor para la organización</h4>
+          <p id="valorText"></p>
+        </div>
+        <div class="list-col desarrollo">
+          <h4>De qué abusa</h4>
+          <p id="abusaText"></p>
+        </div>
+      </div>
+
+      <div class="report-section two-col">
+        <div>
+          <h3>Bajo presión</h3>
+          <p id="presionText"></p>
+        </div>
+        <div>
+          <h3>Qué teme</h3>
+          <p id="temeText"></p>
+        </div>
+      </div>
+
+      <div class="report-section">
+        <h3>Sería más eficaz si...</h3>
+        <p id="eficazText"></p>
+      </div>
+
+      <div class="report-section">
+        <h3>Competencias comportamentales</h3>
+        <div id="competenciasContainer"></div>
+      </div>
+      </div>
+
+      <div id="benzigerSection">
+      <div class="report-section">
+        <h3>Estilo de pensamiento (Benziger)</h3>
+        <div id="bzBrainContainer" style="margin-bottom:18px;"></div>
+        <div class="two-col" style="margin-bottom:14px;">
+          <div>
+            <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Modo dominante: <span id="bzTop1Name"></span></h4>
+            <p id="bzTop1Resumen" style="font-size:14px; margin-bottom:8px;"></p>
+            <p id="bzTop1Energiza" style="font-size:13px; color:#8a8a8e;"></p>
+          </div>
+          <div>
+            <h4 style="font-family:'Barlow Condensed',sans-serif; color:var(--navy); margin-bottom:6px;">Modo menos preferido: <span id="bzLowName"></span></h4>
+            <p id="bzLowResumen" style="font-size:14px; margin-bottom:8px;"></p>
+            <p id="bzLowRiesgo" style="font-size:13px; color:#8a8a8e;"></p>
+          </div>
+        </div>
+        <div id="bzBarsContainer"></div>
+      </div>
+      </div>
+
+      <div class="disclaimer">
+        Este informe es una herramienta complementaria de apoyo al proceso de selección de Amplifica. No constituye un diagnóstico psicológico ni un criterio único de decisión. Los resultados deben interpretarse junto con la entrevista, la evaluación técnica y las referencias del candidato.
+      </div>
+      <div class="footer-actions">
+        <button class="btn-secondary" onclick="window.print()">Imprimir / Guardar PDF</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+<script>
+// ---------- FIREBASE ----------
+const firebaseConfig = {
+  apiKey: "AIzaSyBKi4N_hfRvsCIbLW2cErTaPoEqeMj-0x4",
+  authDomain: "discamplifica.firebaseapp.com",
+  databaseURL: "https://discamplifica-default-rtdb.firebaseio.com",
+  projectId: "discamplifica",
+  storageBucket: "discamplifica.firebasestorage.app",
+  messagingSenderId: "57383148148",
+  appId: "1:57383148148:web:942d4626055214ff7d8f21"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const rtdb = firebase.database();
+
+// ---------- DATA: 28 bloques oficiales (palabra + dimensión por posición) ----------
+const BLOCKS = [
+  {words:["Entusiasta","Rápido(a)","Lógico(a)","Apacible"], dims:["i","d","c","s"]},
+  {words:["Cauteloso(a)","Decidido(a)","Receptivo(a)","Bondadoso(a)"], dims:["c","d","i","s"]},
+  {words:["Amigable","Preciso(a)","Franco(a)","Tranquilo(a)"], dims:["i","c","d","s"]},
+  {words:["Elocuente","Controlado(a)","Tolerante","Decisivo(a)"], dims:["i","c","s","d"]},
+  {words:["Atrevido(a)","Concienzudo(a)","Comunicativo(a)","Moderado(a)"], dims:["d","c","i","s"]},
+  {words:["Ameno(a)","Ingenioso(a)","Investigador(a)","Acepta Riesgos"], dims:["s","i","c","d"]},
+  {words:["Expresivo(a)","Cuidadoso(a)","Dominante","Sensible"], dims:["i","c","d","s"]},
+  {words:["Extrovertido(a)","Precavido(a)","Constante","Impaciente"], dims:["i","c","s","d"]},
+  {words:["Discreto(a)","Complaciente","Encantador(a)","Insistente"], dims:["c","s","i","d"]},
+  {words:["Valeroso(a)","Anima a los demás","Pacifico(a)","Perfeccionista"], dims:["d","i","s","c"]},
+  {words:["Reservado(a)","Atento(a)","Osado(a)","Alegre"], dims:["c","s","d","i"]},
+  {words:["Estimulante","Gentil","Perceptivo(a)","Independiente"], dims:["i","s","c","d"]},
+  {words:["Competitivo(a)","Considerado(a)","Alegre","Sagaz"], dims:["d","s","i","c"]},
+  {words:["Meticuloso(a)","Obediente","Ideas Firmes","Alentador(a)"], dims:["c","s","d","i"]},
+  {words:["Popular","Reflexivo(a)","Tenaz","Calmado(a)"], dims:["i","c","d","s"]},
+  {words:["Analítico(a)","Audaz","Leal","Promotor(a)"], dims:["c","d","s","i"]},
+  {words:["Sociable","Paciente","Autosuficiente","Certero(a)"], dims:["i","s","d","c"]},
+  {words:["Adaptable","Resuelto(a)","Prevenido(a)","Vivaz"], dims:["s","d","c","i"]},
+  {words:["Agresivo(a)","Impetuoso(a)","Amistoso(a)","Discerniente"], dims:["d","i","s","c"]},
+  {words:["De trato Fácil","Compasivo(a)","Cauto(a)","Habla Directo"], dims:["i","s","c","d"]},
+  {words:["Evaluador(a)","Generoso(a)","Animado(a)","Persistente"], dims:["c","s","i","d"]},
+  {words:["Impulsivo(a)","Cuida los Detalles","Enérgico(a)","Tranquilo(a)"], dims:["i","c","d","s"]},
+  {words:["Sociable","Sistemático(a)","Vigoroso(a)","Tolerante"], dims:["i","c","d","s"]},
+  {words:["Cautivador(a)","Contento(a)","Exigente","Apegado(a) a las normas"], dims:["i","s","d","c"]},
+  {words:["Le agrada discutir","Metódico(a)","Comedido(a)","Desenvuelto(a)"], dims:["d","c","s","i"]},
+  {words:["Jovial","Preciso(a)","Directo(a)","Ecuánime"], dims:["i","c","d","s"]},
+  {words:["Inquieto(a)","Amable","Elocuente","Cuidadoso(a)"], dims:["d","s","i","c"]},
+  {words:["Prudente","Pionero(a)","Espontáneo(a)","Colaborador"], dims:["c","d","i","s"]}
+];
+const DIMS = ['d','i','s','c'];
+const DIM_LABEL = {d:'Dominancia', i:'Influencia', s:'Estabilidad', c:'Cumplimiento'};
+const DIM_COLOR = {d:'#121755', i:'#F7DC4B', s:'#4548FF', c:'#1D1D1F'};
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+// ---------- BENZIGER: estilo de pensamiento / dominancia cerebral (redacción propia) ----------
+const BENZIGER_QUADRANTS = {
+  FI: {
+    nombre: "Analítico",
+    subtitulo: "Frontal Izquierdo",
+    resumen: "Piensa de forma lógica, crítica y orientada a hechos. Le resulta natural analizar información, cuestionar argumentos y decidir en base a evidencia antes que a impresiones.",
+    fortalezas: ["Pensamiento lógico","Análisis crítico","Orientación a datos","Toma de decisiones objetiva","Resolución de problemas técnicos","Evaluación de riesgos"],
+    leEnergiza: "Le energiza analizar problemas complejos, debatir ideas con rigor y llegar a conclusiones basadas en evidencia.",
+    entornoIdeal: "Rinde mejor en entornos donde puede evaluar información con criterio propio y donde las decisiones se sostienen con datos, no solo con consenso.",
+    comunicacion: "Se comunica de forma directa y basada en hechos, y espera el mismo nivel de rigor de quienes lo/a rodean.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en tareas puramente relacionales o de detalle administrativo sin margen de análisis), tiende a agotarse aunque pueda hacerlo bien."
+  },
+  BI: {
+    nombre: "Estructurado",
+    subtitulo: "Basal Izquierdo",
+    resumen: "Piensa de forma ordenada, secuencial y orientada a procesos. Le resulta natural planificar, seguir procedimientos y llevar las cosas hasta su conclusión de forma confiable.",
+    fortalezas: ["Organización","Planificación","Disciplina","Atención al detalle","Cumplimiento de plazos","Confiabilidad"],
+    leEnergiza: "Le energiza ordenar información, seguir un plan claro y ver una tarea llevada hasta el final sin cabos sueltos.",
+    entornoIdeal: "Rinde mejor en entornos con procesos claros, expectativas explícitas y estabilidad en el día a día.",
+    comunicacion: "Se comunica de forma clara, concreta y estructurada, prefiriendo instrucciones precisas antes que la ambigüedad.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en ambientes muy improvisados o cambiantes, sin procesos definidos), tiende a agotarse aunque logre adaptarse."
+  },
+  BD: {
+    nombre: "Relacional",
+    subtitulo: "Basal Derecho",
+    resumen: "Piensa de forma interpersonal y emocional. Le resulta natural conectar con las personas, percibir el clima emocional de un grupo y priorizar la armonía y el vínculo humano.",
+    fortalezas: ["Empatía","Escucha activa","Construcción de confianza","Trabajo en equipo","Mediación de conflictos","Comunicación cálida"],
+    leEnergiza: "Le energiza conectar con otras personas, apoyar a su equipo y sentir que las relaciones de trabajo son genuinas.",
+    entornoIdeal: "Rinde mejor en entornos colaborativos, con buen clima humano y espacio real para el vínculo interpersonal.",
+    comunicacion: "Se comunica con calidez, cuidando el efecto emocional de lo que dice antes que la eficiencia del mensaje.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en tareas muy solitarias o en ambientes fríos y puramente técnicos), tiende a agotarse aunque pueda cumplir igualmente."
+  },
+  FD: {
+    nombre: "Conceptual",
+    subtitulo: "Frontal Derecho",
+    resumen: "Piensa de forma intuitiva, conceptual y orientada al futuro. Le resulta natural imaginar posibilidades, conectar ideas distintas entre sí y ver el panorama completo antes que el detalle.",
+    fortalezas: ["Pensamiento estratégico","Creatividad","Visión de futuro","Síntesis de información compleja","Innovación","Adaptabilidad"],
+    leEnergiza: "Le energiza imaginar posibilidades nuevas, explorar ideas poco convencionales y conectar conceptos de áreas distintas.",
+    entornoIdeal: "Rinde mejor en entornos flexibles, con espacio para experimentar y sin exigencia de seguir siempre el mismo procedimiento.",
+    comunicacion: "Se comunica en términos de panorama general e ideas grandes, y puede pasar por alto el detalle operativo al hacerlo.",
+    riesgoFalsificacion: "Cuando debe operar por periodos largos fuera de este modo (por ejemplo, en tareas muy repetitivas y detalladas, sin espacio para explorar), tiende a agotarse aunque logre concentrarse igual."
+  }
+};
+const BENZIGER_QUADRANT_ORDER = ["FI","BI","BD","FD"];
+
+const BENZIGER_STATEMENTS = [
+{q:"FI",t:"Me energiza analizar datos para encontrar la explicación lógica de un problema."},
+{q:"FI",t:"Disfruto detectar inconsistencias o errores en un razonamiento."},
+{q:"FI",t:"Prefiero decidir en base a hechos y evidencia, no en base a lo que \"se siente bien\"."},
+{q:"FI",t:"Me resulta natural desglosar un problema complejo en sus partes componentes."},
+{q:"FI",t:"Cuestiono las cosas hasta que la lógica me convence, no antes."},
+{q:"FI",t:"Me siento cómodo/a debatiendo ideas de forma directa y crítica."},
+{q:"FI",t:"Prefiero la precisión técnica por sobre la ambigüedad emocional."},
+{q:"FI",t:"Evalúo el rendimiento de algo en términos de eficiencia y resultados medibles."},
+{q:"FI",t:"Me interesa entender el \"por qué\" detrás de cómo funcionan las cosas."},
+{q:"FI",t:"Tomo decisiones rápidas cuando tengo datos suficientes, sin necesitar consenso."},
+{q:"FI",t:"Prefiero la verdad objetiva, aunque sea incómoda, a una versión suavizada."},
+{q:"FI",t:"Disfruto competir y medir resultados frente a un estándar claro."},
+{q:"FI",t:"Me cuesta entender por qué alguien tomaría una decisión sin datos que la respalden."},
+{q:"FI",t:"Analizar riesgos y costos/beneficios me resulta natural y agradable."},
+{q:"FI",t:"Prefiero liderar con argumentos sólidos antes que con carisma."},
+{q:"BI",t:"Me siento cómodo/a siguiendo procedimientos claros y probados."},
+{q:"BI",t:"Disfruto organizar información en listas, calendarios o sistemas ordenados."},
+{q:"BI",t:"Prefiero terminar una tarea antes de empezar otra."},
+{q:"BI",t:"Me energiza planificar los detalles de una actividad con anticipación."},
+{q:"BI",t:"Valoro mucho la puntualidad y el cumplimiento de plazos."},
+{q:"BI",t:"Prefiero la estabilidad y la rutina antes que la improvisación constante."},
+{q:"BI",t:"Reviso mi trabajo varias veces para asegurarme de que esté correcto."},
+{q:"BI",t:"Me resulta natural mantener el orden en mi espacio y mis materiales de trabajo."},
+{q:"BI",t:"Sigo las reglas incluso cuando nadie está supervisando."},
+{q:"BI",t:"Prefiero instrucciones específicas antes que la ambigüedad de \"arréglatelas como puedas\"."},
+{q:"BI",t:"Disfruto los procesos repetitivos cuando sé que llevan a un buen resultado."},
+{q:"BI",t:"Me siento incómodo/a cuando un plan cambia sin previo aviso."},
+{q:"BI",t:"Guardar registros y documentar lo que hago me resulta natural."},
+{q:"BI",t:"Prefiero la confiabilidad constante antes que la innovación arriesgada."},
+{q:"BI",t:"Me energiza ver una tarea grande dividida en pasos pequeños y manejables."},
+{q:"BD",t:"Me energiza conectar emocionalmente con las personas que me rodean."},
+{q:"BD",t:"Percibo con facilidad cuando alguien está incómodo o triste, aunque no lo diga."},
+{q:"BD",t:"Prefiero tomar decisiones considerando cómo afectarán a las personas involucradas."},
+{q:"BD",t:"Disfruto crear un ambiente cálido y de confianza en un grupo."},
+{q:"BD",t:"Me resulta natural expresar afecto y apoyo a quienes me rodean."},
+{q:"BD",t:"Prefiero el consenso del grupo antes que imponer mi propia postura."},
+{q:"BD",t:"Me importa profundamente mantener la armonía en mis relaciones."},
+{q:"BD",t:"Escuchar a otros sin juzgarlos me resulta fácil y natural."},
+{q:"BD",t:"Disfruto celebrar y compartir momentos significativos con otros."},
+{q:"BD",t:"Me cuesta avanzar en un tema si siento que alguien quedó dolido en el camino."},
+{q:"BD",t:"Prefiero trabajar en equipo antes que en solitario."},
+{q:"BD",t:"Me energiza ayudar a otros a sentirse valorados y comprendidos."},
+{q:"BD",t:"Soy sensible al ambiente emocional de una sala apenas entro en ella."},
+{q:"BD",t:"Prefiero la lealtad personal por sobre la eficiencia fría."},
+{q:"BD",t:"Disfruto actividades que fortalecen los vínculos humanos, como compartir historias o experiencias."},
+{q:"FD",t:"Me energiza imaginar posibilidades que todavía no existen."},
+{q:"FD",t:"Disfruto conectar ideas de áreas muy distintas entre sí."},
+{q:"FD",t:"Prefiero pensar en el panorama completo antes que en los detalles específicos."},
+{q:"FD",t:"Me resulta natural intuir hacia dónde va una situación, incluso sin todos los datos."},
+{q:"FD",t:"Me aburro con la rutina y busco constantemente nuevas formas de hacer las cosas."},
+{q:"FD",t:"Disfruto explorar preguntas grandes y abstractas, aunque no tengan respuesta inmediata."},
+{q:"FD",t:"Prefiero la experimentación antes que seguir un manual paso a paso."},
+{q:"FD",t:"Se me ocurren ideas originales con facilidad, incluso en temas que no domino."},
+{q:"FD",t:"Me energiza soñar con el futuro y con lo que podría llegar a ser."},
+{q:"FD",t:"Prefiero adaptarme sobre la marcha antes que seguir un plan rígido."},
+{q:"FD",t:"Disfruto sintetizar información compleja en una visión simple y potente."},
+{q:"FD",t:"Me siento cómodo/a con la ambigüedad y lo no resuelto."},
+{q:"FD",t:"Cuestiono el \"siempre se ha hecho así\" y busco reinventar procesos."},
+{q:"FD",t:"Prefiero trabajar en varios proyectos a la vez que en uno solo, de forma lineal."},
+{q:"FD",t:"Me atrae explorar lo desconocido más que perfeccionar lo ya conocido."}
+];
+
+const BZ_PAGE_SIZE = 10;
+const bzSession = shuffle(BENZIGER_STATEMENTS.map((s,i)=>({...s, origIdx:i})));
+const bzPages = [];
+for(let i=0;i<bzSession.length;i+=BZ_PAGE_SIZE){ bzPages.push(bzSession.slice(i,i+BZ_PAGE_SIZE)); }
+let bzCurrentPage = 0;
+const bzAnswers = new Array(bzSession.length).fill(0);
+
+const blockOrder = shuffle(BLOCKS.map((_,i)=>i));
+const session = blockOrder.map(idx=>{
+  const block = BLOCKS[idx];
+  const phrases = block.words.map((w,i)=>({dim:block.dims[i], text:w}));
+  return shuffle(phrases);
+});
+
+let current = 0;
+const answers = new Array(session.length).fill(null);
+let candidate = { nombre:'', rut:'', cargo:'', email:'' };
+
+// ---- SELECCIÓN DE EVALUACIÓN (vía link ?test=disc | ?test=benziger | ?test=ambos) ----
+const urlParams = new URLSearchParams(window.location.search);
+let testMode = (urlParams.get('test') || '').toLowerCase();
+if(!['disc','benziger','ambos'].includes(testMode)) testMode = 'ambos';
+const doDisc = testMode==='disc' || testMode==='ambos';
+const doBenziger = testMode==='benziger' || testMode==='ambos';
+const totalStages = (doDisc?1:0) + (doBenziger?1:0);
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ---- INTRO ----
+(function initIntroText(){
+  const introDesc = document.getElementById('introDesc');
+  if(doDisc && doBenziger){
+    introDesc.innerHTML = 'Esta evaluación tiene <strong>2 etapas</strong>: primero un perfil de comportamiento <strong>DISC</strong> (28 bloques de 4 palabras cada uno, eligiendo la que MÁS y la que MENOS te representa) y luego un test de <strong>estilo de pensamiento (Benziger)</strong>, donde calificas 60 afirmaciones según cuánto te representen. Te tomará entre 20 y 25 minutos en total.';
+  } else if(doDisc){
+    introDesc.innerHTML = 'Esta evaluación consta de un perfil de comportamiento <strong>DISC</strong>: 28 bloques de 4 palabras cada uno, donde eliges la que <strong>MÁS</strong> y la que <strong>MENOS</strong> te representa. Te tomará entre 10 y 15 minutos.';
+  } else {
+    introDesc.innerHTML = 'Esta evaluación consta de un test de <strong>estilo de pensamiento (Benziger)</strong>: 60 afirmaciones que calificas del 1 al 5 según cuánto te representen. Te tomará entre 10 y 15 minutos.';
+  }
+  document.getElementById('discEyebrow').textContent = totalStages>1 ? 'Etapa 1 de 2 · Perfil DISC' : 'Perfil DISC';
+  document.getElementById('bzEyebrow').textContent = totalStages>1 ? 'Etapa 2 de 2 · Estilo de pensamiento (Benziger)' : 'Estilo de pensamiento (Benziger)';
+})();
+
+const consentCheck = document.getElementById('consentCheck');
+const startBtn = document.getElementById('startBtn');
+consentCheck.addEventListener('change', ()=>{ startBtn.disabled = !consentCheck.checked; });
+startBtn.addEventListener('click', ()=>{ showScreen('datos'); });
+
+document.getElementById('fakeSubmitBtn').addEventListener('click', async ()=>{
+  // Genera respuestas aleatorias válidas para los 28 bloques DISC
+  for(let i=0;i<session.length;i++){
+    const mas = Math.floor(Math.random()*4);
+    let menos = Math.floor(Math.random()*4);
+    while(menos===mas){ menos = Math.floor(Math.random()*4); }
+    answers[i] = { mas, menos };
+  }
+  // Genera respuestas aleatorias válidas para las 60 afirmaciones Benziger
+  for(let i=0;i<bzAnswers.length;i++){ bzAnswers[i] = 1 + Math.floor(Math.random()*5); }
+  const names = ["Tony Stark","Pepper Potts","Bruce Banner","Natasha Romanoff"];
+  const cargos = ["Analista de Comercio Exterior","Encargado de Bodega","Ejecutivo Comercial","Analista de Datos"];
+  candidate = {
+    nombre: names[Math.floor(Math.random()*names.length)],
+    rut: (10000000+Math.floor(Math.random()*89999999)) + '-' + 'kK0123456789'[Math.floor(Math.random()*10)],
+    cargo: cargos[Math.floor(Math.random()*cargos.length)],
+    email: 'prueba@amplifica.io'
+  };
+  await finishQuiz();
+});
+
+// ---- DATOS ----
+function validateRut(rut){
+  return /^[0-9]{6,9}-[0-9kK]{1}$|^[0-9]{1,3}(\.[0-9]{3}){1,2}-[0-9kK]{1}$/.test(rut.trim());
+}
+function validateEmail(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+}
+document.getElementById('continueBtn').addEventListener('click', ()=>{
+  const nombre = document.getElementById('fNombre').value.trim();
+  const rut = document.getElementById('fRut').value.trim();
+  const cargo = document.getElementById('fCargo').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  let valid = true;
+
+  document.getElementById('errNombre').style.display = nombre.length < 3 ? 'block' : 'none';
+  if(nombre.length < 3) valid = false;
+
+  document.getElementById('errRut').style.display = !validateRut(rut) ? 'block' : 'none';
+  if(!validateRut(rut)) valid = false;
+
+  document.getElementById('errCargo').style.display = cargo.length < 2 ? 'block' : 'none';
+  if(cargo.length < 2) valid = false;
+
+  document.getElementById('errEmail').style.display = !validateEmail(email) ? 'block' : 'none';
+  if(!validateEmail(email)) valid = false;
+
+  if(!valid) return;
+  candidate = { nombre, rut, cargo, email };
+  if(doDisc){ showScreen('quiz'); renderBlock(); }
+  else { showScreen('benzigerQuiz'); renderBzPage(); }
+});
+
+// ---- QUIZ ----
+function renderBlock(){
+  const block = session[current];
+  const saved = answers[current] || {mas:null, menos:null};
+  const container = document.getElementById('phraseContainer');
+  container.innerHTML = '';
+  block.forEach((phrase, i)=>{
+    const row = document.createElement('div');
+    row.className = 'phrase-row';
+    row.innerHTML = `
+      <div class="phrase-text">${phrase.text}</div>
+      <div class="tag-buttons">
+        <button class="tag-btn mas ${saved.mas===i?'selected':''}" data-idx="${i}" data-type="mas">MÁS</button>
+        <button class="tag-btn menos ${saved.menos===i?'selected':''}" data-idx="${i}" data-type="menos">MENOS</button>
+      </div>
+    `;
+    container.appendChild(row);
+  });
+  container.querySelectorAll('.tag-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const idx = parseInt(btn.dataset.idx);
+      const type = btn.dataset.type;
+      if(!answers[current]) answers[current] = {mas:null, menos:null};
+      if(type==='mas'){
+        if(answers[current].menos===idx) return;
+        answers[current].mas = answers[current].mas===idx ? null : idx;
+      } else {
+        if(answers[current].mas===idx) return;
+        answers[current].menos = answers[current].menos===idx ? null : idx;
+      }
+      renderBlock();
+    });
+  });
+  document.getElementById('progressText').textContent = `Bloque ${current+1} de ${session.length}`;
+  const pct = Math.round(((current+1)/session.length)*100);
+  document.getElementById('progressPct').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('backBtn').style.visibility = current===0 ? 'hidden' : 'visible';
+  updateNav();
+}
+function updateNav(){
+  const a = answers[current];
+  const complete = a && a.mas!==null && a.menos!==null;
+  document.getElementById('nextBtn').disabled = !complete;
+  document.getElementById('nextBtn').textContent = current===session.length-1 ? 'Finalizar' : 'Siguiente';
+}
+document.getElementById('backBtn').addEventListener('click', ()=>{ if(current>0){ current--; renderBlock(); } });
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if(current<session.length-1){ current++; renderBlock(); }
+  else if(doBenziger){ showScreen('benzigerQuiz'); renderBzPage(); }
+  else { finishQuiz(); }
+});
+
+// ---- BENZIGER QUIZ (Etapa 2) ----
+function renderBzPage(){
+  const page = bzPages[bzCurrentPage];
+  const container = document.getElementById('bzContainer');
+  container.innerHTML = '';
+  page.forEach(item=>{
+    const row = document.createElement('div');
+    row.className = 'bz-row';
+    const val = bzAnswers[item.origIdx];
+    row.innerHTML = `
+      <div class="bz-text">${item.t}</div>
+      <div class="bz-scale">
+        ${[1,2,3,4,5].map(n=>`<button type="button" data-idx="${item.origIdx}" data-val="${n}" class="${val===n?'selected':''}">${n}</button>`).join('')}
+      </div>
+    `;
+    container.appendChild(row);
+  });
+  if(bzCurrentPage===0){
+    const legend = document.createElement('div');
+    legend.className = 'bz-scale-legend';
+    legend.innerHTML = '<span>1 · Nada como yo</span><span>5 · Totalmente como yo</span>';
+    container.prepend(legend);
+  }
+  container.querySelectorAll('.bz-scale button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      bzAnswers[parseInt(btn.dataset.idx)] = parseInt(btn.dataset.val);
+      renderBzPage();
+    });
+  });
+  document.getElementById('bzProgressText').textContent = `Página ${bzCurrentPage+1} de ${bzPages.length}`;
+  const pct = Math.round(((bzCurrentPage+1)/bzPages.length)*100);
+  document.getElementById('bzProgressPct').textContent = pct + '%';
+  document.getElementById('bzProgressFill').style.width = pct + '%';
+  document.getElementById('bzBackBtn').style.visibility = bzCurrentPage===0 ? 'hidden' : 'visible';
+  updateBzNav();
+}
+function updateBzNav(){
+  const page = bzPages[bzCurrentPage];
+  const complete = page.every(item=> bzAnswers[item.origIdx] !== 0);
+  const nextBtn = document.getElementById('bzNextBtn');
+  nextBtn.disabled = !complete;
+  nextBtn.textContent = bzCurrentPage===bzPages.length-1 ? 'Finalizar' : 'Siguiente';
+}
+document.getElementById('bzBackBtn').addEventListener('click', ()=>{ if(bzCurrentPage>0){ bzCurrentPage--; renderBzPage(); } });
+document.getElementById('bzNextBtn').addEventListener('click', ()=>{
+  if(bzCurrentPage<bzPages.length-1){ bzCurrentPage++; renderBzPage(); }
+  else { finishQuiz(); }
+});
+
+function computeScores(){
+  const raw = {d:0,i:0,s:0,c:0};
+  session.forEach((block, bi)=>{
+    const a = answers[bi];
+    if(!a) return;
+    raw[block[a.mas].dim] += 1;
+    raw[block[a.menos].dim] -= 1;
+  });
+  return raw;
+}
+function levelFor(score){
+  if(score>=8) return 'Alto';
+  if(score<=-8) return 'Bajo';
+  return 'Medio';
+}
+
+// ---- Tabla de clasificación oficial (código de 4 dígitos -> patrón clásico) ----
+const CODE_TO_PATTERN = {1111:"Subactivo",1112:"Subactivo",1113:"Subactivo",1114:"Subactivo",1115:"Objetivo",1116:"Objetivo",1117:"Objetivo",1121:"Subactivo",1122:"Subactivo",1123:"Subactivo",1124:"Subactivo",1125:"Objetivo",1126:"Objetivo",1127:"Objetivo",1131:"Subactivo",1132:"Subactivo",1133:"Subactivo",1134:"Subactivo",1135:"Objetivo",1136:"Objetivo",1137:"Objetivo",1141:"Subactivo",1142:"Subactivo",1143:"Subactivo",1144:"Subactivo",1145:"Objetivo",1146:"Objetivo",1147:"Objetivo",1151:"Especialista",1152:"Especialista",1153:"Especialista",1154:"Especialista",1155:"Perfeccionista",1156:"Perfeccionista",1157:"Perfeccionista",1161:"Especialista",1162:"Especialista",1163:"Especialista",1164:"Especialista",1165:"Perfeccionista",1166:"Perfeccionista",1167:"Perfeccionista",1171:"Especialista",1172:"Especialista",1173:"Especialista",1174:"Especialista",1175:"Perfeccionista",1176:"Perfeccionista",1177:"Perfeccionista",1211:"Subactivo",1212:"Subactivo",1213:"Subactivo",1214:"Subactivo",1215:"Objetivo",1216:"Objetivo",1217:"Objetivo",1221:"Subactivo",1222:"Subactivo",1223:"Subactivo",1224:"Subactivo",1225:"Objetivo",1226:"Objetivo",1227:"Objetivo",1231:"Subactivo",1232:"Subactivo",1233:"Subactivo",1234:"Subactivo",1235:"Objetivo",1236:"Objetivo",1237:"Objetivo",1241:"Subactivo",1242:"Subactivo",1243:"Subactivo",1244:"Subactivo",1245:"Objetivo",1246:"Objetivo",1247:"Objetivo",1251:"Especialista",1252:"Especialista",1253:"Especialista",1254:"Especialista",1255:"Perfeccionista",1256:"Perfeccionista",1257:"Perfeccionista",1261:"Especialista",1262:"Especialista",1263:"Especialista",1264:"Especialista",1265:"Perfeccionista",1266:"Perfeccionista",1267:"Perfeccionista",1271:"Especialista",1272:"Especialista",1273:"Especialista",1274:"Especialista",1275:"Perfeccionista",1276:"Perfeccionista",1277:"Perfeccionista",1311:"Subactivo",1312:"Subactivo",1313:"Subactivo",1314:"Subactivo",1315:"Objetivo",1316:"Objetivo",1317:"Objetivo",1321:"Subactivo",1322:"Subactivo",1323:"Subactivo",1324:"Subactivo",1325:"Objetivo",1326:"Objetivo",1327:"Objetivo",1331:"Subactivo",1332:"Subactivo",1333:"Subactivo",1334:"Subactivo",1335:"Objetivo",1336:"Objetivo",1337:"Objetivo",1341:"Subactivo",1342:"Subactivo",1343:"Subactivo",1344:"Subactivo",1345:"Objetivo",1346:"Objetivo",1347:"Objetivo",1351:"Especialista",1352:"Especialista",1353:"Especialista",1354:"Especialista",1355:"Perfeccionista",1356:"Perfeccionista",1357:"Perfeccionista",1361:"Especialista",1362:"Especialista",1363:"Especialista",1364:"Especialista",1365:"Perfeccionista",1366:"Perfeccionista",1367:"Perfeccionista",1371:"Especialista",1372:"Especialista",1373:"Especialista",1374:"Especialista",1375:"Perfeccionista",1376:"Perfeccionista",1377:"Perfeccionista",1411:"Subactivo",1412:"Subactivo",1413:"Subactivo",1414:"Subactivo",1415:"Objetivo",1416:"Objetivo",1417:"Objetivo",1421:"Subactivo",1422:"Subactivo",1423:"Subactivo",1424:"Subactivo",1425:"Objetivo",1426:"Objetivo",1427:"Objetivo",1431:"Subactivo",1432:"Subactivo",1433:"Subactivo",1434:"Subactivo",1435:"Objetivo",1436:"Objetivo",1437:"Objetivo",1441:"Subactivo",1442:"Subactivo",1443:"Subactivo",1444:"Subactivo",1445:"Objetivo",1446:"Objetivo",1447:"Objetivo",1451:"Especialista",1452:"Especialista",1453:"Especialista",1454:"Especialista",1455:"Perfeccionista",1456:"Perfeccionista",1457:"Perfeccionista",1461:"Especialista",1462:"Especialista",1463:"Especialista",1464:"Especialista",1465:"Perfeccionista",1466:"Perfeccionista",1467:"Perfeccionista",1471:"Especialista",1472:"Especialista",1473:"Especialista",1474:"Especialista",1475:"Perfeccionista",1476:"Perfeccionista",1477:"Perfeccionista",1511:"Promotor",1512:"Promotor",1513:"Promotor",1514:"Promotor",1515:"Evaluador",1516:"Evaluador",1517:"Evaluador",1521:"Promotor",1522:"Promotor",1523:"Promotor",1524:"Promotor",1525:"Evaluador",1526:"Evaluador",1527:"Evaluador",1531:"Promotor",1532:"Promotor",1533:"Promotor",1534:"Promotor",1535:"Evaluador",1536:"Evaluador",1537:"Evaluador",1541:"Promotor",1542:"Promotor",1543:"Promotor",1544:"Promotor",1545:"Profesional",1546:"Profesional",1547:"Profesional",1551:"Consejero",1552:"Consejero",1553:"Consejero",1554:"Consejero",1555:"Profesional",1556:"Profesional",1557:"Profesional",1561:"Agente",1562:"Agente",1563:"Agente",1564:"Agente",1565:"Profesional",1566:"Profesional",1567:"Profesional",1571:"Agente",1572:"Agente",1573:"Agente",1574:"Agente",1575:"Profesional",1576:"Profesional",1577:"Profesional",1611:"Promotor",1612:"Promotor",1613:"Promotor",1614:"Promotor",1615:"Evaluador",1616:"Evaluador",1617:"Evaluador",1621:"Promotor",1622:"Promotor",1623:"Promotor",1624:"Promotor",1625:"Evaluador",1626:"Evaluador",1627:"Evaluador",1631:"Promotor",1632:"Promotor",1633:"Promotor",1634:"Promotor",1635:"Evaluador",1636:"Evaluador",1637:"Evaluador",1641:"Promotor",1642:"Promotor",1643:"Promotor",1644:"Promotor",1645:"Profesional",1646:"Profesional",1647:"Profesional",1651:"Consejero",1652:"Consejero",1653:"Consejero",1654:"Consejero",1655:"Profesional",1656:"Profesional",1657:"Profesional",1661:"Consejero",1662:"Consejero",1663:"Consejero",1664:"Consejero",1665:"Profesional",1666:"Profesional",1667:"Profesional",1671:"Agente",1672:"Agente",1673:"Agente",1674:"Agente",1675:"Profesional",1676:"Profesional",1677:"Profesional",1711:"Promotor",1712:"Promotor",1713:"Promotor",1714:"Promotor",1715:"Evaluador",1716:"Evaluador",1717:"Evaluador",1721:"Promotor",1722:"Promotor",1723:"Promotor",1724:"Promotor",1725:"Evaluador",1726:"Evaluador",1727:"Evaluador",1731:"Promotor",1732:"Promotor",1733:"Promotor",1734:"Promotor",1735:"Evaluador",1736:"Evaluador",1737:"Evaluador",1741:"Promotor",1742:"Promotor",1743:"Promotor",1744:"Promotor",1745:"Profesional",1746:"Profesional",1747:"Profesional",1751:"Consejero",1752:"Consejero",1753:"Consejero",1754:"Consejero",1755:"Profesional",1756:"Profesional",1757:"Profesional",1761:"Consejero",1762:"Consejero",1763:"Consejero",1764:"Consejero",1765:"Profesional",1766:"Profesional",1767:"Profesional",1771:"Consejero",1772:"Consejero",1773:"Consejero",1774:"Consejero",1775:"Profesional",1776:"Profesional",1777:"Profesional",2111:"Subactivo",2112:"Subactivo",2113:"Subactivo",2114:"Subactivo",2115:"Objetivo",2116:"Objetivo",2117:"Objetivo",2121:"Subactivo",2122:"Subactivo",2123:"Subactivo",2124:"Subactivo",2125:"Objetivo",2126:"Objetivo",2127:"Objetivo",2131:"Subactivo",2132:"Subactivo",2133:"Subactivo",2134:"Subactivo",2135:"Objetivo",2136:"Objetivo",2137:"Objetivo",2141:"Subactivo",2142:"Subactivo",2143:"Subactivo",2144:"Subactivo",2145:"Objetivo",2146:"Objetivo",2147:"Objetivo",2151:"Especialista",2152:"Especialista",2153:"Especialista",2154:"Especialista",2155:"Perfeccionista",2156:"Perfeccionista",2157:"Perfeccionista",2161:"Especialista",2162:"Especialista",2163:"Especialista",2164:"Especialista",2165:"Perfeccionista",2166:"Perfeccionista",2167:"Perfeccionista",2171:"Especialista",2172:"Especialista",2173:"Especialista",2174:"Especialista",2175:"Perfeccionista",2176:"Perfeccionista",2177:"Perfeccionista",2211:"Subactivo",2212:"Subactivo",2213:"Subactivo",2214:"Subactivo",2215:"Objetivo",2216:"Objetivo",2217:"Objetivo",2221:"Subactivo",2222:"Subactivo",2223:"Subactivo",2224:"Subactivo",2225:"Objetivo",2226:"Objetivo",2227:"Objetivo",2231:"Subactivo",2232:"Subactivo",2233:"Subactivo",2234:"Subactivo",2235:"Objetivo",2236:"Objetivo",2237:"Objetivo",2241:"Subactivo",2242:"Subactivo",2243:"Subactivo",2244:"Subactivo",2245:"Objetivo",2246:"Objetivo",2247:"Objetivo",2251:"Especialista",2252:"Especialista",2253:"Especialista",2254:"Especialista",2255:"Perfeccionista",2256:"Perfeccionista",2257:"Perfeccionista",2261:"Especialista",2262:"Especialista",2263:"Especialista",2264:"Especialista",2265:"Perfeccionista",2266:"Perfeccionista",2267:"Perfeccionista",2271:"Especialista",2272:"Especialista",2273:"Especialista",2274:"Especialista",2275:"Perfeccionista",2276:"Perfeccionista",2277:"Perfeccionista",2311:"Subactivo",2312:"Subactivo",2313:"Subactivo",2314:"Subactivo",2315:"Objetivo",2316:"Objetivo",2317:"Objetivo",2321:"Subactivo",2322:"Subactivo",2323:"Subactivo",2324:"Subactivo",2325:"Objetivo",2326:"Objetivo",2327:"Objetivo",2331:"Subactivo",2332:"Subactivo",2333:"Subactivo",2334:"Subactivo",2335:"Objetivo",2336:"Objetivo",2337:"Objetivo",2341:"Subactivo",2342:"Subactivo",2343:"Subactivo",2344:"Subactivo",2345:"Objetivo",2346:"Objetivo",2347:"Objetivo",2351:"Especialista",2352:"Especialista",2353:"Especialista",2354:"Especialista",2355:"Perfeccionista",2356:"Perfeccionista",2357:"Perfeccionista",2361:"Especialista",2362:"Especialista",2363:"Especialista",2364:"Especialista",2365:"Perfeccionista",2366:"Perfeccionista",2367:"Perfeccionista",2371:"Especialista",2372:"Especialista",2373:"Especialista",2374:"Especialista",2375:"Perfeccionista",2376:"Perfeccionista",2377:"Perfeccionista",2411:"Subactivo",2412:"Subactivo",2413:"Subactivo",2414:"Subactivo",2415:"Objetivo",2416:"Objetivo",2417:"Objetivo",2421:"Subactivo",2422:"Subactivo",2423:"Subactivo",2424:"Subactivo",2425:"Objetivo",2426:"Objetivo",2427:"Objetivo",2431:"Subactivo",2432:"Subactivo",2433:"Subactivo",2434:"Subactivo",2435:"Objetivo",2436:"Objetivo",2437:"Objetivo",2441:"Subactivo",2442:"Subactivo",2443:"Subactivo",2444:"Subactivo",2445:"Objetivo",2446:"Objetivo",2447:"Objetivo",2451:"Especialista",2452:"Especialista",2453:"Especialista",2454:"Especialista",2455:"Perfeccionista",2456:"Perfeccionista",2457:"Perfeccionista",2461:"Especialista",2462:"Especialista",2463:"Especialista",2464:"Especialista",2465:"Perfeccionista",2466:"Perfeccionista",2467:"Perfeccionista",2471:"Especialista",2472:"Especialista",2473:"Especialista",2474:"Especialista",2475:"Perfeccionista",2476:"Perfeccionista",2477:"Perfeccionista",2511:"Promotor",2512:"Promotor",2513:"Promotor",2514:"Promotor",2515:"Evaluador",2516:"Evaluador",2517:"Evaluador",2521:"Promotor",2522:"Promotor",2523:"Promotor",2524:"Promotor",2525:"Evaluador",2526:"Evaluador",2527:"Evaluador",2531:"Promotor",2532:"Promotor",2533:"Promotor",2534:"Promotor",2535:"Evaluador",2536:"Evaluador",2537:"Evaluador",2541:"Promotor",2542:"Promotor",2543:"Promotor",2544:"Promotor",2545:"Profesional",2546:"Profesional",2547:"Profesional",2551:"Consejero",2552:"Consejero",2553:"Consejero",2554:"Consejero",2555:"Profesional",2556:"Profesional",2557:"Profesional",2561:"Agente",2562:"Agente",2563:"Agente",2564:"Agente",2565:"Profesional",2566:"Profesional",2567:"Profesional",2571:"Agente",2572:"Agente",2573:"Agente",2574:"Agente",2575:"Profesional",2576:"Profesional",2577:"Profesional",2611:"Promotor",2612:"Promotor",2613:"Promotor",2614:"Promotor",2615:"Evaluador",2616:"Evaluador",2617:"Evaluador",2621:"Promotor",2622:"Promotor",2623:"Promotor",2624:"Promotor",2625:"Evaluador",2626:"Evaluador",2627:"Evaluador",2631:"Promotor",2632:"Promotor",2633:"Promotor",2634:"Promotor",2635:"Evaluador",2636:"Evaluador",2637:"Evaluador",2641:"Promotor",2642:"Promotor",2643:"Promotor",2644:"Promotor",2645:"Profesional",2646:"Profesional",2647:"Profesional",2651:"Consejero",2652:"Consejero",2653:"Consejero",2654:"Consejero",2655:"Profesional",2656:"Profesional",2657:"Profesional",2661:"Consejero",2662:"Consejero",2663:"Consejero",2664:"Consejero",2665:"Profesional",2666:"Profesional",2667:"Profesional",2671:"Agente",2672:"Agente",2673:"Agente",2674:"Agente",2675:"Profesional",2676:"Profesional",2677:"Profesional",2711:"Promotor",2712:"Promotor",2713:"Promotor",2714:"Promotor",2715:"Evaluador",2716:"Evaluador",2717:"Evaluador",2721:"Promotor",2722:"Promotor",2723:"Promotor",2724:"Promotor",2725:"Evaluador",2726:"Evaluador",2727:"Evaluador",2731:"Promotor",2732:"Promotor",2733:"Promotor",2734:"Promotor",2735:"Evaluador",2736:"Evaluador",2737:"Evaluador",2741:"Promotor",2742:"Promotor",2743:"Promotor",2744:"Promotor",2745:"Profesional",2746:"Profesional",2747:"Profesional",2751:"Consejero",2752:"Consejero",2753:"Consejero",2754:"Consejero",2755:"Profesional",2756:"Profesional",2757:"Profesional",2761:"Consejero",2762:"Consejero",2763:"Consejero",2764:"Consejero",2765:"Profesional",2766:"Profesional",2767:"Profesional",2771:"Consejero",2772:"Consejero",2773:"Consejero",2774:"Consejero",2775:"Profesional",2776:"Profesional",2777:"Profesional",3111:"Subactivo",3112:"Subactivo",3113:"Subactivo",3114:"Subactivo",3115:"Objetivo",3116:"Objetivo",3117:"Objetivo",3121:"Subactivo",3122:"Subactivo",3123:"Subactivo",3124:"Subactivo",3125:"Objetivo",3126:"Objetivo",3127:"Objetivo",3131:"Subactivo",3132:"Subactivo",3133:"Subactivo",3134:"Subactivo",3135:"Objetivo",3136:"Objetivo",3137:"Objetivo",3141:"Subactivo",3142:"Subactivo",3143:"Subactivo",3144:"Subactivo",3145:"Objetivo",3146:"Objetivo",3147:"Objetivo",3151:"Especialista",3152:"Especialista",3153:"Especialista",3154:"Especialista",3155:"Perfeccionista",3156:"Perfeccionista",3157:"Perfeccionista",3161:"Especialista",3162:"Especialista",3163:"Especialista",3164:"Especialista",3165:"Perfeccionista",3166:"Perfeccionista",3167:"Perfeccionista",3171:"Especialista",3172:"Especialista",3173:"Especialista",3174:"Especialista",3175:"Perfeccionista",3176:"Perfeccionista",3177:"Perfeccionista",3211:"Subactivo",3212:"Subactivo",3213:"Subactivo",3214:"Subactivo",3215:"Objetivo",3216:"Objetivo",3217:"Objetivo",3221:"Subactivo",3222:"Subactivo",3223:"Subactivo",3224:"Subactivo",3225:"Objetivo",3226:"Objetivo",3227:"Objetivo",3231:"Subactivo",3232:"Subactivo",3233:"Subactivo",3234:"Subactivo",3235:"Objetivo",3236:"Objetivo",3237:"Objetivo",3241:"Subactivo",3242:"Subactivo",3243:"Subactivo",3244:"Subactivo",3245:"Objetivo",3246:"Objetivo",3247:"Objetivo",3251:"Especialista",3252:"Especialista",3253:"Especialista",3254:"Especialista",3255:"Perfeccionista",3256:"Perfeccionista",3257:"Perfeccionista",3261:"Especialista",3262:"Especialista",3263:"Especialista",3264:"Especialista",3265:"Perfeccionista",3266:"Perfeccionista",3267:"Perfeccionista",3271:"Especialista",3272:"Especialista",3273:"Especialista",3274:"Especialista",3275:"Perfeccionista",3276:"Perfeccionista",3277:"Perfeccionista",3311:"Subactivo",3312:"Subactivo",3313:"Subactivo",3314:"Subactivo",3315:"Objetivo",3316:"Objetivo",3317:"Objetivo",3321:"Subactivo",3322:"Subactivo",3323:"Subactivo",3324:"Subactivo",3325:"Objetivo",3326:"Objetivo",3327:"Objetivo",3331:"Subactivo",3332:"Subactivo",3333:"Subactivo",3334:"Desconcertante",3335:"Objetivo",3336:"Objetivo",3337:"Objetivo",3341:"Subactivo",3342:"Subactivo",3343:"Desconcertante",3344:"Desconcertante",3345:"Objetivo",3346:"Objetivo",3347:"Objetivo",3351:"Especialista",3352:"Especialista",3353:"Especialista",3354:"Especialista",3355:"Perfeccionista",3356:"Perfeccionista",3357:"Perfeccionista",3361:"Especialista",3362:"Especialista",3363:"Especialista",3364:"Especialista",3365:"Perfeccionista",3366:"Perfeccionista",3367:"Perfeccionista",3371:"Especialista",3372:"Especialista",3373:"Especialista",3374:"Especialista",3375:"Perfeccionista",3376:"Perfeccionista",3377:"Perfeccionista",3411:"Subactivo",3412:"Subactivo",3413:"Subactivo",3414:"Subactivo",3415:"Objetivo",3416:"Objetivo",3417:"Objetivo",3421:"Subactivo",3422:"Subactivo",3423:"Subactivo",3424:"Subactivo",3425:"Objetivo",3426:"Objetivo",3427:"Objetivo",3431:"Subactivo",3432:"Subactivo",3433:"Desconcertante",3434:"Desconcertante",3435:"Objetivo",3436:"Objetivo",3437:"Objetivo",3441:"Subactivo",3442:"Subactivo",3443:"Desconcertante",3444:"Desconcertante",3445:"Objetivo",3446:"Objetivo",3447:"Objetivo",3451:"Especialista",3452:"Especialista",3453:"Especialista",3454:"Especialista",3455:"Perfeccionista",3456:"Perfeccionista",3457:"Perfeccionista",3461:"Especialista",3462:"Especialista",3463:"Especialista",3464:"Especialista",3465:"Perfeccionista",3466:"Perfeccionista",3467:"Perfeccionista",3471:"Especialista",3472:"Especialista",3473:"Especialista",3474:"Especialista",3475:"Perfeccionista",3476:"Perfeccionista",3477:"Perfeccionista",3511:"Promotor",3512:"Promotor",3513:"Promotor",3514:"Promotor",3515:"Evaluador",3516:"Evaluador",3517:"Evaluador",3521:"Promotor",3522:"Promotor",3523:"Promotor",3524:"Promotor",3525:"Evaluador",3526:"Evaluador",3527:"Evaluador",3531:"Promotor",3532:"Promotor",3533:"Promotor",3534:"Promotor",3535:"Evaluador",3536:"Evaluador",3537:"Evaluador",3541:"Promotor",3542:"Promotor",3543:"Promotor",3544:"Promotor",3545:"Profesional",3546:"Profesional",3547:"Profesional",3551:"Consejero",3552:"Consejero",3553:"Consejero",3554:"Consejero",3555:"Profesional",3556:"Profesional",3557:"Profesional",3561:"Agente",3562:"Agente",3563:"Agente",3564:"Agente",3565:"Profesional",3566:"Profesional",3567:"Profesional",3571:"Agente",3572:"Agente",3573:"Agente",3574:"Agente",3575:"Profesional",3576:"Profesional",3577:"Profesional",3611:"Promotor",3612:"Promotor",3613:"Promotor",3614:"Promotor",3615:"Evaluador",3616:"Evaluador",3617:"Evaluador",3621:"Promotor",3622:"Promotor",3623:"Promotor",3624:"Promotor",3625:"Evaluador",3626:"Evaluador",3627:"Evaluador",3631:"Promotor",3632:"Promotor",3633:"Promotor",3634:"Promotor",3635:"Evaluador",3636:"Evaluador",3637:"Evaluador",3641:"Promotor",3642:"Promotor",3643:"Promotor",3644:"Promotor",3645:"Profesional",3646:"Profesional",3647:"Profesional",3651:"Consejero",3652:"Consejero",3653:"Consejero",3654:"Consejero",3655:"Profesional",3656:"Profesional",3657:"Profesional",3661:"Consejero",3662:"Consejero",3663:"Consejero",3664:"Consejero",3665:"Profesional",3666:"Profesional",3667:"Profesional",3671:"Agente",3672:"Agente",3673:"Agente",3674:"Agente",3675:"Profesional",3676:"Profesional",3677:"Profesional",3711:"Promotor",3712:"Promotor",3713:"Promotor",3714:"Promotor",3715:"Evaluador",3716:"Evaluador",3717:"Evaluador",3721:"Promotor",3722:"Promotor",3723:"Promotor",3724:"Promotor",3725:"Evaluador",3726:"Evaluador",3727:"Evaluador",3731:"Promotor",3732:"Promotor",3733:"Promotor",3734:"Promotor",3735:"Evaluador",3736:"Evaluador",3737:"Evaluador",3741:"Promotor",3742:"Promotor",3743:"Promotor",3744:"Promotor",3745:"Profesional",3746:"Profesional",3747:"Profesional",3751:"Consejero",3752:"Consejero",3753:"Consejero",3754:"Consejero",3755:"Profesional",3756:"Profesional",3757:"Profesional",3761:"Consejero",3762:"Consejero",3763:"Consejero",3764:"Consejero",3765:"Profesional",3766:"Profesional",3767:"Profesional",3771:"Consejero",3772:"Consejero",3773:"Consejero",3774:"Consejero",3775:"Profesional",3776:"Profesional",3777:"Profesional",4111:"Subactivo",4112:"Subactivo",4113:"Subactivo",4114:"Subactivo",4115:"Objetivo",4116:"Objetivo",4117:"Objetivo",4121:"Subactivo",4122:"Subactivo",4123:"Subactivo",4124:"Subactivo",4125:"Objetivo",4126:"Objetivo",4127:"Objetivo",4131:"Subactivo",4132:"Subactivo",4133:"Subactivo",4134:"Subactivo",4135:"Objetivo",4136:"Objetivo",4137:"Objetivo",4141:"Subactivo",4142:"Subactivo",4143:"Subactivo",4144:"Subactivo",4145:"Objetivo",4146:"Objetivo",4147:"Objetivo",4151:"Especialista",4152:"Especialista",4153:"Especialista",4154:"Especialista",4155:"Perfeccionista",4156:"Perfeccionista",4157:"Perfeccionista",4161:"Especialista",4162:"Especialista",4163:"Especialista",4164:"Especialista",4165:"Perfeccionista",4166:"Perfeccionista",4167:"Perfeccionista",4171:"Especialista",4172:"Especialista",4173:"Especialista",4174:"Especialista",4175:"Perfeccionista",4176:"Perfeccionista",4177:"Perfeccionista",4211:"Subactivo",4212:"Subactivo",4213:"Subactivo",4214:"Subactivo",4215:"Objetivo",4216:"Objetivo",4217:"Objetivo",4221:"Subactivo",4222:"Subactivo",4223:"Subactivo",4224:"Subactivo",4225:"Objetivo",4226:"Objetivo",4227:"Objetivo",4231:"Subactivo",4232:"Subactivo",4233:"Subactivo",4234:"Subactivo",4235:"Objetivo",4236:"Objetivo",4237:"Objetivo",4241:"Subactivo",4242:"Subactivo",4243:"Subactivo",4244:"Subactivo",4245:"Objetivo",4246:"Objetivo",4247:"Objetivo",4251:"Especialista",4252:"Especialista",4253:"Especialista",4254:"Especialista",4255:"Perfeccionista",4256:"Perfeccionista",4257:"Perfeccionista",4261:"Especialista",4262:"Especialista",4263:"Especialista",4264:"Especialista",4265:"Perfeccionista",4266:"Perfeccionista",4267:"Perfeccionista",4271:"Especialista",4272:"Especialista",4273:"Especialista",4274:"Especialista",4275:"Perfeccionista",4276:"Perfeccionista",4277:"Perfeccionista",4311:"Subactivo",4312:"Subactivo",4313:"Subactivo",4314:"Subactivo",4315:"Objetivo",4316:"Objetivo",4317:"Objetivo",4321:"Subactivo",4322:"Subactivo",4323:"Subactivo",4324:"Subactivo",4325:"Objetivo",4326:"Objetivo",4327:"Objetivo",4331:"Subactivo",4332:"Subactivo",4333:"Desconcertante",4334:"Desconcertante",4335:"Objetivo",4336:"Objetivo",4337:"Objetivo",4341:"Subactivo",4342:"Subactivo",4343:"Desconcertante",4344:"Desconcertante",4345:"Objetivo",4346:"Objetivo",4347:"Objetivo",4351:"Especialista",4352:"Especialista",4353:"Especialista",4354:"Especialista",4355:"Perfeccionista",4356:"Perfeccionista",4357:"Perfeccionista",4361:"Especialista",4362:"Especialista",4363:"Especialista",4364:"Especialista",4365:"Perfeccionista",4366:"Perfeccionista",4367:"Perfeccionista",4371:"Especialista",4372:"Especialista",4373:"Especialista",4374:"Especialista",4375:"Perfeccionista",4376:"Perfeccionista",4377:"Perfeccionista",4411:"Subactivo",4412:"Subactivo",4413:"Subactivo",4414:"Subactivo",4415:"Objetivo",4416:"Objetivo",4417:"Objetivo",4421:"Subactivo",4422:"Subactivo",4423:"Subactivo",4424:"Subactivo",4425:"Objetivo",4426:"Objetivo",4427:"Objetivo",4431:"Subactivo",4432:"Subactivo",4433:"Desconcertante",4434:"Desconcertante",4435:"Objetivo",4436:"Objetivo",4437:"Objetivo",4441:"Subactivo",4442:"Subactivo",4443:"Desconcertante",4444:"Desconcertante",4445:"Desconcertante",4446:"Objetivo",4447:"Objetivo",4451:"Especialista",4452:"Especialista",4453:"Especialista",4454:"Desconcertante",4455:"Desconcertante",4456:"Perfeccionista",4457:"Perfeccionista",4461:"Especialista",4462:"Especialista",4463:"Especialista",4464:"Especialista",4465:"Perfeccionista",4466:"Perfeccionista",4467:"Perfeccionista",4471:"Especialista",4472:"Especialista",4473:"Especialista",4474:"Especialista",4475:"Perfeccionista",4476:"Perfeccionista",4477:"Perfeccionista",4511:"Promotor",4512:"Promotor",4513:"Promotor",4514:"Promotor",4515:"Evaluador",4516:"Evaluador",4517:"Evaluador",4521:"Promotor",4522:"Promotor",4523:"Promotor",4524:"Promotor",4525:"Evaluador",4526:"Evaluador",4527:"Evaluador",4531:"Promotor",4532:"Promotor",4533:"Promotor",4534:"Promotor",4535:"Evaluador",4536:"Evaluador",4537:"Evaluador",4541:"Consejero",4542:"Consejero",4543:"Consejero",4544:"Desconcertante",4545:"Profesional",4546:"Profesional",4547:"Profesional",4551:"Consejero",4552:"Consejero",4553:"Consejero",4554:"Consejero",4555:"Desconcertante",4556:"Profesional",4557:"Profesional",4561:"Agente",4562:"Agente",4563:"Agente",4564:"Agente",4565:"Profesional",4566:"Profesional",4567:"Profesional",4571:"Agente",4572:"Agente",4573:"Agente",4574:"Agente",4575:"Profesional",4576:"Profesional",4577:"Profesional",4611:"Promotor",4612:"Promotor",4613:"Promotor",4614:"Promotor",4615:"Evaluador",4616:"Evaluador",4617:"Evaluador",4621:"Promotor",4622:"Promotor",4623:"Promotor",4624:"Promotor",4625:"Evaluador",4626:"Evaluador",4627:"Evaluador",4631:"Promotor",4632:"Promotor",4633:"Promotor",4634:"Promotor",4635:"Evaluador",4636:"Evaluador",4637:"Evaluador",4641:"Promotor",4642:"Promotor",4643:"Promotor",4644:"Promotor",4645:"Evaluador",4646:"Evaluador",4647:"Evaluador",4651:"Consejero",4652:"Consejero",4653:"Consejero",4654:"Consejero",4655:"Profesional",4656:"Profesional",4657:"Profesional",4661:"Consejero",4662:"Consejero",4663:"Consejero",4664:"Consejero",4665:"Profesional",4666:"Profesional",4667:"Profesional",4671:"Agente",4672:"Agente",4673:"Agente",4674:"Agente",4675:"Profesional",4676:"Profesional",4677:"Profesional",4711:"Promotor",4712:"Promotor",4713:"Promotor",4714:"Promotor",4715:"Evaluador",4716:"Evaluador",4717:"Evaluador",4721:"Promotor",4722:"Promotor",4723:"Promotor",4724:"Promotor",4725:"Evaluador",4726:"Evaluador",4727:"Evaluador",4731:"Promotor",4732:"Promotor",4733:"Promotor",4734:"Promotor",4735:"Evaluador",4736:"Evaluador",4737:"Evaluador",4741:"Promotor",4742:"Promotor",4743:"Promotor",4744:"Promotor",4745:"Evaluador",4746:"Evaluador",4747:"Evaluador",4751:"Consejero",4752:"Consejero",4753:"Consejero",4754:"Consejero",4755:"Profesional",4756:"Profesional",4757:"Profesional",4761:"Consejero",4762:"Consejero",4763:"Consejero",4764:"Consejero",4765:"Profesional",4766:"Profesional",4767:"Profesional",4771:"Consejero",4772:"Consejero",4773:"Consejero",4774:"Consejero",4775:"Profesional",4776:"Profesional",4777:"Profesional",5111:"Resolutivo",5112:"Resolutivo",5113:"Resolutivo",5114:"Resolutivo",5115:"Creativo",5116:"Creativo",5117:"Creativo",5121:"Resolutivo",5122:"Resolutivo",5123:"Resolutivo",5124:"Resolutivo",5125:"Creativo",5126:"Creativo",5127:"Creativo",5131:"Resolutivo",5132:"Resolutivo",5133:"Resolutivo",5134:"Resolutivo",5135:"Creativo",5136:"Creativo",5137:"Creativo",5141:"Resolutivo",5142:"Resolutivo",5143:"Resolutivo",5144:"Resolutivo",5145:"Creativo",5146:"Creativo",5147:"Creativo",5151:"Realizador",5152:"Realizador",5153:"Realizador",5154:"Realizador",5155:"Investigador",5156:"Investigador",5157:"Investigador",5161:"Realizador",5162:"Realizador",5163:"Realizador",5164:"Realizador",5165:"Investigador",5166:"Investigador",5167:"Investigador",5171:"Realizador",5172:"Realizador",5173:"Realizador",5174:"Realizador",5175:"Investigador",5176:"Investigador",5177:"Investigador",5211:"Resolutivo",5212:"Resolutivo",5213:"Resolutivo",5214:"Resolutivo",5215:"Creativo",5216:"Creativo",5217:"Creativo",5221:"Resolutivo",5222:"Resolutivo",5223:"Resolutivo",5224:"Resolutivo",5225:"Creativo",5226:"Creativo",5227:"Creativo",5231:"Resolutivo",5232:"Resolutivo",5233:"Resolutivo",5234:"Resolutivo",5235:"Creativo",5236:"Creativo",5237:"Creativo",5241:"Resolutivo",5242:"Resolutivo",5243:"Resolutivo",5244:"Resolutivo",5245:"Creativo",5246:"Creativo",5247:"Creativo",5251:"Realizador",5252:"Realizador",5253:"Realizador",5254:"Realizador",5255:"Investigador",5256:"Investigador",5257:"Investigador",5261:"Realizador",5262:"Realizador",5263:"Realizador",5264:"Realizador",5265:"Investigador",5266:"Investigador",5267:"Investigador",5271:"Realizador",5272:"Realizador",5273:"Realizador",5274:"Realizador",5275:"Investigador",5276:"Investigador",5277:"Investigador",5311:"Resolutivo",5312:"Resolutivo",5313:"Resolutivo",5314:"Resolutivo",5315:"Creativo",5316:"Creativo",5317:"Creativo",5321:"Resolutivo",5322:"Resolutivo",5323:"Resolutivo",5324:"Resolutivo",5325:"Creativo",5326:"Creativo",5327:"Creativo",5331:"Resolutivo",5332:"Resolutivo",5333:"Resolutivo",5334:"Resolutivo",5335:"Creativo",5336:"Creativo",5337:"Creativo",5341:"Resolutivo",5342:"Resolutivo",5343:"Resolutivo",5344:"Resolutivo",5345:"Creativo",5346:"Creativo",5347:"Creativo",5351:"Realizador",5352:"Realizador",5353:"Realizador",5354:"Realizador",5355:"Investigador",5356:"Investigador",5357:"Investigador",5361:"Realizador",5362:"Realizador",5363:"Realizador",5364:"Realizador",5365:"Investigador",5366:"Investigador",5367:"Investigador",5371:"Realizador",5372:"Realizador",5373:"Realizador",5374:"Realizador",5375:"Investigador",5376:"Investigador",5377:"Investigador",5411:"OrientadoResultados",5412:"OrientadoResultados",5413:"OrientadoResultados",5414:"OrientadoResultados",5415:"Creativo",5416:"Creativo",5417:"Creativo",5421:"OrientadoResultados",5422:"OrientadoResultados",5423:"OrientadoResultados",5424:"OrientadoResultados",5425:"Creativo",5426:"Creativo",5427:"Creativo",5431:"OrientadoResultados",5432:"OrientadoResultados",5433:"OrientadoResultados",5434:"OrientadoResultados",5435:"Creativo",5436:"Creativo",5437:"Creativo",5441:"OrientadoResultados",5442:"OrientadoResultados",5443:"OrientadoResultados",5444:"Desconcertante",5445:"Creativo",5446:"Creativo",5447:"Creativo",5451:"Realizador",5452:"Realizador",5453:"Realizador",5454:"Realizador",5455:"Investigador",5456:"Investigador",5457:"Investigador",5461:"Realizador",5462:"Realizador",5463:"Realizador",5464:"Realizador",5465:"Investigador",5466:"Investigador",5467:"Investigador",5471:"Realizador",5472:"Realizador",5473:"Realizador",5474:"Realizador",5475:"Investigador",5476:"Investigador",5477:"Investigador",5511:"Alentador",5512:"Alentador",5513:"Alentador",5514:"Alentador",5515:"Evaluador",5516:"Evaluador",5517:"Evaluador",5521:"Alentador",5522:"Alentador",5523:"Alentador",5524:"Alentador",5525:"Evaluador",5526:"Evaluador",5527:"Evaluador",5531:"Alentador",5532:"Alentador",5533:"Alentador",5534:"Alentador",5535:"Evaluador",5536:"Evaluador",5537:"Evaluador",5541:"Alentador",5542:"Alentador",5543:"Alentador",5544:"Desconcertante",5545:"Evaluador",5546:"Evaluador",5547:"Evaluador",5551:"Consejero",5552:"Consejero",5553:"Consejero",5554:"Desconcertante",5555:"Superactivo",5556:"Superactivo",5557:"Superactivo",5561:"Agente",5562:"Agente",5563:"Agente",5564:"Agente",5565:"Superactivo",5566:"Superactivo",5567:"Superactivo",5571:"Agente",5572:"Agente",5573:"Agente",5574:"Agente",5575:"Superactivo",5576:"Superactivo",5577:"Superactivo",5611:"Persuasivo",5612:"Persuasivo",5613:"Persuasivo",5614:"Persuasivo",5615:"Evaluador",5616:"Evaluador",5617:"Evaluador",5621:"Persuasivo",5622:"Persuasivo",5623:"Persuasivo",5624:"Persuasivo",5625:"Evaluador",5626:"Evaluador",5627:"Evaluador",5631:"Persuasivo",5632:"Persuasivo",5633:"Persuasivo",5634:"Persuasivo",5635:"Evaluador",5636:"Evaluador",5637:"Evaluador",5641:"Persuasivo",5642:"Persuasivo",5643:"Persuasivo",5644:"Persuasivo",5645:"Evaluador",5646:"Evaluador",5647:"Evaluador",5651:"Persuasivo",5652:"Persuasivo",5653:"Persuasivo",5654:"Persuasivo",5655:"Superactivo",5656:"Superactivo",5657:"Superactivo",5661:"Consejero",5662:"Consejero",5663:"Consejero",5664:"Consejero",5665:"Superactivo",5666:"Superactivo",5667:"Superactivo",5671:"Agente",5672:"Agente",5673:"Agente",5674:"Agente",5675:"Superactivo",5676:"Superactivo",5677:"Superactivo",5711:"Persuasivo",5712:"Persuasivo",5713:"Persuasivo",5714:"Persuasivo",5715:"Evaluador",5716:"Evaluador",5717:"Evaluador",5721:"Persuasivo",5722:"Persuasivo",5723:"Persuasivo",5724:"Persuasivo",5725:"Evaluador",5726:"Evaluador",5727:"Evaluador",5731:"Persuasivo",5732:"Persuasivo",5733:"Persuasivo",5734:"Persuasivo",5735:"Evaluador",5736:"Evaluador",5737:"Evaluador",5741:"Persuasivo",5742:"Persuasivo",5743:"Persuasivo",5744:"Persuasivo",5745:"Evaluador",5746:"Evaluador",5747:"Evaluador",5751:"Persuasivo",5752:"Persuasivo",5753:"Persuasivo",5754:"Persuasivo",5755:"Superactivo",5756:"Superactivo",5757:"Superactivo",5761:"Consejero",5762:"Consejero",5763:"Consejero",5764:"Consejero",5765:"Superactivo",5766:"Superactivo",5767:"Superactivo",5771:"Consejero",5772:"Consejero",5773:"Consejero",5774:"Consejero",5775:"Superactivo",5776:"Superactivo",5777:"Superactivo",6111:"Resolutivo",6112:"Resolutivo",6113:"Resolutivo",6114:"Resolutivo",6115:"Creativo",6116:"Creativo",6117:"Creativo",6121:"Resolutivo",6122:"Resolutivo",6123:"Resolutivo",6124:"Resolutivo",6125:"Creativo",6126:"Creativo",6127:"Creativo",6131:"Resolutivo",6132:"Resolutivo",6133:"Resolutivo",6134:"Resolutivo",6135:"Creativo",6136:"Creativo",6137:"Creativo",6141:"Resolutivo",6142:"Resolutivo",6143:"Resolutivo",6144:"Resolutivo",6145:"Creativo",6146:"Creativo",6147:"Creativo",6151:"Realizador",6152:"Realizador",6153:"Realizador",6154:"Realizador",6155:"Investigador",6156:"Investigador",6157:"Investigador",6161:"Realizador",6162:"Realizador",6163:"Realizador",6164:"Realizador",6165:"Investigador",6166:"Investigador",6167:"Investigador",6171:"Realizador",6172:"Realizador",6173:"Realizador",6174:"Realizador",6175:"Investigador",6176:"Investigador",6177:"Investigador",6211:"Resolutivo",6212:"Resolutivo",6213:"Resolutivo",6214:"Resolutivo",6215:"Creativo",6216:"Creativo",6217:"Creativo",6221:"Resolutivo",6222:"Resolutivo",6223:"Resolutivo",6224:"Resolutivo",6225:"Creativo",6226:"Creativo",6227:"Creativo",6231:"Resolutivo",6232:"Resolutivo",6233:"Resolutivo",6234:"Resolutivo",6235:"Creativo",6236:"Creativo",6237:"Creativo",6241:"Resolutivo",6242:"Resolutivo",6243:"Resolutivo",6244:"Resolutivo",6245:"Creativo",6246:"Creativo",6247:"Creativo",6251:"Realizador",6252:"Realizador",6253:"Realizador",6254:"Realizador",6255:"Investigador",6256:"Investigador",6257:"Investigador",6261:"Realizador",6262:"Realizador",6263:"Realizador",6264:"Realizador",6265:"Investigador",6266:"Investigador",6267:"Investigador",6271:"Realizador",6272:"Realizador",6273:"Realizador",6274:"Realizador",6275:"Investigador",6276:"Investigador",6277:"Investigador",6311:"Resolutivo",6312:"Resolutivo",6313:"Resolutivo",6314:"Resolutivo",6315:"Creativo",6316:"Creativo",6317:"Creativo",6321:"Resolutivo",6322:"Resolutivo",6323:"Resolutivo",6324:"Resolutivo",6325:"Creativo",6326:"Creativo",6327:"Creativo",6331:"Resolutivo",6332:"Resolutivo",6333:"Resolutivo",6334:"Resolutivo",6335:"Creativo",6336:"Creativo",6337:"Creativo",6341:"Resolutivo",6342:"Resolutivo",6343:"Resolutivo",6344:"Resolutivo",6345:"Creativo",6346:"Creativo",6347:"Creativo",6351:"Realizador",6352:"Realizador",6353:"Realizador",6354:"Realizador",6355:"Investigador",6356:"Investigador",6357:"Investigador",6361:"Realizador",6362:"Realizador",6363:"Realizador",6364:"Realizador",6365:"Investigador",6366:"Investigador",6367:"Investigador",6371:"Realizador",6372:"Realizador",6373:"Realizador",6374:"Realizador",6375:"Investigador",6376:"Investigador",6377:"Investigador",6411:"OrientadoResultados",6412:"OrientadoResultados",6413:"OrientadoResultados",6414:"OrientadoResultados",6415:"Creativo",6416:"Creativo",6417:"Creativo",6421:"OrientadoResultados",6422:"OrientadoResultados",6423:"OrientadoResultados",6424:"OrientadoResultados",6425:"Creativo",6426:"Creativo",6427:"Creativo",6431:"OrientadoResultados",6432:"OrientadoResultados",6433:"OrientadoResultados",6434:"OrientadoResultados",6435:"Creativo",6436:"Creativo",6437:"Creativo",6441:"OrientadoResultados",6442:"OrientadoResultados",6443:"OrientadoResultados",6444:"OrientadoResultados",6445:"Creativo",6446:"Creativo",6447:"Creativo",6451:"Realizador",6452:"Realizador",6453:"Realizador",6454:"Realizador",6455:"Investigador",6456:"Investigador",6457:"Investigador",6461:"Realizador",6462:"Realizador",6463:"Realizador",6464:"Realizador",6465:"Investigador",6466:"Investigador",6467:"Investigador",6471:"Realizador",6472:"Realizador",6473:"Realizador",6474:"Realizador",6475:"Investigador",6476:"Investigador",6477:"Investigador",6511:"OrientadoResultados",6512:"OrientadoResultados",6513:"OrientadoResultados",6514:"OrientadoResultados",6515:"Creativo",6516:"Creativo",6517:"Creativo",6521:"OrientadoResultados",6522:"OrientadoResultados",6523:"OrientadoResultados",6524:"OrientadoResultados",6525:"Creativo",6526:"Creativo",6527:"Creativo",6531:"OrientadoResultados",6532:"OrientadoResultados",6533:"OrientadoResultados",6534:"OrientadoResultados",6535:"Creativo",6536:"Creativo",6537:"Creativo",6541:"OrientadoResultados",6542:"OrientadoResultados",6543:"OrientadoResultados",6544:"OrientadoResultados",6545:"Creativo",6546:"Creativo",6547:"Creativo",6551:"OrientadoResultados",6552:"OrientadoResultados",6553:"OrientadoResultados",6554:"OrientadoResultados",6555:"Superactivo",6556:"Superactivo",6557:"Superactivo",6561:"Realizador",6562:"Realizador",6563:"Realizador",6564:"Realizador",6565:"Superactivo",6566:"Superactivo",6567:"Superactivo",6571:"Realizador",6572:"Realizador",6573:"Realizador",6574:"Realizador",6575:"Superactivo",6576:"Superactivo",6577:"Superactivo",6611:"Alentador",6612:"Alentador",6613:"Alentador",6614:"Alentador",6615:"Evaluador",6616:"Evaluador",6617:"Evaluador",6621:"Alentador",6622:"Alentador",6623:"Alentador",6624:"Alentador",6625:"Evaluador",6626:"Evaluador",6627:"Evaluador",6631:"Alentador",6632:"Alentador",6633:"Alentador",6634:"Alentador",6635:"Evaluador",6636:"Evaluador",6637:"Evaluador",6641:"Alentador",6642:"Alentador",6643:"Alentador",6644:"Alentador",6645:"Evaluador",6646:"Evaluador",6647:"Evaluador",6651:"Alentador",6652:"Alentador",6653:"Alentador",6654:"Alentador",6655:"Superactivo",6656:"Superactivo",6657:"Superactivo",6661:"Alentador",6662:"Alentador",6663:"Alentador",6664:"Alentador",6665:"Superactivo",6666:"Superactivo",6667:"Superactivo",6671:"Alentador",6672:"Alentador",6673:"Alentador",6674:"Alentador",6675:"Superactivo",6676:"Superactivo",6677:"Superactivo",6711:"Alentador",6712:"Alentador",6713:"Alentador",6714:"Alentador",6715:"Evaluador",6716:"Evaluador",6717:"Evaluador",6721:"Alentador",6722:"Alentador",6723:"Alentador",6724:"Alentador",6725:"Evaluador",6726:"Evaluador",6727:"Evaluador",6731:"Alentador",6732:"Alentador",6733:"Alentador",6734:"Alentador",6735:"Evaluador",6736:"Evaluador",6737:"Evaluador",6741:"Alentador",6742:"Alentador",6743:"Alentador",6744:"Alentador",6745:"Evaluador",6746:"Evaluador",6747:"Evaluador",6751:"Alentador",6752:"Alentador",6753:"Alentador",6754:"Alentador",6755:"Superactivo",6756:"Superactivo",6757:"Superactivo",6761:"Alentador",6762:"Alentador",6763:"Alentador",6764:"Alentador",6765:"Superactivo",6766:"Superactivo",6767:"Superactivo",6771:"Alentador",6772:"Alentador",6773:"Alentador",6774:"Alentador",6775:"Superactivo",6776:"Superactivo",6777:"Superactivo",7111:"Resolutivo",7112:"Resolutivo",7113:"Resolutivo",7114:"Resolutivo",7115:"Creativo",7116:"Creativo",7117:"Creativo",7121:"Resolutivo",7122:"Resolutivo",7123:"Resolutivo",7124:"Resolutivo",7125:"Creativo",7126:"Creativo",7127:"Creativo",7131:"Resolutivo",7132:"Resolutivo",7133:"Resolutivo",7134:"Resolutivo",7135:"Creativo",7136:"Creativo",7137:"Creativo",7141:"Resolutivo",7142:"Resolutivo",7143:"Resolutivo",7144:"Resolutivo",7145:"Creativo",7146:"Creativo",7147:"Creativo",7151:"Realizador",7152:"Realizador",7153:"Realizador",7154:"Realizador",7155:"Investigador",7156:"Investigador",7157:"Investigador",7161:"Realizador",7162:"Realizador",7163:"Realizador",7164:"Realizador",7165:"Investigador",7166:"Investigador",7167:"Investigador",7171:"Realizador",7172:"Realizador",7173:"Realizador",7174:"Realizador",7175:"Investigador",7176:"Investigador",7177:"Investigador",7211:"Resolutivo",7212:"Resolutivo",7213:"Resolutivo",7214:"Resolutivo",7215:"Creativo",7216:"Creativo",7217:"Creativo",7221:"Resolutivo",7222:"Resolutivo",7223:"Resolutivo",7224:"Resolutivo",7225:"Creativo",7226:"Creativo",7227:"Creativo",7231:"Resolutivo",7232:"Resolutivo",7233:"Resolutivo",7234:"Resolutivo",7235:"Creativo",7236:"Creativo",7237:"Creativo",7241:"Resolutivo",7242:"Resolutivo",7243:"Resolutivo",7244:"Resolutivo",7245:"Creativo",7246:"Creativo",7247:"Creativo",7251:"Realizador",7252:"Realizador",7253:"Realizador",7254:"Realizador",7255:"Investigador",7256:"Investigador",7257:"Investigador",7261:"Realizador",7262:"Realizador",7263:"Realizador",7264:"Realizador",7265:"Investigador",7266:"Investigador",7267:"Investigador",7271:"Realizador",7272:"Realizador",7273:"Realizador",7274:"Realizador",7275:"Investigador",7276:"Investigador",7277:"Investigador",7311:"Resolutivo",7312:"Resolutivo",7313:"Resolutivo",7314:"Resolutivo",7315:"Creativo",7316:"Creativo",7317:"Creativo",7321:"Resolutivo",7322:"Resolutivo",7323:"Resolutivo",7324:"Resolutivo",7325:"Creativo",7326:"Creativo",7327:"Creativo",7331:"Resolutivo",7332:"Resolutivo",7333:"Resolutivo",7334:"Resolutivo",7335:"Creativo",7336:"Creativo",7337:"Creativo",7341:"Resolutivo",7342:"Resolutivo",7343:"Resolutivo",7344:"Resolutivo",7345:"Creativo",7346:"Creativo",7347:"Creativo",7351:"Realizador",7352:"Realizador",7353:"Realizador",7354:"Realizador",7355:"Investigador",7356:"Investigador",7357:"Investigador",7361:"Realizador",7362:"Realizador",7363:"Realizador",7364:"Realizador",7365:"Investigador",7366:"Investigador",7367:"Investigador",7371:"Realizador",7372:"Realizador",7373:"Realizador",7374:"Realizador",7375:"Investigador",7376:"Investigador",7377:"Investigador",7411:"OrientadoResultados",7412:"OrientadoResultados",7413:"OrientadoResultados",7414:"OrientadoResultados",7415:"Creativo",7416:"Creativo",7417:"Creativo",7421:"OrientadoResultados",7422:"OrientadoResultados",7423:"OrientadoResultados",7424:"OrientadoResultados",7425:"Creativo",7426:"Creativo",7427:"Creativo",7431:"OrientadoResultados",7432:"OrientadoResultados",7433:"OrientadoResultados",7434:"OrientadoResultados",7435:"Creativo",7436:"Creativo",7437:"Creativo",7441:"OrientadoResultados",7442:"OrientadoResultados",7443:"OrientadoResultados",7444:"OrientadoResultados",7445:"Creativo",7446:"Creativo",7447:"Creativo",7451:"Realizador",7452:"Realizador",7453:"Realizador",7454:"Realizador",7455:"Investigador",7456:"Investigador",7457:"Investigador",7461:"Realizador",7462:"Realizador",7463:"Realizador",7464:"Realizador",7465:"Investigador",7466:"Investigador",7467:"Investigador",7471:"Realizador",7472:"Realizador",7473:"Realizador",7474:"Realizador",7475:"Investigador",7476:"Investigador",7477:"Investigador",7511:"OrientadoResultados",7512:"OrientadoResultados",7513:"OrientadoResultados",7514:"OrientadoResultados",7515:"Creativo",7516:"Creativo",7517:"Creativo",7521:"OrientadoResultados",7522:"OrientadoResultados",7523:"OrientadoResultados",7524:"OrientadoResultados",7525:"Creativo",7526:"Creativo",7527:"Creativo",7531:"OrientadoResultados",7532:"OrientadoResultados",7533:"OrientadoResultados",7534:"OrientadoResultados",7535:"Creativo",7536:"Creativo",7537:"Creativo",7541:"OrientadoResultados",7542:"OrientadoResultados",7543:"OrientadoResultados",7544:"OrientadoResultados",7545:"Creativo",7546:"Creativo",7547:"Creativo",7551:"OrientadoResultados",7552:"OrientadoResultados",7553:"OrientadoResultados",7554:"OrientadoResultados",7555:"Superactivo",7556:"Superactivo",7557:"Superactivo",7561:"Realizador",7562:"Realizador",7563:"Realizador",7564:"Realizador",7565:"Superactivo",7566:"Superactivo",7567:"Superactivo",7571:"Realizador",7572:"Realizador",7573:"Realizador",7574:"Realizador",7575:"Superactivo",7576:"Superactivo",7577:"Superactivo",7611:"Alentador",7612:"Alentador",7613:"Alentador",7614:"Alentador",7615:"Creativo",7616:"Creativo",7617:"Creativo",7621:"Alentador",7622:"Alentador",7623:"Alentador",7624:"Alentador",7625:"Creativo",7626:"Creativo",7627:"Creativo",7631:"Alentador",7632:"Alentador",7633:"Alentador",7634:"Alentador",7635:"Creativo",7636:"Creativo",7637:"Creativo",7641:"Alentador",7642:"Alentador",7643:"Alentador",7644:"Alentador",7645:"Creativo",7646:"Creativo",7647:"Creativo",7651:"Alentador",7652:"Alentador",7653:"Alentador",7654:"Alentador",7655:"Superactivo",7656:"Superactivo",7657:"Superactivo",7661:"Alentador",7662:"Alentador",7663:"Alentador",7664:"Alentador",7665:"Superactivo",7666:"Superactivo",7667:"Superactivo",7671:"Realizador",7672:"Realizador",7673:"Realizador",7674:"Realizador",7675:"Superactivo",7676:"Superactivo",7677:"Superactivo",7711:"Alentador",7712:"Alentador",7713:"Alentador",7714:"Alentador",7715:"Evaluador",7716:"Evaluador",7717:"Evaluador",7721:"Alentador",7722:"Alentador",7723:"Alentador",7724:"Alentador",7725:"Evaluador",7726:"Evaluador",7727:"Evaluador",7731:"Alentador",7732:"Alentador",7733:"Alentador",7734:"Alentador",7735:"Evaluador",7736:"Evaluador",7737:"Evaluador",7741:"Alentador",7742:"Alentador",7743:"Alentador",7744:"Alentador",7745:"Evaluador",7746:"Evaluador",7747:"Evaluador",7751:"Alentador",7752:"Alentador",7753:"Alentador",7754:"Alentador",7755:"Superactivo",7756:"Superactivo",7757:"Superactivo",7761:"Alentador",7762:"Alentador",7763:"Alentador",7764:"Alentador",7765:"Superactivo",7766:"Superactivo",7767:"Superactivo",7771:"Alentador",7772:"Alentador",7773:"Alentador",7774:"Alentador",7775:"Superactivo",7776:"Superactivo",7777:"Superactivo"};
+
+// ---- Contenido narrativo por patrón (redacción propia de Amplifica) ----
+const PATTERNS = {
+Alentador: {
+  nombre: "Alentador",
+  resumen: "Combina asertividad y sociabilidad: toma la iniciativa con confianza y al mismo tiempo genera entusiasmo en quienes lo rodean. Prefiere avanzar rápido y con el respaldo del grupo, antes que seguir procesos rígidos o esperar instrucciones detalladas.",
+  atributos: ["Persuasivo/a","Enérgico/a","Sociable","Seguro/a de sí mismo/a","Directo/a","Optimista"],
+  emociones: "Se entusiasma con facilidad y contagia ese ánimo a su equipo; puede impacientarse cuando el entusiasmo inicial no se traduce en avances concretos.",
+  metas: "Busca resultados visibles logrados junto a otras personas, y reconocimiento por su capacidad de movilizar al equipo.",
+  influye: "Influye combinando cercanía personal con firmeza: convence primero por simpatía y luego respalda con decisión.",
+  juzga: "Juzga a los demás por su disposición a actuar y por la energía que aportan al equipo, más que por su apego a los procedimientos.",
+  valor: "Aporta liderazgo motivador: es capaz de alinear a un equipo detrás de un objetivo y sostener el ritmo cuando otros decaen.",
+  abusa: "Puede abusar de su capacidad de persuasión para saltarse controles o de su seguridad para no pedir opinión antes de decidir.",
+  presion: "Bajo presión, tiende a acelerar el ritmo y a presionar al equipo, pudiendo pasar por alto el cansancio o las dudas de otros.",
+  teme: "Teme perder el control de la situación o quedar en una posición donde no puede influir en el resultado.",
+  eficaz: "Sería más eficaz si dedicara tiempo a escuchar objeciones antes de avanzar, y si delegara el detalle operativo sin perder el ritmo."
+},
+Persuasivo: {
+  nombre: "Persuasivo",
+  resumen: "Es, ante todo, un comunicador convincente: se apoya en su entusiasmo y su seguridad para ganar apoyo hacia sus ideas. Le interesa más el impacto de lo que dice que el análisis exhaustivo de los datos que lo respaldan.",
+  atributos: ["Convincente","Entusiasta","Seguro/a","Sociable","Optimista","Espontáneo/a"],
+  emociones: "Expresa entusiasmo abiertamente y espera que otros lo compartan; puede frustrarse ante el escepticismo o la indiferencia.",
+  metas: "Persigue el reconocimiento social y la validación de sus ideas por parte de otros.",
+  influye: "Influye principalmente a través de su capacidad verbal y su energía positiva, apelando a la emoción antes que al detalle técnico.",
+  juzga: "Juzga a los demás por su capacidad de entusiasmarse y de dejarse convencer.",
+  valor: "Aporta la capacidad de vender ideas y generar adhesión rápida en el equipo o con clientes.",
+  abusa: "Puede abusar del optimismo, minimizando riesgos reales para no perder el impulso de una idea.",
+  presion: "Bajo presión, redobla el discurso persuasivo en lugar de revisar los hechos, buscando convencer antes que analizar.",
+  teme: "Teme el rechazo social y que sus ideas no sean bien recibidas.",
+  eficaz: "Sería más eficaz si contrastara su entusiasmo con datos concretos antes de comprometerse públicamente con un resultado."
+},
+Promotor: {
+  nombre: "Promotor",
+  resumen: "Es marcadamente sociable y espontáneo, con un perfil energético que no se apoya especialmente en la asertividad, la constancia ni el control de detalles. Disfruta el contacto con personas y los ambientes dinámicos por sobre la estructura o la rutina.",
+  atributos: ["Sociable","Espontáneo/a","Entusiasta","Comunicativo/a","Flexible","Optimista"],
+  emociones: "Vive las emociones de forma expresiva e inmediata, compartiéndolas abiertamente con quienes lo rodean.",
+  metas: "Busca variedad, interacción social constante y reconocimiento por su simpatía y cercanía.",
+  influye: "Influye generando simpatía y un buen clima; rara vez impone su posición con firmeza.",
+  juzga: "Juzga a los demás por su calidez y su disposición a socializar, más que por su rendimiento o disciplina.",
+  valor: "Aporta un buen ambiente de trabajo y facilidad para conectar con distintos perfiles de personas.",
+  abusa: "Puede abusar de la informalidad, postergando tareas de detalle o compromisos que exigen seguimiento estricto.",
+  presion: "Bajo presión, busca apoyo social y conversación antes que enfrentar el problema en solitario.",
+  teme: "Teme el rechazo social, la soledad y los ambientes fríos o excesivamente formales.",
+  eficaz: "Sería más eficaz si sostuviera el seguimiento de sus compromisos con la misma energía con que los propone."
+},
+Consejero: {
+  nombre: "Consejero",
+  resumen: "Combina calidez interpersonal con paciencia: genera confianza con facilidad y sostiene relaciones de forma constante en el tiempo. Prioriza el bienestar del equipo por sobre la exposición personal o el enfrentamiento directo.",
+  atributos: ["Cálido/a","Paciente","Empático/a","Leal","Buen/a oyente","Colaborador/a"],
+  emociones: "Es sensible al estado emocional de los demás y tiende a acompañar antes que a confrontar.",
+  metas: "Busca relaciones de confianza duraderas y un ambiente de trabajo armonioso.",
+  influye: "Influye escuchando primero y ofreciendo apoyo genuino, ganándose la confianza antes de proponer cambios.",
+  juzga: "Juzga a los demás por su calidez y su disposición a cuidar al equipo.",
+  valor: "Aporta estabilidad emocional al grupo y capacidad real de mediar en conflictos interpersonales.",
+  abusa: "Puede abusar de la contemporización, evitando decisiones incómodas por no querer generar tensión.",
+  presion: "Bajo presión, busca consenso y evita tomar postura unilateral, lo que puede retrasar una decisión necesaria.",
+  teme: "Teme el conflicto abierto y decepcionar a las personas que confían en él o ella.",
+  eficaz: "Sería más eficaz si expresara desacuerdos de forma directa cuando la situación realmente lo requiere."
+},
+Agente: {
+  nombre: "Agente",
+  resumen: "Es paciente y estable, con una sociabilidad moderada que lo hace un buen facilitador entre personas o posiciones distintas. No busca protagonismo ni control; prefiere operar como puente antes que como líder al frente.",
+  atributos: ["Paciente","Diplomático/a","Confiable","Tranquilo/a","Colaborador/a","Discreto/a"],
+  emociones: "Mantiene la calma incluso en situaciones tensas, y transmite esa estabilidad a su entorno.",
+  metas: "Busca acuerdos que funcionen para todas las partes y estabilidad en las relaciones de trabajo.",
+  influye: "Influye mediando entre posiciones distintas, facilitando el entendimiento antes que imponiendo una postura.",
+  juzga: "Juzga a los demás por su disposición a cooperar y a mantener la armonía del grupo.",
+  valor: "Aporta capacidad real de conciliar intereses distintos sin generar bandos ni resentimientos.",
+  abusa: "Puede abusar de la neutralidad, evitando tomar una posición clara cuando se necesita liderazgo.",
+  presion: "Bajo presión, busca serenar el ambiente antes de resolver el fondo del problema.",
+  teme: "Teme quedar atrapado en medio de un conflicto que no pueda mediar.",
+  eficaz: "Sería más eficaz si estuviera dispuesto/a a tomar postura propia, no solo a facilitar la de otros."
+},
+Evaluador: {
+  nombre: "Evaluador",
+  resumen: "Une sociabilidad con pensamiento analítico: se comunica con facilidad y al mismo tiempo examina con ojo crítico lo que observa. Se aburre con la rutina y prefiere entornos donde pueda opinar y cuestionar.",
+  atributos: ["Analítico/a","Comunicativo/a","Crítico/a","Curioso/a","Directo/a","Perspicaz"],
+  emociones: "Expresa sus opiniones con soltura, incluyendo las críticas, sin mayor filtro emocional.",
+  metas: "Busca variedad de estímulos y la oportunidad de aplicar su juicio crítico a problemas reales.",
+  influye: "Influye argumentando con lógica y datos, comunicados de forma directa y persuasiva.",
+  juzga: "Juzga a los demás por la calidad de sus argumentos y su capacidad de sostener una posición con fundamento.",
+  valor: "Aporta una mirada crítica que detecta riesgos u errores que otros pasan por alto.",
+  abusa: "Puede abusar de la crítica, cuestionando en exceso decisiones ya tomadas o el trabajo de otros.",
+  presion: "Bajo presión, se vuelve más impaciente y más incisivo/a en sus juicios sobre lo que está saliendo mal.",
+  teme: "Teme la rutina prolongada y verse forzado/a a aceptar algo sin poder cuestionarlo.",
+  eficaz: "Sería más eficaz si equilibrara la crítica con reconocimiento explícito de lo que sí funciona."
+},
+Investigador: {
+  nombre: "Investigador",
+  resumen: "Es decidido, constante y meticuloso a la vez: avanza con determinación pero sin descuidar el detalle, y prefiere trabajar de forma autónoma antes que depender de la interacción social constante. Es reservado en su forma de comunicarse.",
+  atributos: ["Meticuloso/a","Persistente","Independiente","Reservado/a","Riguroso/a","Determinado/a"],
+  emociones: "Controla la expresión de sus emociones y prefiere mostrarse mediante hechos antes que mediante palabras.",
+  metas: "Busca dominar en profundidad un tema o problema y sostener sus conclusiones con evidencia sólida.",
+  influye: "Influye mediante la solidez de sus argumentos y la consistencia de su trabajo en el tiempo, no mediante el carisma.",
+  juzga: "Juzga a los demás por su rigurosidad y su capacidad de sostener un compromiso hasta el final.",
+  valor: "Aporta profundidad de análisis y constancia para llevar proyectos complejos hasta su conclusión.",
+  abusa: "Puede abusar del control, revisando en exceso o desconfiando del trabajo delegado a otros.",
+  presion: "Bajo presión, se repliega y profundiza el análisis en lugar de buscar apoyo o delegar.",
+  teme: "Teme equivocarse por falta de información y que su trabajo sea juzgado sin el contexto adecuado.",
+  eficaz: "Sería más eficaz si compartiera su razonamiento con el equipo antes de llegar a una conclusión final."
+},
+Objetivo: {
+  nombre: "Objetivo",
+  resumen: "Es predominantemente analítico y reservado: procesa la información con method y prefiere la precisión sobre la velocidad. No busca protagonismo social ni imponer su punto de vista; deja que los datos hablen por sí mismos.",
+  atributos: ["Analítico/a","Reservado/a","Preciso/a","Metódico/a","Objetivo/a","Cauteloso/a"],
+  emociones: "Mantiene una expresión emocional contenida y prefiere separar los hechos de las impresiones personales.",
+  metas: "Busca exactitud y comprobación antes de comprometerse con una conclusión o recomendación.",
+  influye: "Influye presentando evidencia clara y bien organizada, dejando que los hechos sostengan el argumento.",
+  juzga: "Juzga a los demás por la precisión y la lógica de lo que plantean, no por su capacidad de persuasión.",
+  valor: "Aporta objetividad y rigor técnico en decisiones que requieren análisis cuidadoso.",
+  abusa: "Puede abusar del análisis, postergando una decisión mientras busca información que quizás nunca sea suficiente.",
+  presion: "Bajo presión, se vuelve más cauteloso/a y pide más tiempo o más datos antes de actuar.",
+  teme: "Teme equivocarse por haber actuado con información incompleta.",
+  eficaz: "Sería más eficaz si aceptara decidir con información razonable, sin esperar certeza absoluta."
+},
+OrientadoResultados: {
+  nombre: "Orientado a Resultados",
+  resumen: "Es decidido y con una sociabilidad moderada que le permite movilizar a otros hacia una meta concreta. Actúa con rapidez y prioriza el avance tangible por sobre el consenso extendido o el análisis prolongado.",
+  atributos: ["Decidido/a","Pragmático/a","Directo/a","Enérgico/a","Competitivo/a","Autónomo/a"],
+  emociones: "Muestra sus emociones con moderación, principalmente cuando se relacionan con el avance o el estancamiento de un objetivo.",
+  metas: "Busca metas medibles y la satisfacción de verlas cumplidas en plazos concretos.",
+  influye: "Influye mostrando resultados concretos y proponiendo un camino de acción claro.",
+  juzga: "Juzga a los demás por su capacidad de producir resultados, más que por su proceso para llegar a ellos.",
+  valor: "Aporta foco y capacidad de ejecución en contextos donde se necesita avanzar rápido.",
+  abusa: "Puede abusar de la velocidad, saltándose pasos de validación que a la larga generan retrabajo.",
+  presion: "Bajo presión, acelera la toma de decisiones y puede volverse impaciente con quienes necesitan más tiempo.",
+  teme: "Teme el estancamiento y la sensación de no estar avanzando hacia ninguna meta.",
+  eficaz: "Sería más eficaz si validara el camino con el equipo antes de acelerar la ejecución."
+},
+Perfeccionista: {
+  nombre: "Perfeccionista",
+  resumen: "Es cuidadoso, constante y meticuloso: prioriza hacer las cosas bien por sobre hacerlas rápido, y prefiere la estabilidad y los estándares claros antes que el cambio constante o la improvisación.",
+  atributos: ["Meticuloso/a","Constante","Cauteloso/a","Disciplinado/a","Confiable","Detallista"],
+  emociones: "Prefiere mantener la calma y evitar reacciones impulsivas, incluso frente a la presión.",
+  metas: "Busca calidad consistente y evitar errores, más que la velocidad de ejecución.",
+  influye: "Influye mediante la calidad demostrada de su trabajo y el cumplimiento estricto de lo acordado.",
+  juzga: "Juzga a los demás por su prolijidad y su respeto a los procesos establecidos.",
+  valor: "Aporta consistencia y confiabilidad en tareas que exigen exactitud sostenida en el tiempo.",
+  abusa: "Puede abusar del control de calidad, retrasando entregas por buscar una perfección que el contexto no siempre exige.",
+  presion: "Bajo presión, se vuelve aún más cauteloso/a y necesita más tiempo del disponible para sentirse seguro/a.",
+  teme: "Teme cometer errores visibles y ser asociado/a con un trabajo de baja calidad.",
+  eficaz: "Sería más eficaz si aceptara que un resultado \"suficientemente bueno\" a tiempo vale más que uno perfecto y tarde."
+},
+Creativo: {
+  nombre: "Creativo",
+  resumen: "Combina asertividad con pensamiento analítico: propone ideas con confianza y las sostiene con lógica, aunque sin mucho interés en el consenso social o la paciencia frente a procesos lentos.",
+  atributos: ["Innovador/a","Analítico/a","Independiente","Directo/a","Seguro/a de sí mismo/a","Curioso/a"],
+  emociones: "Se involucra intelectualmente más que emocionalmente, y puede parecer distante en el trato cotidiano.",
+  metas: "Busca resolver problemas de forma novedosa y demostrar la solidez lógica de sus ideas.",
+  influye: "Influye proponiendo soluciones originales y defendiéndolas con argumentos racionales firmes.",
+  juzga: "Juzga a los demás por la originalidad y coherencia lógica de sus ideas, no por su calidez interpersonal.",
+  valor: "Aporta soluciones poco convencionales a problemas que los enfoques tradicionales no logran resolver.",
+  abusa: "Puede abusar de la independencia, descartando el aporte de otros sin considerarlo seriamente.",
+  presion: "Bajo presión, se vuelve más cortante en el trato y más rígido/a en defender su propia idea.",
+  teme: "Teme quedar atrapado/a en procesos rígidos que no dejan espacio para nuevas soluciones.",
+  eficaz: "Sería más eficaz si invirtiera tiempo en explicar sus ideas de forma más accesible para el resto del equipo."
+},
+Realizador: {
+  nombre: "Realizador",
+  resumen: "Combina decisión con constancia: actúa con firmeza pero sostiene sus compromisos en el tiempo, en lugar de perder el impulso tras el arranque inicial. Es exigente, pero también confiable en el largo plazo.",
+  atributos: ["Decidido/a","Constante","Confiable","Exigente","Firme","Perseverante"],
+  emociones: "Se mantiene estable emocionalmente incluso en contextos demandantes, sin grandes altibajos.",
+  metas: "Busca resultados sostenidos en el tiempo, no solo logros puntuales.",
+  influye: "Influye demostrando consistencia entre lo que promete y lo que efectivamente entrega.",
+  juzga: "Juzga a los demás por su compromiso sostenido, más que por su desempeño en un momento aislado.",
+  valor: "Aporta la combinación, poco común, de firmeza en la decisión y estabilidad en la ejecución.",
+  abusa: "Puede abusar de su exigencia personal, imponiendo ese mismo estándar a otros sin considerar sus límites.",
+  presion: "Bajo presión, mantiene el rumbo con firmeza, aunque puede volverse inflexible ante alternativas distintas a la suya.",
+  teme: "Teme que un cambio de rumbo brusco eche a perder un esfuerzo sostenido en el tiempo.",
+  eficaz: "Sería más eficaz si diera espacio a ajustar el plan cuando la evidencia indica que es necesario."
+},
+Resolutivo: {
+  nombre: "Resolutivo",
+  resumen: "Es marcadamente decidido y directo, con baja dependencia de la interacción social, la paciencia o el detalle para actuar. Prefiere resolver rápido y avanzar, incluso con información parcial.",
+  atributos: ["Decidido/a","Directo/a","Independiente","Pragmático/a","Enérgico/a","Autosuficiente"],
+  emociones: "Expresa poca vulnerabilidad emocional y prioriza la acción por sobre la reflexión compartida.",
+  metas: "Busca resolver el problema que tiene enfrente, sin mayor necesidad de validación externa.",
+  influye: "Influye por la fuerza de sus decisiones y su disposición a actuar cuando otros dudan.",
+  juzga: "Juzga a los demás por su capacidad de decidir y actuar sin depender de otros.",
+  valor: "Aporta capacidad real de resolver situaciones urgentes cuando nadie más se hace cargo.",
+  abusa: "Puede abusar de la unilateralidad, decidiendo solo/a en temas que requerían la opinión del equipo.",
+  presion: "Bajo presión, decide aún más rápido, arriesgando pasar por alto información relevante.",
+  teme: "Teme depender de otros para resolver algo que considera que puede resolver solo/a.",
+  eficaz: "Sería más eficaz si consultara antes de decidir en temas que afectan directamente a otras personas."
+},
+Profesional: {
+  nombre: "Profesional",
+  resumen: "Combina calidez, constancia y precisión, con un perfil poco asertivo que privilegia la buena relación y el trabajo bien hecho por sobre la exposición personal. Es un perfil que rara vez genera friction en un equipo.",
+  atributos: ["Meticuloso/a","Cálido/a","Constante","Colaborador/a","Confiable","Prudente"],
+  emociones: "Es sensible al ambiente del equipo y prefiere evitar la tensión antes que confrontarla abiertamente.",
+  metas: "Busca hacer bien su trabajo y mantener buenas relaciones con todo su entorno.",
+  influye: "Influye con calidad de trabajo y buen trato, más que con asertividad o presión directa.",
+  juzga: "Juzga a los demás por su prolijidad y su disposición a colaborar sin generar conflicto.",
+  valor: "Aporta una combinación estable de calidad técnica y buen ambiente de trabajo.",
+  abusa: "Puede abusar de la prudencia, evitando decir lo que piensa cuando implica generar una diferencia de opinión.",
+  presion: "Bajo presión, se enfoca en no fallar y en no generar tensión, aunque eso implique no tomar una postura firme.",
+  teme: "Teme el conflicto interpersonal y ser percibido/a como alguien poco confiable en su trabajo.",
+  eficaz: "Sería más eficaz si expresara su opinión con más firmeza cuando el contexto realmente lo requiere."
+},
+Especialista: {
+  nombre: "Especialista",
+  resumen: "Es marcadamente paciente y constante, sin mayor necesidad de protagonismo social, asertividad o control del detalle ajeno. Rinde bien en tareas estables que puede sostener en el tiempo sin sobresaltos.",
+  atributos: ["Paciente","Constante","Discreto/a","Confiable","Calmado/a","Metódico/a"],
+  emociones: "Mantiene la calma de forma casi constante, sin grandes variaciones emocionales visibles.",
+  metas: "Busca estabilidad laboral y la posibilidad de dominar bien una tarea específica.",
+  influye: "Influye poco de forma directa; su aporte se nota más en la consistencia que en la persuasión.",
+  juzga: "Juzga a los demás por su constancia y su respeto a los tiempos y compromisos acordados.",
+  valor: "Aporta continuidad operativa: es quien sostiene procesos estables sin necesitar supervisión constante.",
+  abusa: "Puede abusar de la rutina, resistiéndose a cambios que en realidad serían beneficiosos.",
+  presion: "Bajo presión, prefiere retraerse y seguir el procedimiento conocido antes que improvisar.",
+  teme: "Teme los cambios abruptos y quedar expuesto/a en un rol que exija visibilidad o confrontación.",
+  eficaz: "Sería más eficaz si se animara a proponer ideas propias en vez de esperar siempre indicaciones externas."
+},
+Desconcertante: {
+  nombre: "Desconcertante",
+  resumen: "Presenta un perfil equilibrado, sin una dimensión claramente dominante sobre las demás. Esto suele traducirse en un comportamiento que varía según el contexto, más que en un patrón fijo y predecible.",
+  atributos: ["Adaptable","Situacional","Versátil","Ecléctico/a","Flexible","Contextual"],
+  emociones: "Su expresión emocional varía según la situación, sin un patrón único y estable.",
+  metas: "Sus prioridades pueden variar de un contexto a otro, más que responder a un mismo motor constante.",
+  influye: "Influye de forma distinta según el interlocutor y el contexto, adaptando su enfoque caso a caso.",
+  juzga: "Juzga a los demás con criterios que varían según la situación específica que esté viviendo.",
+  valor: "Aporta versatilidad: puede ajustarse a roles y contextos distintos sin quedar encasillado/a en uno solo.",
+  abusa: "Puede resultar difícil de predecir para sus colaboradores, lo que en ocasiones genera cierta incertidumbre en el equipo.",
+  presion: "Bajo presión, su reacción es menos predecible que en otros perfiles, y puede variar de una situación a otra.",
+  teme: "Teme ser encasillado/a en una única forma de ser, cuando en la práctica se adapta según el contexto.",
+  eficaz: "Sería más eficaz si comunicara con claridad qué enfoque va a usar en cada situación, para dar más previsibilidad a su equipo."
+},
+Superactivo: {
+  nombre: "Superactivo",
+  resumen: "Muestra una intensidad alta en las cuatro dimensiones a la vez: es asertivo, sociable, constante y meticuloso, todo con fuerza. Esto suele traducirse en un nivel de energía y exigencia notablemente alto, tanto consigo mismo/a como con su entorno.",
+  atributos: ["Intenso/a","Exigente","Multifacético/a","Enérgico/a","Perfeccionista","Determinado/a"],
+  emociones: "Vive todo con intensidad: sus emociones, su exigencia y su energía suelen estar por sobre el promedio.",
+  metas: "Busca destacar en múltiples frentes a la vez, sin conformarse con cumplir solo lo mínimo esperado.",
+  influye: "Influye por la suma de asertividad, cercanía, constancia y rigor, lo que puede resultar abrumador para otros.",
+  juzga: "Juzga a los demás con estándares altos, esperando un nivel de compromiso similar al propio.",
+  valor: "Aporta una capacidad de trabajo y de exigencia que puede elevar el estándar de todo un equipo.",
+  abusa: "Puede abusar de su propia intensidad, generando agotamiento en sí mismo/a o presión excesiva en su entorno.",
+  presion: "Bajo presión, redobla el esfuerzo en todos los frentes a la vez, lo que puede ser insostenible en el tiempo.",
+  teme: "Teme no estar dando lo suficiente, incluso cuando objetivamente ya está rindiendo por sobre el estándar.",
+  eficaz: "Sería más eficaz si priorizara menos frentes a la vez y aceptara que no todo puede sostenerse al máximo nivel."
+},
+Subactivo: {
+  nombre: "Subactivo",
+  resumen: "Muestra una intensidad baja en las cuatro dimensiones a la vez: sus respuestas tienden a ser moderadas y reservadas, sin una inclinación marcada hacia la asertividad, la sociabilidad, la constancia o el control del detalle.",
+  atributos: ["Reservado/a","Moderado/a","Cauteloso/a","Discreto/a","Ecuánime","Bajo perfil"],
+  emociones: "Expresa sus emociones de forma contenida, sin grandes manifestaciones en ningún sentido.",
+  metas: "Sus objetivos suelen ser modestos y poco ambiciosos en comparación con otros perfiles.",
+  influye: "Influye poco de forma activa; prefiere no imponerse ni buscar protagonismo.",
+  juzga: "Juzga a los demás con criterios moderados, evitando posiciones extremas.",
+  valor: "Aporta un perfil de bajo conflicto, que rara vez genera tensión o fricción en el equipo.",
+  abusa: "Puede abusar del bajo perfil, evitando asumir responsabilidad o visibilidad cuando el rol lo requiere.",
+  presion: "Bajo presión, tiende a replegarse aún más, en lugar de activar una respuesta visible.",
+  teme: "Teme la exposición y verse forzado/a a asumir un rol de mayor protagonismo del que le es cómodo.",
+  eficaz: "Sería más eficaz si se permitiera mostrar más iniciativa propia, incluso cuando nadie se la exige explícitamente."
+}
+};
+
+// ---- Clasificación en patrones clásicos (misma lógica que la tabulación oficial de Amplifica) ----
+function classifyD(x){
+  if(x<-7) return 1;
+  if(x<-3 && x>-8) return 2;
+  if(x<0 && x>-4) return 3;
+  if(x<2 && x>-1) return 4;
+  if(x>1 && x<5) return 5;
+  if(x>4 && x<9) return 6;
+  return 7;
+}
+function classifyI(x){
+  if(x<-7) return 1;
+  if(x<-3 && x>-8) return 2;
+  if(x<-1 && x>-4) return 3;
+  if(x<2 && x>-2) return 4;
+  if(x>1 && x<4) return 5;
+  if(x>3 && x<7) return 6;
+  return 7;
+}
+function classifyS(x){
+  if(x<-10) return 1;
+  if(x<-6 && x>-11) return 2;
+  if(x<-3 && x>-7) return 3;
+  if(x<0 && x>-4) return 4;
+  if(x>-1 && x<3) return 5;
+  if(x>2 && x<8) return 6;
+  return 7;
+}
+function classifyC(x){
+  if(x<-5) return 1;
+  if(x<-2 && x>-6) return 2;
+  if(x<0 && x>-3) return 3;
+  if(x<3 && x>-1) return 4;
+  if(x>2 && x<5) return 5;
+  if(x>4 && x<9) return 6;
+  return 7;
+}
+function classifyProfile(raw){
+  const subIndex = { d: classifyD(raw.d), i: classifyI(raw.i), s: classifyS(raw.s), c: classifyC(raw.c) };
+  const code = '' + subIndex.d + subIndex.i + subIndex.s + subIndex.c;
+  const patternKey = CODE_TO_PATTERN[code] || 'Desconcertante';
+  return { subIndex, code, patternKey };
+}
+
+
+// ---- Competencias comportamentales calculadas a partir del DISC ----
+const COMPETENCIAS = [
+  { key:'escucha', label:'Capacidad de escucha', desc:'Habilidad para comprender lo que otros comunican, en contenido y en emoción.', weights:{d:0, i:0.30, s:0.45, c:0.25} },
+  { key:'comunicacion_hab', label:'Habilidades de comunicación', desc:'Capacidad de transmitir ideas de forma clara y adaptada al interlocutor.', weights:{d:0.25, i:0.55, s:0.20, c:0} },
+  { key:'manejo_equipos', label:'Manejo de equipos', desc:'Capacidad de organizar, coordinar y dirigir el trabajo de un grupo.', weights:{d:0.45, i:0.30, s:0.25, c:0} },
+  { key:'motivacion_otros', label:'Motivación a otros', desc:'Capacidad de inspirar y movilizar a otras personas hacia una meta.', weights:{d:0.30, i:0.55, s:0.15, c:0} },
+  { key:'orientacion_resultados', label:'Orientación a resultados', desc:'Capacidad de enfocar el esfuerzo hacia el logro de metas concretas.', weights:{d:0.55, i:0.20, s:0, c:0.25} },
+  { key:'toma_decisiones_comp', label:'Toma de decisiones', desc:'Capacidad de resolver y elegir entre alternativas de forma oportuna.', weights:{d:0.50, i:0.20, s:0, c:0.30} },
+  { key:'vision_futuro', label:'Visión de futuro', desc:'Capacidad de anticipar escenarios y proyectar el trabajo a mediano y largo plazo.', weights:{d:0.40, i:0.25, s:0, c:0.35} },
+  { key:'servicio_cliente', label:'Servicio al cliente', desc:'Capacidad de generar una experiencia positiva y de confianza en quienes reciben el servicio.', weights:{d:0, i:0.35, s:0.45, c:0.20} }
+];
+
+function pctFromRaw(score){ return Math.max(0, Math.min(100, Math.round(((score+28)/56)*100))); }
+
+function computeCompetencies(raw){
+  const pct = { d: pctFromRaw(raw.d), i: pctFromRaw(raw.i), s: pctFromRaw(raw.s), c: pctFromRaw(raw.c) };
+  return COMPETENCIAS.map(comp=>{
+    const value = Math.round(comp.weights.d*pct.d + comp.weights.i*pct.i + comp.weights.s*pct.s + comp.weights.c*pct.c);
+    return { label:comp.label, desc:comp.desc, value };
+  });
+}
+
+function computeBenzigerScores(){
+  const totals = {}; BENZIGER_QUADRANT_ORDER.forEach(q=>totals[q]=0);
+  bzSession.forEach(item=>{ totals[item.q] += bzAnswers[item.origIdx]; });
+  return totals;
+}
+
+// ---- Gráfico "cerebro" con el polígono de puntajes Benziger ----
+function renderBenzigerBrainSVG(scores){
+  const cx = 200, cy = 200, maxR = 115, minScore = 15, maxScore = 75;
+  const dirsRaw = { FI:[-1,-1], FD:[1,-1], BD:[1,1], BI:[-1,1] };
+  const dirs = {};
+  Object.keys(dirsRaw).forEach(k=>{
+    const [x,y] = dirsRaw[k];
+    const len = Math.sqrt(x*x+y*y);
+    dirs[k] = [x/len, y/len];
+  });
+  const order = ['FI','FD','BD','BI'];
+  const ticks = [15,30,45,60,75];
+
+  function radiusFor(score){
+    const t = Math.max(0, Math.min(1, (score-minScore)/(maxScore-minScore)));
+    return 18 + t*(maxR-18);
+  }
+  function pointFor(q, score){
+    const [dx,dy] = dirs[q];
+    const r = radiusFor(score);
+    return [cx+dx*r, cy+dy*r];
+  }
+
+  function brainBlobPath(R, bumps, amp){
+    const N = bumps*6;
+    const pts = [];
+    for(let i=0;i<N;i++){
+      const theta = (i/N)*Math.PI*2;
+      const r = R + amp*Math.sin(bumps*theta + 0.7);
+      pts.push([cx+r*Math.cos(theta), cy+r*Math.sin(theta)]);
+    }
+    let d = `M ${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)} `;
+    for(let i=0;i<N;i++){
+      const cur = pts[i], next = pts[(i+1)%N];
+      const mx = (cur[0]+next[0])/2, my = (cur[1]+next[1])/2;
+      d += `Q ${cur[0].toFixed(1)},${cur[1].toFixed(1)} ${mx.toFixed(1)},${my.toFixed(1)} `;
+    }
+    return d + 'Z';
+  }
+
+  let axesSvg = '';
+  order.forEach(q=>{
+    const [dx,dy] = dirs[q];
+    const x2 = cx+dx*maxR, y2 = cy+dy*maxR;
+    axesSvg += `<line x1="${cx}" y1="${cy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.9"/>`;
+    ticks.forEach(tk=>{
+      const [tx,ty] = pointFor(q, tk);
+      axesSvg += `<circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="1.5" fill="#ffffff" opacity="0.7"/>`;
+    });
+  });
+
+  const pts = order.map(q=>pointFor(q, scores[q]));
+  const polyPoints = pts.map(p=>p.map(n=>n.toFixed(1)).join(',')).join(' ');
+
+  let vertexSvg = '';
+  pts.forEach(([x,y])=>{
+    vertexSvg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5" fill="#121755" stroke="#fff" stroke-width="2"/>`;
+  });
+
+  const labelR = maxR + 45;
+  let labelSvg = '';
+  order.forEach(q=>{
+    const [dx,dy] = dirs[q];
+    const lx = cx+dx*labelR, ly = cy+dy*labelR;
+    const anchor = dx<0 ? 'end' : 'start';
+    labelSvg += `<text x="${lx.toFixed(1)}" y="${(ly-4).toFixed(1)}" text-anchor="${anchor}" font-family="Barlow Condensed, sans-serif" font-size="14" font-weight="700" fill="#121755">${BENZIGER_QUADRANTS[q].nombre}</text>`;
+    labelSvg += `<text x="${lx.toFixed(1)}" y="${(ly+13).toFixed(1)}" text-anchor="${anchor}" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#4548FF">${scores[q]}/75</text>`;
+  });
+
+  const blobPath = brainBlobPath(132, 10, 6);
+
+  return `
+    <svg viewBox="0 0 400 400" style="width:100%; max-width:380px; display:block; margin:0 auto;">
+      <path d="${blobPath}" fill="#7fb3ad" opacity="0.30"/>
+      <line x1="${cx}" y1="30" x2="${cx}" y2="370" stroke="#ffffff" stroke-width="4"/>
+      <line x1="30" y1="${cy}" x2="370" y2="${cy}" stroke="#ffffff" stroke-width="4"/>
+      ${axesSvg}
+      <polygon points="${polyPoints}" fill="rgba(69,72,255,0.18)" stroke="#4548FF" stroke-width="2.5"/>
+      ${vertexSvg}
+      ${labelSvg}
+    </svg>
+  `;
+}
+
+function buildRecord(){
+  const record = {
+    nombre: candidate.nombre,
+    rut: candidate.rut,
+    cargo: candidate.cargo,
+    email: candidate.email,
+    submittedAt: new Date().toISOString()
+  };
+  if(doDisc) record.scores = computeScores();
+  if(doBenziger) record.benziger = computeBenzigerScores();
+  return record;
+}
+
+async function finishQuiz(){
+  const record = buildRecord();
+  const safeKey = record.rut.replace(/[^a-zA-Z0-9]/g,'') + '-' + Date.now();
+  try{
+    await rtdb.ref('results/' + safeKey).set(record);
+  }catch(e){
+    console.error('No se pudo guardar el resultado', e);
+  }
+  showScreen('thanks');
+}
+
+// ---- ADMIN ----
+document.getElementById('adminLink').addEventListener('click', (e)=>{
+  e.preventDefault();
+  showScreen('adminGate');
+});
+document.getElementById('adminLinkIntro').addEventListener('click', (e)=>{
+  e.preventDefault();
+  showScreen('adminGate');
+});
+document.getElementById('adminEnterBtn').addEventListener('click', async ()=>{
+  const email = document.getElementById('adminEmail').value.trim();
+  const pass = document.getElementById('adminPass').value;
+  try{
+    await auth.signInWithEmailAndPassword(email, pass);
+  }catch(e){
+    document.getElementById('errPass').style.display = 'block';
+    return;
+  }
+  document.getElementById('errPass').style.display = 'none';
+  document.getElementById('resetMsg').style.display = 'none';
+  await renderAdminList();
+  showScreen('adminList');
+});
+document.getElementById('adminResetBtn').addEventListener('click', async ()=>{
+  const email = document.getElementById('adminEmail').value.trim();
+  const resetMsg = document.getElementById('resetMsg');
+  if(!email){
+    resetMsg.textContent = 'Escribe tu correo arriba primero.';
+    resetMsg.style.color = '#c0392b';
+    resetMsg.style.display = 'block';
+    return;
+  }
+  try{
+    await auth.sendPasswordResetEmail(email);
+    resetMsg.textContent = 'Te enviamos un correo para restablecer tu contraseña.';
+    resetMsg.style.color = 'var(--blue)';
+  }catch(e){
+    resetMsg.textContent = 'No se pudo enviar el correo de restablecimiento.';
+    resetMsg.style.color = '#c0392b';
+  }
+  resetMsg.style.display = 'block';
+});
+
+let adminRecords = [];
+async function renderAdminList(){
+  const container = document.getElementById('adminListContainer');
+  container.innerHTML = '<div class="empty-state">Cargando...</div>';
+  adminRecords = [];
+  try{
+    const snapshot = await rtdb.ref('results').once('value');
+    const data = snapshot.val();
+    if(data && typeof data === 'object'){
+      Object.keys(data).forEach(key=>{
+        const record = data[key];
+        record._key = key;
+        adminRecords.push(record);
+      });
+    }
+  }catch(e){
+    console.error('No se pudo listar resultados', e);
+  }
+  adminRecords.sort((a,b)=> new Date(b.submittedAt) - new Date(a.submittedAt));
+
+  if(adminRecords.length===0){
+    container.innerHTML = '<div class="empty-state">Aún no hay resultados registrados.</div>';
+    return;
+  }
+  container.innerHTML = '';
+  adminRecords.forEach((record, i)=>{
+    let codeLabel = '—';
+    if(record.scores){
+      const { patternKey } = classifyProfile(record.scores);
+      codeLabel = (PATTERNS[patternKey] || PATTERNS.Desconcertante).nombre;
+    } else if(record.benziger){
+      const topQ = BENZIGER_QUADRANT_ORDER.slice().sort((a,b)=>record.benziger[b]-record.benziger[a])[0];
+      codeLabel = BENZIGER_QUADRANTS[topQ].nombre;
+    }
+    const item = document.createElement('div');
+    item.className = 'admin-item';
+    item.innerHTML = `
+      <div>
+        <div class="admin-item-name">${record.nombre}</div>
+        <div class="admin-item-sub">${record.cargo} · ${new Date(record.submittedAt).toLocaleDateString('es-CL')}</div>
+      </div>
+      <div class="admin-item-code" style="font-size:16px;">${codeLabel}</div>
+    `;
+    item.addEventListener('click', ()=>{ showResultDetail(record); });
+    container.appendChild(item);
+  });
+}
+document.getElementById('backToListBtn').addEventListener('click', ()=>{ showScreen('adminList'); });
+
+function showResultDetail(record){
+  showScreen('results');
+
+  document.getElementById('candidateMeta').innerHTML = `
+    <div><strong>Nombre:</strong> ${record.nombre}</div>
+    <div><strong>RUT:</strong> ${record.rut}</div>
+    <div><strong>Cargo postulado:</strong> ${record.cargo}</div>
+    <div><strong>Correo:</strong> ${record.email}</div>
+    <div><strong>Fecha:</strong> ${new Date(record.submittedAt).toLocaleString('es-CL')}</div>
+  `;
+
+  const discSection = document.getElementById('discSection');
+  if(!record.scores){ discSection.style.display = 'none'; return renderBenzigerReportSection(record); }
+  discSection.style.display = 'block';
+
+  const raw = record.scores;
+  const { subIndex, code, patternKey } = classifyProfile(raw);
+  const pattern = PATTERNS[patternKey] || PATTERNS.Desconcertante;
+
+  document.getElementById('profileCode').textContent = pattern.nombre;
+  document.getElementById('profileName').textContent = `Patrón clásico · código ${code} (D${subIndex.d} I${subIndex.i} S${subIndex.s} C${subIndex.c})`;
+
+  document.getElementById('narrativeText').textContent = pattern.resumen;
+
+  const atribContainer = document.getElementById('atributosContainer');
+  atribContainer.innerHTML = pattern.atributos.map(a=>`<span class="tag-pill">${a}</span>`).join('');
+
+  document.getElementById('emocionesText').textContent = pattern.emociones;
+  document.getElementById('metasText').textContent = pattern.metas;
+  document.getElementById('influyeText').textContent = pattern.influye;
+  document.getElementById('juzgaText').textContent = pattern.juzga;
+  document.getElementById('valorText').textContent = pattern.valor;
+  document.getElementById('abusaText').textContent = pattern.abusa;
+  document.getElementById('presionText').textContent = pattern.presion;
+  document.getElementById('temeText').textContent = pattern.teme;
+  document.getElementById('eficazText').textContent = pattern.eficaz;
+
+  const competencias = computeCompetencies(raw);
+  const compContainer = document.getElementById('competenciasContainer');
+  compContainer.innerHTML = '';
+  competencias.forEach(comp=>{
+    const row = document.createElement('div');
+    row.className = 'competency-row';
+    row.innerHTML = `
+      <div class="competency-head"><span>${comp.label}</span><span>${comp.value}%</span></div>
+      <div class="competency-desc">${comp.desc}</div>
+      <div class="competency-track"><div class="competency-fill"></div></div>
+    `;
+    compContainer.appendChild(row);
+    requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.competency-fill').style.width = comp.value + '%'; }, 50); });
+  });
+
+  const barsContainer = document.getElementById('barsContainer');
+  barsContainer.innerHTML = '';
+  DIMS.forEach(dim=>{
+    const score = raw[dim];
+    const pct = Math.max(0, Math.round(((score+28)/56)*100));
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-head"><span>${dim.toUpperCase()} · ${DIM_LABEL[dim]}</span><span>${score>=0?'+':''}${score}</span></div>
+      <div class="bar-track"><div class="bar-fill" style="background:${DIM_COLOR[dim]}"></div></div>
+      <div class="bar-level">Nivel: ${levelFor(score)}</div>
+    `;
+    barsContainer.appendChild(row);
+    requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = pct + '%'; }, 50); });
+  });
+
+  renderBenzigerReportSection(record);
+}
+
+function renderBenzigerReportSection(record){
+  const benziger = record.benziger;
+  const benzigerSection = document.getElementById('benzigerSection');
+  if(!benziger){ benzigerSection.style.display = 'none'; return; }
+  benzigerSection.style.display = 'block';
+
+  const bzBarsContainer = document.getElementById('bzBarsContainer');
+  bzBarsContainer.innerHTML = '';
+  const sortedQ = BENZIGER_QUADRANT_ORDER.slice().sort((a,b)=>benziger[b]-benziger[a]);
+  const top1 = sortedQ[0], low = sortedQ[sortedQ.length-1];
+  document.getElementById('bzTop1Name').textContent = `${BENZIGER_QUADRANTS[top1].nombre} (${BENZIGER_QUADRANTS[top1].subtitulo})`;
+  document.getElementById('bzTop1Resumen').textContent = BENZIGER_QUADRANTS[top1].resumen;
+  document.getElementById('bzTop1Energiza').textContent = BENZIGER_QUADRANTS[top1].leEnergiza;
+  document.getElementById('bzLowName').textContent = `${BENZIGER_QUADRANTS[low].nombre} (${BENZIGER_QUADRANTS[low].subtitulo})`;
+  document.getElementById('bzLowResumen').textContent = BENZIGER_QUADRANTS[low].resumen;
+  document.getElementById('bzLowRiesgo').textContent = BENZIGER_QUADRANTS[low].riesgoFalsificacion;
+  document.getElementById('bzBrainContainer').innerHTML = renderBenzigerBrainSVG(benziger);
+
+  sortedQ.forEach(q=>{
+    const score = benziger[q];
+    const pct = Math.round(((score-15)/(75-15))*100);
+    const row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML = `
+      <div class="bar-head"><span>${BENZIGER_QUADRANTS[q].nombre} · ${BENZIGER_QUADRANTS[q].subtitulo}</span><span>${score} / 75</span></div>
+      <div class="bar-track"><div class="bar-fill" style="background:var(--blue)"></div></div>
+    `;
+    bzBarsContainer.appendChild(row);
+    requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.bar-fill').style.width = Math.max(0,pct) + '%'; }, 50); });
+  });
+}
+</script>
+</body>
+</html>
